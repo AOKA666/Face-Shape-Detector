@@ -34,6 +34,8 @@ interface AnalysisPayload {
 }
 
 const detailTabConfig = [
+  { label: "Shape", key: "shape" },
+  { label: "Score", key: "score" },
   { label: "Eyes", key: "eyes" },
   { label: "Brows", key: "brows" },
   { label: "Lips", key: "lips" },
@@ -303,9 +305,88 @@ export function Hero() {
   const overallScore = analysis?.summary?.overallScore
   const featureRatings = analysis?.summary?.featureRatings
   const overallComment = analysis?.summary?.overallComment
-  const [activeDetailTab, setActiveDetailTab] = useState<DetailTabKey>("eyes")
+  const [activeDetailTab, setActiveDetailTab] = useState<DetailTabKey>("shape")
 
   const displayImageSrc = previewImage ?? uploadedImage
+
+  const renderTabContent = () => {
+    if (!analysis) {
+      return <p className="text-sm text-white/60">Upload a photo to start the analysis.</p>
+    }
+
+    if (activeDetailTab === "shape") {
+      return (
+        <div className="space-y-5">
+          <DetailSection
+            title="Face Shape"
+            data={{
+              ...analysis.shape,
+              shape: analysis.shape?.faceShape,
+              description: analysis.shape?.description,
+            }}
+            emphasize
+          />
+          <div className="space-y-5">
+            <div>
+              <p className="text-sm font-semibold text-white">Shape probabilities</p>
+              <ProbabilityBars data={analysis.shape?.probabilities} />
+            </div>
+            <MeasurementGrid measurements={analysis.shape?.facialMeasurements} />
+          </div>
+        </div>
+      )
+    }
+
+    if (activeDetailTab === "score") {
+      const scoreEntries: FeatureScores = {}
+      if (overallScore !== undefined) {
+        scoreEntries["Overall Score"] = overallScore
+      }
+      if (featureRatings) {
+        Object.entries(featureRatings).forEach(([key, value]) => {
+          scoreEntries[key] = value
+        })
+      }
+
+      if (!Object.keys(scoreEntries).length) {
+        return <p className="text-sm text-white/60">Score data is not available yet.</p>
+      }
+
+      return (
+        <div className="space-y-4">
+          <div className="rounded-3xl border border-white/5 bg-white/5 p-5">
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-white/60">Score breakdown</p>
+            {overallComment && (
+              <p className="mt-2 text-sm text-white/70">{overallComment}</p>
+            )}
+            <ScoreGrid scores={scoreEntries} />
+          </div>
+        </div>
+      )
+    }
+
+    const chosenData =
+      activeDetailTab === "eyes"
+        ? analysis.eyes
+        : activeDetailTab === "brows"
+        ? analysis.brows
+        : activeDetailTab === "lips"
+        ? analysis.lips
+        : activeDetailTab === "nose"
+        ? analysis.nose
+        : undefined
+
+    if (!chosenData) {
+      return <p className="text-sm text-white/60">Detailed metrics are pending.</p>
+    }
+
+    return (
+      <DetailSection
+        title={detailTabConfig.find((tab) => tab.key === activeDetailTab)?.label ?? "Details"}
+        data={chosenData}
+      />
+    )
+  }
 
   const uploadDropArea = (
     <div
@@ -433,24 +514,6 @@ export function Hero() {
           </div>
         </div>
 
-        <DetailSection
-          title="Face Shape"
-          data={{
-            ...analysis?.shape,
-            shape: analysis?.shape?.faceShape,
-            description: analysis?.shape?.description,
-          }}
-          emphasize
-        />
-
-        <div className="space-y-5">
-          <div>
-            <p className="text-sm font-semibold text-white">Shape probabilities</p>
-            <ProbabilityBars data={analysis?.shape?.probabilities} />
-          </div>
-          <MeasurementGrid measurements={analysis?.shape?.facialMeasurements} />
-        </div>
-
         <div className="space-y-4">
           <div className="flex flex-wrap gap-2">
             {detailTabConfig.map((tab) => {
@@ -469,10 +532,7 @@ export function Hero() {
               )
             })}
           </div>
-          <DetailSection
-            title={detailTabConfig.find((tab) => tab.key === activeDetailTab)?.label ?? "Eyes"}
-            data={analysis?.[activeDetailTab]}
-          />
+          {renderTabContent()}
         </div>
 
       </div>
