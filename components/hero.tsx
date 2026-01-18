@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import type React from "react"
-import { useState, useCallback, useRef } from "react"
+import { useState, useCallback, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Upload, X } from "lucide-react"
 
@@ -33,7 +33,50 @@ interface AnalysisPayload {
   raw?: string
 }
 
+const detailTabConfig = [
+  { label: "Eyes", key: "eyes" },
+  { label: "Brows", key: "brows" },
+  { label: "Lips", key: "lips" },
+  { label: "Nose", key: "nose" },
+] as const
+
+type DetailTabKey = (typeof detailTabConfig)[number]["key"]
+
 const probabilityKeyOrder = ["Square", "Round", "Diamond", "Heart", "Oblong", "Oval"]
+
+async function resizeImageFile(file: File, maxSide = 512): Promise<string> {
+  const bitmap = await createImageBitmap(file)
+  const longest = Math.max(bitmap.width, bitmap.height)
+  if (longest <= maxSide) {
+    const canvas = document.createElement("canvas")
+    canvas.width = bitmap.width
+    canvas.height = bitmap.height
+    const ctx = canvas.getContext("2d")
+    if (ctx) {
+      ctx.imageSmoothingEnabled = true
+      ctx.imageSmoothingQuality = "high"
+      ctx.drawImage(bitmap, 0, 0, bitmap.width, bitmap.height)
+    }
+    bitmap.close()
+    return canvas.toDataURL("image/jpeg", 0.95)
+  }
+  const ratio = maxSide / longest
+  const width = Math.max(1, Math.round(bitmap.width * ratio))
+  const height = Math.max(1, Math.round(bitmap.height * ratio))
+
+  const canvas = document.createElement("canvas")
+  canvas.width = width
+  canvas.height = height
+  const ctx = canvas.getContext("2d")
+  if (ctx) {
+    ctx.imageSmoothingEnabled = true
+    ctx.imageSmoothingQuality = "high"
+    ctx.drawImage(bitmap, 0, 0, width, height)
+  }
+  bitmap.close()
+
+  return canvas.toDataURL("image/jpeg", 0.95)
+}
 
 function parseNumber(value: number | string | undefined): number | undefined {
   if (value === undefined || value === null) return undefined
@@ -148,6 +191,7 @@ function DetailSection({
 
 export function Hero() {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null)
+  const [previewImage, setPreviewImage] = useState<string | null>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [analysis, setAnalysis] = useState<AnalysisPayload | null>(null)
   const [loading, setLoading] = useState(false)
@@ -156,20 +200,37 @@ export function Hero() {
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const fileInputId = "hero-upload-input"
 
-  const handleDrop = useCallback((event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault()
-    setIsDragging(false)
-    const file = event.dataTransfer.files[0]
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        setUploadedImage(e.target?.result as string)
-        setAnalysis(null)
-        setRawOutput(null)
-      }
-      reader.readAsDataURL(file)
+  const processFile = useCallback(async (file: File | null) => {
+    if (!file) return
+    setError(null)
+    setPreviewImage(null)
+    const reader = new FileReader()
+    reader.onload = (event) => {
+      setPreviewImage(event.target?.result as string)
+    }
+    reader.readAsDataURL(file)
+
+    try {
+      const resized = await resizeImageFile(file, 512)
+      setUploadedImage(resized)
+      setAnalysis(null)
+      setRawOutput(null)
+    } catch {
+      setError("Could not process the image. Please try another photo.")
     }
   }, [])
+
+  const handleDrop = useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault()
+      setIsDragging(false)
+      const file = event.dataTransfer.files[0]
+      if (file && file.type.startsWith("image/")) {
+        void processFile(file)
+      }
+    },
+    [processFile]
+  )
 
   const handleDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
@@ -181,18 +242,15 @@ export function Hero() {
     setIsDragging(false)
   }, [])
 
-  const handleFileSelect = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        setUploadedImage(e.target?.result as string)
-        setAnalysis(null)
-        setRawOutput(null)
+  const handleFileSelect = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0]
+      if (file && file.type.startsWith("image/")) {
+        void processFile(file)
       }
-      reader.readAsDataURL(file)
-    }
-  }, [])
+    },
+    [processFile]
+  )
 
   const triggerFilePicker = useCallback(() => {
     fileInputRef.current?.click()
@@ -201,8 +259,9 @@ export function Hero() {
   const clearImage = useCallback(() => {
     setUploadedImage(null)
     setAnalysis(null)
-    setRawOutput(null)
     setError(null)
+    setRawOutput(null)
+    setPreviewImage(null)
   }, [])
 
   const analyzeImage = useCallback(async () => {
@@ -226,7 +285,7 @@ export function Hero() {
       }
       const parsed = payload?.parsed
       setRawOutput(payload?.raw ?? null)
-      setAnalysis(parsed ? { ...parsed, raw: parsed.raw ?? payload?.raw } : { raw: payload?.raw })
+      setAnalysis(parsed ?? null)
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "An unexpected error occurred while analyzing the image."
@@ -236,9 +295,17 @@ export function Hero() {
     }
   }, [uploadedImage])
 
+  useEffect(() => {
+    if (!uploadedImage) return
+    void analyzeImage()
+  }, [uploadedImage, analyzeImage])
+
   const overallScore = analysis?.summary?.overallScore
   const featureRatings = analysis?.summary?.featureRatings
   const overallComment = analysis?.summary?.overallComment
+  const [activeDetailTab, setActiveDetailTab] = useState<DetailTabKey>("eyes")
+
+  const displayImageSrc = previewImage ?? uploadedImage
 
   const uploadDropArea = (
     <div
@@ -283,20 +350,22 @@ export function Hero() {
     <div className="mt-12 grid gap-6 lg:grid-cols-[1.1fr_1fr]">
       <div className="space-y-6 rounded-3xl border border-white/10 bg-neutral-900/80 p-6 shadow-2xl shadow-black/40">
         <div
-          className="group relative aspect-[3/4] overflow-hidden rounded-3xl border border-white/5"
+          className="group relative aspect-[3/4] mx-auto max-h-[360px] max-w-[320px] overflow-hidden rounded-3xl border border-white/5"
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
         >
-          <Image
-            src={uploadedImage!}
-            alt="Uploaded face"
-            fill
-            className="object-contain bg-black"
-            priority
-            sizes="(min-width: 1024px) 40vw, 80vw"
-            style={{ objectFit: "contain" }}
-          />
+          {displayImageSrc && (
+            <Image
+              src={displayImageSrc}
+              alt="Uploaded face"
+              fill
+              className="object-contain bg-black"
+              priority
+              sizes="(min-width: 1024px) 25vw, 80vw"
+              style={{ objectFit: "contain" }}
+            />
+          )}
         </div>
 
         <div className="flex items-center justify-between">
@@ -382,17 +451,30 @@ export function Hero() {
           <MeasurementGrid measurements={analysis?.shape?.facialMeasurements} />
         </div>
 
-        <DetailSection title="Eyes" data={analysis?.eyes} />
-        <DetailSection title="Brows" data={analysis?.brows} />
-        <DetailSection title="Lips" data={analysis?.lips} />
-        <DetailSection title="Nose" data={analysis?.nose} />
-
-        {rawOutput && (
-          <div className="rounded-2xl border border-dashed border-white/10 bg-white/5 p-4 text-xs text-white/70">
-            <p className="text-[11px] font-semibold uppercase text-white/50">Raw model output</p>
-            <p className="mt-2 whitespace-pre-wrap text-[12px]">{rawOutput}</p>
+        <div className="space-y-4">
+          <div className="flex flex-wrap gap-2">
+            {detailTabConfig.map((tab) => {
+              const isActive = tab.key === activeDetailTab
+              return (
+                <button
+                  key={tab.key}
+                  type="button"
+                  className={`rounded-full border border-white/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.4em] transition ${
+                    isActive ? "bg-amber-400 text-black border-amber-400" : "bg-white/5 text-white/70 hover:bg-white/10"
+                  }`}
+                  onClick={() => setActiveDetailTab(tab.key)}
+                >
+                  {tab.label}
+                </button>
+              )
+            })}
           </div>
-        )}
+          <DetailSection
+            title={detailTabConfig.find((tab) => tab.key === activeDetailTab)?.label ?? "Eyes"}
+            data={analysis?.[activeDetailTab]}
+          />
+        </div>
+
       </div>
     </div>
   )
