@@ -201,6 +201,8 @@ export function Hero() {
   const [rawOutput, setRawOutput] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const fileInputId = "hero-upload-input"
+  const analysisCache = useRef<Map<string, AnalysisPayload>>(new Map())
+  const pendingController = useRef<AbortController | null>(null)
 
   const processFile = useCallback(async (file: File | null) => {
     if (!file) return
@@ -217,6 +219,7 @@ export function Hero() {
       setUploadedImage(resized)
       setAnalysis(null)
       setRawOutput(null)
+      void analyzeImage(resized)
     } catch {
       setError("Could not process the image. Please try another photo.")
     }
@@ -266,11 +269,25 @@ export function Hero() {
     setPreviewImage(null)
   }, [])
 
-  const analyzeImage = useCallback(async () => {
-    if (!uploadedImage) {
+  const analyzeImage = useCallback(async (image: string) => {
+    if (!image) {
       setError("Please upload an image before analyzing.")
       return
     }
+
+    const cached = analysisCache.current.get(image)
+    if (cached) {
+      setAnalysis(cached)
+      setRawOutput(cached.raw ?? null)
+      setError(null)
+      setLoading(false)
+      return
+    }
+
+    pendingController.current?.abort()
+    const controller = new AbortController()
+    pendingController.current = controller
+
     setLoading(true)
     setError(null)
     try {
@@ -279,28 +296,34 @@ export function Hero() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ image: uploadedImage }),
+        body: JSON.stringify({ image }),
+        signal: controller.signal,
       })
       const payload = await response.json()
       if (!response.ok) {
         throw new Error(payload?.error || "Analysis failed, please try again.")
       }
       const parsed = payload?.parsed
+      const result: AnalysisPayload = parsed
+        ? { ...parsed, raw: parsed.raw ?? payload?.raw }
+        : { raw: payload?.raw }
+      if (result) {
+        analysisCache.current.set(image, result)
+      }
       setRawOutput(payload?.raw ?? null)
-      setAnalysis(parsed ?? null)
+      setAnalysis(result)
     } catch (err) {
+      if ((err as any)?.name === "AbortError") {
+        return
+      }
       const message =
         err instanceof Error ? err.message : "An unexpected error occurred while analyzing the image."
       setError(message)
     } finally {
       setLoading(false)
+      pendingController.current = null
     }
-  }, [uploadedImage])
-
-  useEffect(() => {
-    if (!uploadedImage) return
-    void analyzeImage()
-  }, [uploadedImage, analyzeImage])
+  }, [])
 
   const overallScore = analysis?.summary?.overallScore
   const featureRatings = analysis?.summary?.featureRatings
@@ -475,9 +498,9 @@ export function Hero() {
         <Button
           className="w-full bg-lime-400 text-black hover:bg-lime-300"
           disabled={!uploadedImage || loading}
-          onClick={analyzeImage}
+          onClick={() => uploadedImage && analyzeImage(uploadedImage)}
         >
-          {loading ? "Analyzing..." : analysis ? "Re-run analysis" : "Start analysis"}
+          {loading ? "Analyzing..." : analysis ? "Re-run analysis" : "Re-run analysis"}
         </Button>
         {error && <p className="text-sm text-red-400">{error}</p>}
       </div>
