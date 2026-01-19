@@ -68,13 +68,13 @@ export default function RootLayout({
         </Script>
 
         {/* Google Analytics (deferred) */}
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-W6LV22900R" strategy="lazyOnload" />
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-WTVDWKW9XW" strategy="lazyOnload" />
         <Script id="gtag-init" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-W6LV22900R');
+            gtag('config', 'G-WTVDWKW9XW');
           `}
         </Script>
       </head>
