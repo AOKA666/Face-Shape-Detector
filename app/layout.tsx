@@ -58,14 +58,18 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* Google Tag Manager (deferred) */}
-        <Script id="gtm-script" strategy="lazyOnload">
+        {/* Google Tag Manager */}
+        <Script id="gtm-script" strategy="beforeInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
           j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-NFLHXXGK');`}
+          })(window,document,'script','dataLayer','GTM-PQH3TFZL');`}
         </Script>
+        {/* End Google Tag Manager */}
+
+        {/* Ahrefs Analytics */}
+        <Script src="https://analytics.ahrefs.com/analytics.js" data-key="cQRMVPCUPVxrqZP+upBo4w" strategy="lazyOnload" />
 
         {/* Google Analytics (deferred) */}
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-W6LV22900R" strategy="lazyOnload" />
@@ -79,6 +83,16 @@ export default function RootLayout({
         </Script>
       </head>
       <body>
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-PQH3TFZL"
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          ></iframe>
+        </noscript>
+        {/* End Google Tag Manager (noscript) */}
         <Suspense fallback={null}>
           <div className="fixed inset-0 z-0 bg-black">
             <Plasma color="#8b5cf6" speed={0.8} direction="forward" scale={1.5} opacity={0.4} mouseInteractive={true} />
