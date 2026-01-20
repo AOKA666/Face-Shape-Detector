@@ -1,10 +1,11 @@
 "use client"
 
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import type React from "react"
 import { useState, useCallback, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Upload, X } from "lucide-react"
+import { Hourglass, Upload, X } from "lucide-react"
 import { track } from "@/lib/analytics"
 
 type FeatureScores = Record<string, number | string>
@@ -224,6 +225,8 @@ export function Hero() {
   const fileInputId = "hero-upload-input"
   const analysisCache = useRef<Map<string, AnalysisPayload>>(new Map())
   const pendingController = useRef<AbortController | null>(null)
+  const router = useRouter()
+  const isAnalyzing = loading
 
   const processFile = useCallback(async (file: File | null) => {
     if (!file) return
@@ -290,19 +293,24 @@ export function Hero() {
     setPreviewImage(null)
   }, [])
 
-  const analyzeImage = useCallback(async (image: string) => {
+  const analyzeImage = useCallback(async (image: string, force = false) => {
     if (!image) {
       setError("Please upload an image before analyzing.")
       return
     }
 
-    const cached = analysisCache.current.get(image)
-    if (cached) {
-      setAnalysis(cached)
-      setRawOutput(cached.raw ?? null)
-      setError(null)
-      setLoading(false)
-      return
+    if (!force) {
+      const cached = analysisCache.current.get(image)
+      if (cached) {
+        setAnalysis(cached)
+        setRawOutput(cached.raw ?? null)
+        setError(null)
+        setLoading(false)
+        return
+      }
+    } else {
+      analysisCache.current.delete(image)
+      setAnalysis(null)
     }
 
     pendingController.current?.abort()
@@ -492,6 +500,12 @@ export function Hero() {
               style={{ objectFit: "contain" }}
             />
           )}
+          {displayImageSrc && loading && (
+            <div className="scan-overlay">
+              <div className="scan-line" />
+              <div className="scan-line scan-line--secondary" />
+            </div>
+          )}
         </div>
 
         <div className="flex items-center justify-between">
@@ -520,7 +534,7 @@ export function Hero() {
         <Button
           className="w-full bg-lime-400 text-black hover:bg-lime-300"
           disabled={!uploadedImage || loading}
-          onClick={() => uploadedImage && analyzeImage(uploadedImage)}
+          onClick={() => uploadedImage && analyzeImage(uploadedImage, true)}
         >
           {loading ? "Analyzing..." : analysis ? "Re-run analysis" : "Re-run analysis"}
         </Button>
@@ -528,84 +542,156 @@ export function Hero() {
       </div>
 
       <div className="space-y-6 rounded-3xl border border-white/10 bg-neutral-950/60 p-6 shadow-2xl shadow-black/40">
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-white/50">Analysis results</p>
-              <p className="text-2xl font-semibold text-white">AI Face Summary</p>
+        {isAnalyzing ? (
+          <div className="flex h-full flex-col items-center justify-center gap-6 py-16 text-center">
+            <p className="text-sm uppercase tracking-[0.4em] text-white/60">analyzing...</p>
+            <Hourglass className="h-14 w-14 text-white/70 hourglass-spin" />
+          </div>
+        ) : (
+          <>
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm uppercase tracking-[0.3em] text-white/50">Analysis results</p>
+                  <p className="text-2xl font-semibold text-white">AI Face Summary</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs text-white/50">Overall</p>
+                  <p className="text-3xl font-bold text-lime-300">{overallScore ? overallScore.toFixed(1) : "--"}</p>
+                </div>
+              </div>
+              {overallComment && <p className="text-sm text-white/70">{overallComment}</p>}
+              <div className="grid gap-3 sm:grid-cols-2">
+                {featureRatings &&
+                  Object.entries(featureRatings).map(([label, value]) => {
+                    const numeric = parseNumber(value)
+                    return (
+                      <div
+                        key={label}
+                        className="rounded-2xl border border-white/5 bg-white/5 px-4 py-3 text-xs text-white/60"
+                      >
+                        <p className="text-[11px] uppercase tracking-wide">{label}</p>
+                        <p className="mt-1 text-xl font-semibold text-white">
+                          {numeric !== undefined ? numeric.toFixed(1) : value}
+                        </p>
+                      </div>
+                    )
+                  })}
+              </div>
             </div>
-            <div className="text-right">
-              <p className="text-xs text-white/50">Overall</p>
-              <p className="text-3xl font-bold text-lime-300">{overallScore ? overallScore.toFixed(1) : "--"}</p>
+
+            <div className="space-y-4">
+              <div className="flex flex-wrap gap-2">
+                {detailTabConfig.map((tab) => {
+                  const isActive = tab.key === activeDetailTab
+                  return (
+                    <button
+                      key={tab.key}
+                      type="button"
+                      className={`rounded-full border border-white/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.4em] transition ${
+                        isActive ? "bg-amber-400 text-black border-amber-400" : "bg-white/5 text-white/70 hover:bg-white/10"
+                      }`}
+                      onClick={() => setActiveDetailTab(tab.key)}
+                    >
+                      {tab.label}
+                    </button>
+                  )
+                })}
+              </div>
+              {renderTabContent()}
             </div>
-          </div>
-          {overallComment && <p className="text-sm text-white/70">{overallComment}</p>}
-          <div className="grid gap-3 sm:grid-cols-2">
-            {featureRatings &&
-              Object.entries(featureRatings).map(([label, value]) => {
-                const numeric = parseNumber(value)
-                return (
-                  <div
-                    key={label}
-                    className="rounded-2xl border border-white/5 bg-white/5 px-4 py-3 text-xs text-white/60"
-                  >
-                    <p className="text-[11px] uppercase tracking-wide">{label}</p>
-                    <p className="mt-1 text-xl font-semibold text-white">
-                      {numeric !== undefined ? numeric.toFixed(1) : value}
-                    </p>
-                  </div>
-                )
-              })}
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <div className="flex flex-wrap gap-2">
-            {detailTabConfig.map((tab) => {
-              const isActive = tab.key === activeDetailTab
-              return (
-                <button
-                  key={tab.key}
-                  type="button"
-                  className={`rounded-full border border-white/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.4em] transition ${
-                    isActive ? "bg-amber-400 text-black border-amber-400" : "bg-white/5 text-white/70 hover:bg-white/10"
-                  }`}
-                  onClick={() => setActiveDetailTab(tab.key)}
-                >
-                  {tab.label}
-                </button>
-              )
-            })}
-          </div>
-          {renderTabContent()}
-        </div>
-
+          </>
+        )}
       </div>
     </div>
   )
 
   return (
-    <section className="relative isolate overflow-hidden bg-gradient-to-b from-neutral-900 via-neutral-950 to-black">
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-lime-300">Face Intelligence</p>
-          <h1 className="mt-6 text-3xl font-extrabold leading-tight text-white sm:text-4xl lg:text-5xl">
-            Reimagining facial insights with AI
-          </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-white/70 sm:text-lg">
-            Upload one photo to unlock multidimensional facial scores, measurements, and aesthetic tips; layout mirrors the reference for easy web presentation.
-          </p>
+    <>
+      <section className="relative isolate overflow-hidden bg-gradient-to-b from-neutral-900 via-neutral-950 to-black">
+        <div className="container mx-auto px-4 py-16">
+          {(uploadedImage || previewImage) && (
+            <div className="flex justify-start mb-8">
+              <button
+                type="button"
+                onClick={() => {
+                  clearImage()
+                  router.push("/")
+                }}
+                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/70 transition hover:border-lime-400 hover:text-lime-200"
+              >
+                ← Return home
+              </button>
+            </div>
+          )}
+          <div className="text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-lime-300">Face Intelligence</p>
+            <h1 className="mt-6 text-3xl font-extrabold leading-tight text-white sm:text-4xl lg:text-5xl">
+              Reimagining facial insights with AI
+            </h1>
+            <p className="mx-auto mt-4 max-w-2xl text-base text-white/70 sm:text-lg">
+              Upload one photo to unlock multidimensional facial scores, measurements, and aesthetic tips; layout mirrors the reference for easy web presentation.
+            </p>
+          </div>
+          <input
+            id={fileInputId}
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            onChange={handleFileSelect}
+            className="hidden"
+          />
+          {uploadedImage ? analysisLayout : initialLayout}
         </div>
-        <input
-          id={fileInputId}
-          ref={fileInputRef}
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          onChange={handleFileSelect}
-          className="hidden"
-        />
-        {uploadedImage ? analysisLayout : initialLayout}
-      </div>
-    </section>
+      </section>
+      <style jsx>{`
+        .scan-overlay {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          border-radius: inherit;
+          overflow: hidden;
+          background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.07), transparent 55%);
+        }
+
+        .scan-line {
+          position: absolute;
+          left: 0;
+          right: 0;
+          height: 6px;
+          border-radius: 999px;
+          background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.85), transparent);
+          box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+          animation: scanMotion 2.4s linear infinite;
+        }
+
+        .scan-line--secondary {
+          animation-delay: 1.1s;
+          opacity: 0.5;
+        }
+
+        @keyframes scanMotion {
+          0% {
+            transform: translateY(-120%);
+          }
+          100% {
+            transform: translateY(120%);
+          }
+        }
+
+        .hourglass-spin {
+          animation: hourglassRotate 1.4s linear infinite;
+        }
+
+        @keyframes hourglassRotate {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
+    </>
   )
 }
