@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { X, ArrowRight, ChevronLeft } from "lucide-react"
+import { track } from "@/lib/analytics"
 
 interface OrderState {
   package: {
@@ -240,6 +241,7 @@ export default function CheckoutPage() {
   const handleConfirmOrder = () => {
     const whatsappMessage = generateWhatsAppMessage()
     const whatsappUrl = `https://wa.me/${orderConfig.whatsappNumber.replace(/[^0-9]/g, "")}?text=${whatsappMessage}`
+    track("cta_click", { site: "faceshapedetector", cta: "whatsapp_order", plan: order.package?.name })
     window.open(whatsappUrl, "_blank")
     router.push("/")
   }

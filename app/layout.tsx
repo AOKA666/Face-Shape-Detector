@@ -72,15 +72,19 @@ export default function RootLayout({
         <Script src="https://analytics.ahrefs.com/analytics.js" data-key="cQRMVPCUPVxrqZP+upBo4w" strategy="lazyOnload" />
 
         {/* Google Analytics (deferred) */}
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-WTVDWKW9XW" strategy="lazyOnload" />
-        <Script id="gtag-init" strategy="lazyOnload">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-WTVDWKW9XW');
-          `}
-        </Script>
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`} strategy="lazyOnload" />
+            <Script id="gtag-init" strategy="lazyOnload">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', { anonymize_ip: true });
+              `}
+            </Script>
+          </>
+        )}
       </head>
       <body>
         {/* Google Tag Manager (noscript) */}

@@ -5,6 +5,7 @@ import type React from "react"
 import { useState, useCallback, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Upload, X } from "lucide-react"
+import { track } from "@/lib/analytics"
 
 type FeatureScores = Record<string, number | string>
 
@@ -219,6 +220,7 @@ export function Hero() {
       setUploadedImage(resized)
       setAnalysis(null)
       setRawOutput(null)
+      track("upload_start", { site: "faceshapedetector" })
       void analyzeImage(resized)
     } catch {
       setError("Could not process the image. Please try another photo.")
@@ -309,6 +311,7 @@ export function Hero() {
         : { raw: payload?.raw }
       if (result) {
         analysisCache.current.set(image, result)
+        track("result_view", { site: "faceshapedetector" })
       }
       setRawOutput(payload?.raw ?? null)
       setAnalysis(result)
