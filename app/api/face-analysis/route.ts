@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 
-const MODEL = "doubao-seed-1-8-251228"
+const MODEL = "doubao-seed-1-6-flash-250828"
 
 const SYSTEM_MESSAGE =
   "你是一个面部特征分析师，懂得将图片解读为精准的数据和美学建议。请严格按照用户的要求生成内容，并在同一条返回数据中始终包含结构化的 JSON，同时保留原始描述以供前端回显。"
@@ -168,7 +168,7 @@ const USER_PROMPT = `
   "raw": string
 }
 
-在 JSON 外仍保留简单描述，避免额外解释，轻描淡写地陈列要点即可。`
+在 JSON 外仍保留简单描述，避免额外解释，轻描淡写地陈列要点即可。结果用英文输出，不要有中文`
 
 function extractMessageContent(choice: any): string {
   const content = choice?.message?.content
@@ -234,6 +234,7 @@ export async function POST(request: Request) {
             image_url: {
               url: image,
             },
+            detail: "low"
           },
           {
             type: "text",
@@ -244,7 +245,7 @@ export async function POST(request: Request) {
     ],
     temperature: 0.3,
     max_tokens: 2500,
-    "thinking": {
+    thinking: {
       "type": "disabled"
     }
   }

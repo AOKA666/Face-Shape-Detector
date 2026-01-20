@@ -47,7 +47,10 @@ type DetailTabKey = (typeof detailTabConfig)[number]["key"]
 
 const probabilityKeyOrder = ["Square", "Round", "Diamond", "Heart", "Oblong", "Oval"]
 
-async function resizeImageFile(file: File, maxSide = 512): Promise<string> {
+const MAX_UPLOAD_SIDE = 1024
+const MAX_UPLOAD_SIZE = 2 * 1024 * 1024 // 2 MB
+
+async function resizeImageFile(file: File, maxSide = MAX_UPLOAD_SIDE): Promise<string> {
   const bitmap = await createImageBitmap(file)
   const longest = Math.max(bitmap.width, bitmap.height)
   if (longest <= maxSide) {
@@ -79,6 +82,23 @@ async function resizeImageFile(file: File, maxSide = 512): Promise<string> {
   bitmap.close()
 
   return canvas.toDataURL("image/jpeg", 0.95)
+}
+
+function readFileAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => {
+      if (typeof reader.result === "string") {
+        resolve(reader.result)
+      } else {
+        reject(new Error("Unexpected file reader result"))
+      }
+    }
+    reader.onerror = () => {
+      reject(reader.error ?? new Error("Failed to read file"))
+    }
+    reader.readAsDataURL(file)
+  })
 }
 
 function parseNumber(value: number | string | undefined): number | undefined {
@@ -209,19 +229,18 @@ export function Hero() {
     if (!file) return
     setError(null)
     setPreviewImage(null)
-    const reader = new FileReader()
-    reader.onload = (event) => {
-      setPreviewImage(event.target?.result as string)
-    }
-    reader.readAsDataURL(file)
-
     try {
-      const resized = await resizeImageFile(file, 512)
-      setUploadedImage(resized)
+      const preview = await readFileAsDataUrl(file)
+      setPreviewImage(preview)
+      const needsCompression = file.size > MAX_UPLOAD_SIZE
+      const preparedImage = needsCompression
+        ? await resizeImageFile(file, MAX_UPLOAD_SIDE)
+        : preview
+      setUploadedImage(preparedImage)
       setAnalysis(null)
       setRawOutput(null)
       track("upload_start", { site: "faceshapedetector" })
-      void analyzeImage(resized)
+      void analyzeImage(preparedImage)
     } catch {
       setError("Could not process the image. Please try another photo.")
     }
