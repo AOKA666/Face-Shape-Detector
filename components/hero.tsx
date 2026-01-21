@@ -265,6 +265,10 @@ export function Hero() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [rawOutput, setRawOutput] = useState<string | null>(null)
+  const [leadEmail, setLeadEmail] = useState("")
+  const [leadSubmitting, setLeadSubmitting] = useState(false)
+  const [leadError, setLeadError] = useState<string | null>(null)
+  const [leadDialogOpen, setLeadDialogOpen] = useState(false)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const fileInputId = "hero-upload-input"
   const analysisCache = useRef<Map<string, AnalysisPayload>>(new Map())
@@ -358,6 +362,12 @@ export function Hero() {
     setError(null)
     setRawOutput(null)
     setPreviewImage(null)
+    setLeadEmail("")
+    setLeadError(null)
+    setLeadDialogOpen(false)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""
+    }
   }, [])
 
   const analyzeImage = useCallback(async (image: string, force = false) => {
@@ -421,6 +431,34 @@ export function Hero() {
       pendingController.current = null
     }
   }, [])
+
+  const submitLead = useCallback(async () => {
+    setLeadError(null)
+    const email = leadEmail.trim()
+    if (!email) {
+      setLeadError("Please enter your email.")
+      return
+    }
+    setLeadSubmitting(true)
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, site: "faceshapedetector" }),
+      })
+      const payload = await res.json()
+      if (!res.ok) {
+        throw new Error(payload?.error || "Failed to save email")
+      }
+      setLeadEmail("")
+      setLeadDialogOpen(true)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to save email"
+      setLeadError(message)
+    } finally {
+      setLeadSubmitting(false)
+    }
+  }, [leadEmail])
 
   const overallScore = analysis?.summary?.overallScore
   const featureRatings = analysis?.summary?.featureRatings
@@ -652,6 +690,40 @@ export function Hero() {
               </div>
             </div>
 
+            {analysis && (
+              <div className="rounded-3xl border border-lime-500/20 bg-lime-500/10 p-5 shadow-[0_0_30px_-12px_rgba(190,242,100,0.7)]">
+                <div className="flex flex-col gap-3">
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-lime-200">Get a full report + hairstyle tips (free)</p>
+                    <p className="text-sm text-white/80">Drop your email to receive the PDF summary and future updates.</p>
+                  </div>
+                  <div className="flex flex-col gap-3 sm:flex-row">
+                    <input
+                      type="email"
+                      value={leadEmail}
+                      onChange={(e) => setLeadEmail(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault()
+                          void submitLead()
+                        }
+                      }}
+                      placeholder="you@example.com"
+                      className="flex-1 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-lime-300 focus:outline-none"
+                    />
+                    <Button
+                      className="whitespace-nowrap bg-lime-400 text-black hover:bg-lime-300"
+                      disabled={leadSubmitting || !leadEmail.trim()}
+                      onClick={() => void submitLead()}
+                    >
+                      {leadSubmitting ? "Sending..." : "Send me the report"}
+                    </Button>
+                  </div>
+                  {leadError && <p className="text-sm text-red-300">{leadError}</p>}
+                </div>
+              </div>
+            )}
+
             <div className="space-y-4">
               <div className="flex flex-wrap gap-2">
                 {detailTabConfig.map((tab) => {
@@ -716,6 +788,22 @@ export function Hero() {
           {uploadedImage ? analysisLayout : initialLayout}
         </div>
       </section>
+      {leadDialogOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
+          <div className="w-full max-w-md rounded-3xl border border-white/10 bg-neutral-900 p-6 shadow-2xl shadow-black/50">
+            <p className="text-lg font-semibold text-white">Coming soon</p>
+            <p className="mt-2 text-sm text-white/70">Coming soon. You’ll be notified as soon as this feature is launched.</p>
+            <div className="mt-6 flex justify-end">
+              <Button
+                className="bg-lime-400 text-black hover:bg-lime-300"
+                onClick={() => setLeadDialogOpen(false)}
+              >
+                Got it
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
       <style jsx>{`
         .scan-overlay {
           position: absolute;
