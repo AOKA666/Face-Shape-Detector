@@ -51,6 +51,49 @@ const probabilityKeyOrder = ["Square", "Round", "Diamond", "Heart", "Oblong", "O
 const MAX_UPLOAD_SIDE = 1024
 const MAX_UPLOAD_SIZE = 2 * 1024 * 1024 // 2 MB
 
+function dataUrlToBlob(dataUrl: string): Blob {
+  const [meta, base64] = dataUrl.split(",")
+  if (!base64) throw new Error("Invalid data URL")
+  const mimeMatch = meta.match(/data:([^;]+);base64/)
+  const mime = mimeMatch?.[1] ?? "application/octet-stream"
+  const binary = atob(base64)
+  const len = binary.length
+  const bytes = new Uint8Array(len)
+  for (let i = 0; i < len; i += 1) {
+    bytes[i] = binary.charCodeAt(i)
+  }
+  return new Blob([bytes], { type: mime })
+}
+
+type CosUploadInfo = { uploadUrl: string; fileUrl: string; key: string }
+
+async function requestCosUpload(contentType: string, extension?: string): Promise<CosUploadInfo> {
+  const res = await fetch("/api/cos-upload", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ contentType, extension }),
+  })
+  const payload = await res.json()
+  if (!res.ok) {
+    const message = typeof payload?.error === "string" ? payload.error : "Failed to get COS upload URL"
+    throw new Error(message)
+  }
+  return payload as CosUploadInfo
+}
+
+async function setCosAcl(key: string) {
+  const res = await fetch("/api/cos-upload/confirm", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ key }),
+  })
+  const payload = await res.json()
+  if (!res.ok) {
+    const message = typeof payload?.error === "string" ? payload.error : "Failed to set COS ACL"
+    throw new Error(message)
+  }
+}
+
 async function resizeImageFile(file: File, maxSide = MAX_UPLOAD_SIDE): Promise<string> {
   const bitmap = await createImageBitmap(file)
   const longest = Math.max(bitmap.width, bitmap.height)
@@ -215,6 +258,7 @@ function DetailSection({
 
 export function Hero() {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null)
+  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null)
   const [previewImage, setPreviewImage] = useState<string | null>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [analysis, setAnalysis] = useState<AnalysisPayload | null>(null)
@@ -231,6 +275,7 @@ export function Hero() {
   const processFile = useCallback(async (file: File | null) => {
     if (!file) return
     setError(null)
+    setUploadedUrl(null)
     setPreviewImage(null)
     try {
       const preview = await readFileAsDataUrl(file)
@@ -243,9 +288,30 @@ export function Hero() {
       setAnalysis(null)
       setRawOutput(null)
       track("upload_start", { site: "faceshapedetector" })
-      void analyzeImage(preparedImage)
-    } catch {
-      setError("Could not process the image. Please try another photo.")
+
+      setLoading(true)
+      const blob = dataUrlToBlob(preparedImage)
+      const extension = file.name.split(".").pop()
+      const { uploadUrl, fileUrl, key } = await requestCosUpload(blob.type || "image/jpeg", extension)
+
+      const uploadRes = await fetch(uploadUrl, {
+        method: "PUT",
+        headers: { "Content-Type": blob.type || "application/octet-stream" },
+        body: blob,
+      })
+      if (!uploadRes.ok) {
+        throw new Error("Upload to COS failed")
+      }
+
+      await setCosAcl(key)
+
+      setUploadedUrl(fileUrl)
+      void analyzeImage(fileUrl)
+    } catch (err) {
+      console.error("Upload failed", err)
+      const message = err instanceof Error ? err.message : "Could not process the image. Please try another photo."
+      setError(`${message} (upload to COS required)`)
+      setLoading(false)
     }
   }, [])
 
@@ -287,6 +353,7 @@ export function Hero() {
 
   const clearImage = useCallback(() => {
     setUploadedImage(null)
+    setUploadedUrl(null)
     setAnalysis(null)
     setError(null)
     setRawOutput(null)
@@ -533,8 +600,13 @@ export function Hero() {
 
         <Button
           className="w-full bg-lime-400 text-black hover:bg-lime-300"
-          disabled={!uploadedImage || loading}
-          onClick={() => uploadedImage && analyzeImage(uploadedImage, true)}
+          disabled={!(uploadedUrl || uploadedImage) || loading}
+          onClick={() => {
+            const target = uploadedUrl || uploadedImage
+            if (target) {
+              void analyzeImage(target, true)
+            }
+          }}
         >
           {loading ? "Analyzing..." : analysis ? "Re-run analysis" : "Re-run analysis"}
         </Button>

@@ -1,4 +1,7 @@
 import { NextResponse } from "next/server"
+import type COS from "cos-nodejs-sdk-v5"
+
+export const runtime = "nodejs"
 
 const MODEL = "doubao-seed-1-6-flash-250828"
 
@@ -214,6 +217,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Missing image data" }, { status: 400 })
   }
 
+  let imageUrl: string
+  try {
+    imageUrl = await uploadToCos(image)
+  } catch (error) {
+    console.error("COS upload failed", error)
+    return NextResponse.json({ error: "Image upload failed" }, { status: 500 })
+  }
+
   const apiKey = process.env.ARK_API_KEY
   if (!apiKey) {
     return NextResponse.json({ error: "Server missing ARK_API_KEY" }, { status: 500 })
@@ -232,7 +243,7 @@ export async function POST(request: Request) {
           {
             type: "image_url",
             image_url: {
-              url: image,
+              url: imageUrl,
             },
             detail: "low"
           },
@@ -275,5 +286,85 @@ export async function POST(request: Request) {
   return NextResponse.json({
     raw: rawContent,
     parsed,
+    imageUrl,
   })
+}
+
+type ParsedDataUri = {
+  mime: string
+  buffer: Buffer
+  extension: string
+}
+
+let cosClient: COS | null = null
+
+function ensureCosClient(): COS {
+  if (cosClient) return cosClient
+
+  const secretId = process.env.COS_SECRET_ID
+  const secretKey = process.env.COS_SECRET_KEY
+  const region = process.env.COS_REGION
+  const bucket = process.env.COS_BUCKET
+
+  if (!secretId || !secretKey || !region || !bucket) {
+    throw new Error("COS configuration is missing. Please set COS_SECRET_ID, COS_SECRET_KEY, COS_REGION, COS_BUCKET.")
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const COSConstructor = require("cos-nodejs-sdk-v5") as typeof COS
+  cosClient = new COSConstructor({
+    SecretId: secretId,
+    SecretKey: secretKey,
+  })
+
+  return cosClient
+}
+
+function parseDataUri(dataUri: string): ParsedDataUri {
+  const match = /^data:([^;]+);base64,(.+)$/.exec(dataUri)
+  const mime = match?.[1]
+  const data = match?.[2]
+
+  if (!mime || !data) {
+    throw new Error("Invalid image data")
+  }
+
+  const buffer = Buffer.from(data, "base64")
+  const extension = mime.split("/")[1] || "jpg"
+
+  return { mime, buffer, extension }
+}
+
+async function uploadToCos(image: string): Promise<string> {
+  // If the client already sent an URL, reuse it.
+  if (!image.startsWith("data:")) {
+    return image
+  }
+
+  const { mime, buffer, extension } = parseDataUri(image)
+
+  const secretId = process.env.COS_SECRET_ID
+  const secretKey = process.env.COS_SECRET_KEY
+  const region = process.env.COS_REGION
+  const bucket = process.env.COS_BUCKET
+
+  if (!secretId || !secretKey || !region || !bucket) {
+    throw new Error("COS configuration is missing. Please set COS_SECRET_ID, COS_SECRET_KEY, COS_REGION, COS_BUCKET.")
+  }
+
+  const key = `uploads/${Date.now()}-${Math.random().toString(16).slice(2)}.${extension}`
+  const cos = ensureCosClient()
+
+  await cos.putObject({
+    Bucket: bucket,
+    Region: region,
+    Key: key,
+    Body: buffer,
+    ContentLength: buffer.length,
+    ContentType: mime,
+    CacheControl: "max-age=31536000",
+    ACL: "public-read",
+  })
+
+  return `https://${bucket}.cos.${region}.myqcloud.com/${key}`
 }
