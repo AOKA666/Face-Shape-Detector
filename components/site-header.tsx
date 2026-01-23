@@ -3,9 +3,12 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Menu, Tag, HelpCircle, FileText, Info, Scan } from "lucide-react"
+import { Menu, Tag, HelpCircle, FileText, Info, Scan, ChevronDown, User } from "lucide-react"
+import { useState } from "react"
 
 export function SiteHeader() {
+  const [onlineDropdownOpen, setOnlineDropdownOpen] = useState(false)
+
   const links = [
     { href: "#features", label: "Features", icon: Tag },
     { href: "#faq", label: "FAQ", icon: HelpCircle },
@@ -29,6 +32,37 @@ export function SiteHeader() {
                 {l.label}
               </Link>
             ))}
+            {/* Online with dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setOnlineDropdownOpen(true)}
+              onMouseLeave={() => setOnlineDropdownOpen(false)}
+            >
+              <button
+                className="flex items-center gap-1 hover:text-lime-300 transition-colors"
+              >
+                Online
+                <ChevronDown className="h-3 w-3" />
+              </button>
+              {onlineDropdownOpen && (
+                <div className="absolute left-0 top-full mt-2 min-w-[160px] rounded-xl border border-white/10 bg-neutral-900/95 backdrop-blur-sm p-2 shadow-xl">
+                  <Link
+                    href="/face-shape-detector-online"
+                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10 hover:text-lime-300 transition-colors"
+                  >
+                    <Scan className="h-4 w-4" />
+                    Online Detector
+                  </Link>
+                  <Link
+                    href="/face-shape-detector-for-men"
+                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10 hover:text-lime-300 transition-colors"
+                  >
+                    <User className="h-4 w-4" />
+                    For Men
+                  </Link>
+                </div>
+              )}
+            </div>
           </nav>
 
           {/* Desktop CTA */}
@@ -76,6 +110,27 @@ export function SiteHeader() {
                       <span className="text-sm">{l.label}</span>
                     </Link>
                   ))}
+                  {/* Mobile Online links */}
+                  <div className="mt-2 pt-2 border-t border-gray-800">
+                    <Link
+                      href="/face-shape-detector-online"
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 hover:text-lime-300 transition-colors"
+                    >
+                      <span className="inline-flex items-center justify-center w-5 h-5 text-gray-400">
+                        <Scan className="h-4 w-4" />
+                      </span>
+                      <span className="text-sm">Online Detector</span>
+                    </Link>
+                    <Link
+                      href="/face-shape-detector-for-men"
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 hover:text-lime-300 transition-colors"
+                    >
+                      <span className="inline-flex items-center justify-center w-5 h-5 text-gray-400">
+                        <User className="h-4 w-4" />
+                      </span>
+                      <span className="text-sm">For Men</span>
+                    </Link>
+                  </div>
                 </nav>
 
                 {/* CTA Button at Bottom */}

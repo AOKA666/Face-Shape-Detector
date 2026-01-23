@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"console.log\\(require\\(''lucide-react''\\).Rectangle\\)\")",
+      "Bash(node -e \"console.log\\(Object.keys\\(require\\(''lucide-react''\\)\\).filter\\(k => k.includes\\(''rect''\\) || k.includes\\(''Rect''\\)\\)\\)\")",
+      "Bash(node -e \"const lucide = require\\(''lucide-react''\\); console.log\\(''Download:'', typeof lucide.Download\\); console.log\\(''Globe:'', typeof lucide.Globe\\); console.log\\(''Smartphone:'', typeof lucide.Smartphone\\)\")"
+    ]
+  }
+}
