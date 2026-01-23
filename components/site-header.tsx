@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Menu, Tag, HelpCircle, FileText, Info, Scan, ChevronDown, User } from "lucide-react"
+import { Menu, Tag, HelpCircle, FileText, Info, Scan, ChevronDown, User, Users, Image as ImageIcon, HelpCircle as FaceIcon } from "lucide-react"
 import { useState } from "react"
 
 export function SiteHeader() {
@@ -45,7 +45,7 @@ export function SiteHeader() {
                 <ChevronDown className="h-3 w-3" />
               </button>
               {onlineDropdownOpen && (
-                <div className="absolute left-0 top-full mt-2 min-w-[160px] rounded-xl border border-white/10 bg-neutral-900/95 backdrop-blur-sm p-2 shadow-xl">
+                <div className="absolute left-0 top-full min-w-[160px] rounded-xl border border-white/10 bg-neutral-900/95 backdrop-blur-sm p-2 shadow-xl -translate-y-1">
                   <Link
                     href="/face-shape-detector-online"
                     className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10 hover:text-lime-300 transition-colors"
@@ -59,6 +59,27 @@ export function SiteHeader() {
                   >
                     <User className="h-4 w-4" />
                     For Men
+                  </Link>
+                  <Link
+                    href="/face-shape-detector-for-women"
+                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10 hover:text-lime-300 transition-colors"
+                  >
+                    <Users className="h-4 w-4" />
+                    For Women
+                  </Link>
+                  <Link
+                    href="/face-shape-detector-from-photo"
+                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10 hover:text-lime-300 transition-colors"
+                  >
+                    <ImageIcon className="h-4 w-4" />
+                    From Photo
+                  </Link>
+                  <Link
+                    href="/what-face-shape-do-i-have"
+                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10 hover:text-lime-300 transition-colors"
+                  >
+                    <FaceIcon className="h-4 w-4" />
+                    What Face Shape
                   </Link>
                 </div>
               )}
@@ -129,6 +150,33 @@ export function SiteHeader() {
                         <User className="h-4 w-4" />
                       </span>
                       <span className="text-sm">For Men</span>
+                    </Link>
+                    <Link
+                      href="/face-shape-detector-for-women"
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 hover:text-lime-300 transition-colors"
+                    >
+                      <span className="inline-flex items-center justify-center w-5 h-5 text-gray-400">
+                        <Users className="h-4 w-4" />
+                      </span>
+                      <span className="text-sm">For Women</span>
+                    </Link>
+                    <Link
+                      href="/face-shape-detector-from-photo"
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 hover:text-lime-300 transition-colors"
+                    >
+                      <span className="inline-flex items-center justify-center w-5 h-5 text-gray-400">
+                        <ImageIcon className="h-4 w-4" />
+                      </span>
+                      <span className="text-sm">From Photo</span>
+                    </Link>
+                    <Link
+                      href="/what-face-shape-do-i-have"
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 hover:text-lime-300 transition-colors"
+                    >
+                      <span className="inline-flex items-center justify-center w-5 h-5 text-gray-400">
+                        <FaceIcon className="h-4 w-4" />
+                      </span>
+                      <span className="text-sm">What Face Shape</span>
                     </Link>
                   </div>
                 </nav>
