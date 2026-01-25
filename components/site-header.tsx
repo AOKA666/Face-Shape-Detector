@@ -5,16 +5,27 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu, Tag, HelpCircle, FileText, Info, Scan, ChevronDown, User, Users, Image as ImageIcon, HelpCircle as FaceIcon } from "lucide-react"
 import { useState } from "react"
+import { usePathname } from "next/navigation"
 
 export function SiteHeader() {
   const [onlineDropdownOpen, setOnlineDropdownOpen] = useState(false)
+  const pathname = usePathname()
 
   const links = [
-    { href: "#features", label: "Features", icon: Tag },
     { href: "#faq", label: "FAQ", icon: HelpCircle },
     { href: "#blog", label: "Blog", icon: FileText },
     { href: "#about", label: "About", icon: Info },
   ]
+
+  const dropdownItems = [
+    { href: "/face-shape-detector-online", label: "Online Detector", icon: <Scan className="h-4 w-4" /> },
+    { href: "/face-shape-detector-for-men", label: "For Men", icon: <User className="h-4 w-4" /> },
+    { href: "/face-shape-detector-for-women", label: "For Women", icon: <Users className="h-4 w-4" /> },
+    { href: "/face-shape-detector-from-photo", label: "From Photo", icon: <ImageIcon className="h-4 w-4" /> },
+    { href: "/what-face-shape-do-i-have", label: "What Face Shape", icon: <FaceIcon className="h-4 w-4" /> },
+  ]
+
+  const activeItem = dropdownItems.find(item => pathname === item.href)
 
   return (
     <header className="sticky top-0 z-50 p-4">
@@ -27,11 +38,6 @@ export function SiteHeader() {
           </Link>
 
           <nav className="hidden items-center gap-6 text-sm text-white/90 md:flex">
-            {links.map((l) => (
-              <Link key={l.href} href={l.href} className="hover:text-lime-300 transition-colors">
-                {l.label}
-              </Link>
-            ))}
             {/* Online with dropdown */}
             <div
               className="relative"
@@ -41,49 +47,33 @@ export function SiteHeader() {
               <button
                 className="flex items-center gap-1 hover:text-lime-300 transition-colors"
               >
-                Online
+                {activeItem ? activeItem.label : "Home"}
                 <ChevronDown className="h-3 w-3" />
               </button>
               {onlineDropdownOpen && (
                 <div className="absolute left-0 top-full min-w-[160px] rounded-xl border border-white/10 bg-neutral-900/95 backdrop-blur-sm p-2 shadow-xl -translate-y-1">
-                  <Link
-                    href="/face-shape-detector-online"
-                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10 hover:text-lime-300 transition-colors"
-                  >
-                    <Scan className="h-4 w-4" />
-                    Online Detector
-                  </Link>
-                  <Link
-                    href="/face-shape-detector-for-men"
-                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10 hover:text-lime-300 transition-colors"
-                  >
-                    <User className="h-4 w-4" />
-                    For Men
-                  </Link>
-                  <Link
-                    href="/face-shape-detector-for-women"
-                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10 hover:text-lime-300 transition-colors"
-                  >
-                    <Users className="h-4 w-4" />
-                    For Women
-                  </Link>
-                  <Link
-                    href="/face-shape-detector-from-photo"
-                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10 hover:text-lime-300 transition-colors"
-                  >
-                    <ImageIcon className="h-4 w-4" />
-                    From Photo
-                  </Link>
-                  <Link
-                    href="/what-face-shape-do-i-have"
-                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10 hover:text-lime-300 transition-colors"
-                  >
-                    <FaceIcon className="h-4 w-4" />
-                    What Face Shape
-                  </Link>
+                  {dropdownItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors ${
+                        pathname === item.href
+                          ? "bg-lime-400/20 text-lime-300"
+                          : "text-white/90 hover:bg-white/10 hover:text-lime-300"
+                      }`}
+                    >
+                      {item.icon}
+                      {item.label}
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>
+            {links.map((l) => (
+              <Link key={l.href} href={l.href} className="hover:text-lime-300 transition-colors">
+                {l.label}
+              </Link>
+            ))}
           </nav>
 
           {/* Desktop CTA */}
@@ -119,6 +109,28 @@ export function SiteHeader() {
                 </div>
 
                 <nav className="flex flex-col gap-1 mt-2 text-gray-200">
+                  {/* Mobile Online links */}
+                  <div className="mb-2 pb-2 border-b border-gray-800">
+                    <div className="text-xs text-gray-500 uppercase tracking-wider px-4 py-2 mb-2">{activeItem ? activeItem.label : "Home"}</div>
+                    {dropdownItems.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={`flex items-center gap-3 px-4 py-3 transition-colors ${
+                          pathname === item.href
+                            ? "bg-lime-400/20 text-lime-300"
+                            : "hover:bg-gray-900 hover:text-lime-300"
+                        }`}
+                      >
+                        <span className={`inline-flex items-center justify-center w-5 h-5 ${
+                          pathname === item.href ? "text-lime-300" : "text-gray-400"
+                        }`}>
+                          {item.icon}
+                        </span>
+                        <span className="text-sm">{item.label}</span>
+                      </Link>
+                    ))}
+                  </div>
                   {links.map((l) => (
                     <Link
                       key={l.href}
@@ -131,54 +143,6 @@ export function SiteHeader() {
                       <span className="text-sm">{l.label}</span>
                     </Link>
                   ))}
-                  {/* Mobile Online links */}
-                  <div className="mt-2 pt-2 border-t border-gray-800">
-                    <Link
-                      href="/face-shape-detector-online"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 hover:text-lime-300 transition-colors"
-                    >
-                      <span className="inline-flex items-center justify-center w-5 h-5 text-gray-400">
-                        <Scan className="h-4 w-4" />
-                      </span>
-                      <span className="text-sm">Online Detector</span>
-                    </Link>
-                    <Link
-                      href="/face-shape-detector-for-men"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 hover:text-lime-300 transition-colors"
-                    >
-                      <span className="inline-flex items-center justify-center w-5 h-5 text-gray-400">
-                        <User className="h-4 w-4" />
-                      </span>
-                      <span className="text-sm">For Men</span>
-                    </Link>
-                    <Link
-                      href="/face-shape-detector-for-women"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 hover:text-lime-300 transition-colors"
-                    >
-                      <span className="inline-flex items-center justify-center w-5 h-5 text-gray-400">
-                        <Users className="h-4 w-4" />
-                      </span>
-                      <span className="text-sm">For Women</span>
-                    </Link>
-                    <Link
-                      href="/face-shape-detector-from-photo"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 hover:text-lime-300 transition-colors"
-                    >
-                      <span className="inline-flex items-center justify-center w-5 h-5 text-gray-400">
-                        <ImageIcon className="h-4 w-4" />
-                      </span>
-                      <span className="text-sm">From Photo</span>
-                    </Link>
-                    <Link
-                      href="/what-face-shape-do-i-have"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 hover:text-lime-300 transition-colors"
-                    >
-                      <span className="inline-flex items-center justify-center w-5 h-5 text-gray-400">
-                        <FaceIcon className="h-4 w-4" />
-                      </span>
-                      <span className="text-sm">What Face Shape</span>
-                    </Link>
-                  </div>
                 </nav>
 
                 {/* CTA Button at Bottom */}
