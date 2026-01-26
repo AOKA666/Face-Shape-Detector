@@ -14,6 +14,7 @@ interface SectionBlock {
   shape?: string
   description?: string
   summary?: string
+  overallComment?: string
   measurements?: Record<string, string>
   facialMeasurements?: Record<string, string>
   scores?: FeatureScores
@@ -45,6 +46,15 @@ const detailTabConfig = [
 ] as const
 
 type DetailTabKey = (typeof detailTabConfig)[number]["key"]
+
+const featureRatingKeyByTab: Partial<Record<DetailTabKey, string>> = {
+  eyes: "Eyes",
+  brows: "Eyebrows",
+  lips: "Lips",
+  nose: "Nose",
+}
+
+const summaryFeatureOrder = ["Eyes", "Eyebrows", "Lips", "Nose"] as const
 
 const probabilityKeyOrder = ["Square", "Round", "Diamond", "Heart", "Oblong", "Oval"]
 
@@ -152,6 +162,14 @@ function parseNumber(value: number | string | undefined): number | undefined {
   return Number.isFinite(parsed) ? parsed : undefined
 }
 
+function getScoreColor(score?: number): string {
+  if (score === undefined) return "#84cc16"
+  if (score >= 8) return "#22c55e" // green
+  if (score >= 6) return "#a3e635" // lime
+  if (score >= 4) return "#f59e0b" // orange
+  return "#ef4444" // red
+}
+
 function ProbabilityBars({ data }: { data?: Record<string, number | string> }) {
   if (!data) return null
   const entries = probabilityKeyOrder
@@ -205,12 +223,23 @@ function ScoreGrid({ scores }: FeatureScores | undefined) {
     <div className="grid gap-3 sm:grid-cols-2">
       {Object.entries(scores).map(([label, value]) => {
         const numeric = parseNumber(value)
+        const percentage = numeric ? Math.min(numeric, 10) * 10 : 0
         return (
           <div
             key={label}
             className="rounded-2xl border border-white/5 bg-white/5 px-4 py-3 text-xs uppercase tracking-wide text-white/60"
           >
             <p className="text-[11px] text-white/50">{label}</p>
+            <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/10">
+              <div
+                className="h-full rounded-full transition-all duration-500"
+                style={{
+                  width: `${percentage}%`,
+                  background: getScoreColor(numeric),
+                  boxShadow: `0 0 8px ${getScoreColor(numeric)}40`,
+                }}
+              />
+            </div>
             <p className="mt-1 text-lg font-semibold text-white">
               {numeric !== undefined ? numeric.toFixed(1) : value}
             </p>
@@ -231,6 +260,9 @@ function DetailSection({
   emphasize?: boolean
 }) {
   if (!data) return null
+
+  const hasMeasurements = data.measurements && Object.keys(data.measurements).length > 0
+
   return (
     <div className="space-y-3 rounded-3xl border border-white/5 bg-neutral-950/30 p-5">
       <div className="flex items-center justify-between">
@@ -241,10 +273,44 @@ function DetailSection({
           </span>
         )}
       </div>
+      {data.overallComment && <p className="text-sm text-white/80">{data.overallComment}</p>}
       {data.summary && <p className="text-sm text-white/80">{data.summary}</p>}
       {data.description && <p className="text-sm text-white/70">{data.description}</p>}
-      <MeasurementGrid measurements={data.measurements} />
-      <ScoreGrid scores={data.scores} />
+
+      {hasMeasurements && (
+        <>
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-white/70 mb-4">Features</p>
+          <MeasurementGrid measurements={data.measurements} />
+        </>
+      )}
+
+      {data.scores && (
+        <div className="mt-4 space-y-3">
+          {Object.entries(data.scores)
+            .filter(([label]) => label !== "Overall") // Exclude Overall score
+            .map(([label, value]) => {
+              const numeric = parseNumber(value)
+              const percentage = numeric ? Math.min(numeric, 10) * 10 : 0
+              return (
+                <div key={label} className="flex items-center gap-3">
+                  <p className="text-[11px] uppercase tracking-wide text-white/50">{label}</p>
+                  <div className="flex-1 h-2 overflow-hidden rounded-full bg-white/10">
+                    <div
+                      className="h-full rounded-full transition-all duration-500"
+                      style={{
+                        width: `${percentage}%`,
+                        background: getScoreColor(numeric),
+                        boxShadow: `0 0 8px ${getScoreColor(numeric)}40`,
+                      }}
+                    />
+                  </div>
+                  <p className="text-lg font-semibold text-white">{numeric !== undefined ? numeric.toFixed(1) : value}</p>
+                </div>
+              )
+            })}
+        </div>
+      )}
+
       {data.recommendations && (
         <ul className="list-disc space-y-1 pl-4 text-[13px] text-white/70">
           {data.recommendations.map((item) => (
@@ -465,6 +531,35 @@ export function Hero() {
   const overallComment = analysis?.summary?.overallComment
   const [activeDetailTab, setActiveDetailTab] = useState<DetailTabKey>("shape")
 
+  const getFeatureScore = useCallback(
+    (label: (typeof summaryFeatureOrder)[number]) => {
+      const summaryValue = featureRatings?.[label]
+      if (summaryValue !== undefined) {
+        const numeric = parseNumber(summaryValue)
+        return { display: numeric !== undefined ? numeric.toFixed(1) : String(summaryValue), numeric }
+      }
+
+      const sectionMap: Record<string, SectionBlock | undefined> = {
+        Eyes: analysis?.eyes,
+        Eyebrows: analysis?.brows,
+        Lips: analysis?.lips,
+        Nose: analysis?.nose,
+      }
+      const sectionScoreRaw =
+        sectionMap[label]?.scores?.Overall ??
+        sectionMap[label]?.scores?.overall ??
+        sectionMap[label]?.scores?.["overall"] ??
+        sectionMap[label]?.scores?.["Overall Score"]
+      if (sectionScoreRaw !== undefined) {
+        const numeric = parseNumber(sectionScoreRaw)
+        return { display: numeric !== undefined ? numeric.toFixed(1) : String(sectionScoreRaw), numeric }
+      }
+
+      return { display: undefined, numeric: undefined }
+    },
+    [analysis, featureRatings]
+  )
+
   const displayImageSrc = previewImage ?? uploadedImage
 
   const renderTabContent = () => {
@@ -539,10 +634,46 @@ export function Hero() {
     }
 
     return (
-      <DetailSection
-        title={detailTabConfig.find((tab) => tab.key === activeDetailTab)?.label ?? "Details"}
-        data={chosenData}
-      />
+      <>
+        {/* Overall Score at top for Eyes/Brows/Lips/Nose tabs */}
+        {["eyes", "brows", "lips", "nose"].includes(activeDetailTab) && (
+          (() => {
+            const featureScoreKey = featureRatingKeyByTab[activeDetailTab]
+            const featureScore = featureScoreKey ? getFeatureScore(featureScoreKey as (typeof summaryFeatureOrder)[number]) : undefined
+            const tabScoreNumeric =
+              featureScore?.numeric ?? (overallScore !== undefined ? overallScore : undefined)
+            const featureComment = chosenData?.overallComment ?? overallComment
+            const tabScoreDisplay =
+              tabScoreNumeric !== undefined
+                ? tabScoreNumeric.toFixed(1)
+                : featureScore?.display !== undefined
+                ? featureScore.display
+                : undefined
+
+            if (tabScoreDisplay === undefined) return null
+
+            return (
+              <div className="rounded-3xl border border-white/10 bg-neutral-950/30 p-5 mb-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-2xl font-semibold text-white">Score</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs text-white/50">{featureScoreKey ?? "Overall"}</p>
+                    <p className="text-3xl font-bold text-lime-300">{tabScoreDisplay}</p>
+                  </div>
+                </div>
+                {featureComment && <p className="text-sm text-white/70 mt-2">{featureComment}</p>}
+              </div>
+            )
+          })()
+        )}
+
+        <DetailSection
+          title={detailTabConfig.find((tab) => tab.key === activeDetailTab)?.label ?? "Details"}
+          data={chosenData}
+        />
+      </>
     )
   }
 
@@ -587,6 +718,7 @@ export function Hero() {
 
   const analysisLayout = (
     <div className="mt-12 grid gap-6 lg:grid-cols-[1.1fr_1fr]">
+      {/* Left Column: Image + AI Face Summary */}
       <div className="space-y-6 rounded-3xl border border-white/10 bg-neutral-900/80 p-6 shadow-2xl shadow-black/40">
         <div
           className="group relative aspect-[3/4] mx-auto max-h-[360px] max-w-[320px] overflow-hidden rounded-3xl border border-white/5"
@@ -649,81 +781,101 @@ export function Hero() {
           {loading ? "Analyzing..." : analysis ? "Re-run analysis" : "Re-run analysis"}
         </Button>
         {error && <p className="text-sm text-red-400">{error}</p>}
+
+        {/* AI Face Summary - moved below image */}
+        {!isAnalyzing && analysis && (
+          <div className="mt-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm uppercase tracking-[0.3em] text-white/50">Analysis results</p>
+                <p className="text-2xl font-semibold text-white">AI Face Summary</p>
+              </div>
+              <div className="text-right">
+                <p className="text-xs text-white/50">Overall</p>
+                <p className="text-3xl font-bold text-lime-300">{overallScore ? overallScore.toFixed(1) : "--"}</p>
+              </div>
+            </div>
+            {overallComment && <p className="text-sm text-white/70">{overallComment}</p>}
+            <div className="grid gap-3 sm:grid-cols-2">
+              {summaryFeatureOrder.map((label) => {
+                const { display, numeric } = getFeatureScore(label)
+                if (display === undefined) return null
+                const percentage = numeric ? Math.min(numeric, 10) * 10 : 0
+                return (
+                  <div
+                    key={label}
+                    className="rounded-2xl border border-white/5 bg-white/5 px-4 py-3 text-xs text-white/60"
+                  >
+                    <p className="text-[11px] uppercase tracking-wide">{label}</p>
+                    <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/10">
+                      <div
+                        className="h-full rounded-full transition-all duration-500"
+                        style={{
+                          width: `${percentage}%`,
+                          background: getScoreColor(numeric),
+                          boxShadow: `0 0 8px ${getScoreColor(numeric)}40`,
+                        }}
+                      />
+                    </div>
+                    <p className="mt-1 text-xl font-semibold text-white">{display}</p>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Email Collection - moved below AI Face Summary */}
+        {analysis && !isAnalyzing && (
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-[0_0_30px_-12px_rgba(190,242,100,0.4)]">
+            <div className="flex flex-col gap-4">
+              <div className="space-y-2">
+                <p className="text-lg font-semibold text-white">Unlock detailed results for your face shape</p>
+                <p className="text-sm text-white/80">Get personalized insights based on your result:</p>
+                <ul className="list-disc space-y-1 pl-5 text-sm text-white/70">
+                  <li>Best hairstyles for your exact face shape</li>
+                  <li>Glasses & accessories that suit you</li>
+                  <li>What to avoid (common mistakes)</li>
+                </ul>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <input
+                  type="email"
+                  value={leadEmail}
+                  onChange={(e) => setLeadEmail(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault()
+                      void submitLead()
+                    }
+                  }}
+                  placeholder="you@example.com"
+                  className="flex-1 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-lime-300 focus:outline-none"
+                />
+                <Button
+                  className="whitespace-nowrap bg-lime-400 text-black hover:bg-lime-300"
+                  disabled={leadSubmitting || !leadEmail.trim()}
+                  onClick={() => void submitLead()}
+                >
+                  {leadSubmitting ? "Sending..." : "Email me my result"}
+                </Button>
+              </div>
+              {leadError && <p className="text-sm text-red-300">{leadError}</p>}
+            </div>
+          </div>
+        )}
       </div>
 
+      {/* Right Column: Detail Tabs + Content - moved to top */}
       <div className="space-y-6 rounded-3xl border border-white/10 bg-neutral-950/60 p-6 shadow-2xl shadow-black/40">
         {isAnalyzing ? (
           <div className="flex h-full flex-col items-center justify-center gap-6 py-16 text-center">
             <p className="text-sm uppercase tracking-[0.4em] text-white/60">analyzing...</p>
+            <p className="text-sm text-white/50">Please wait for about 10s...</p>
             <Hourglass className="h-14 w-14 text-white/70 hourglass-spin" />
           </div>
         ) : (
           <>
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm uppercase tracking-[0.3em] text-white/50">Analysis results</p>
-                  <p className="text-2xl font-semibold text-white">AI Face Summary</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-xs text-white/50">Overall</p>
-                  <p className="text-3xl font-bold text-lime-300">{overallScore ? overallScore.toFixed(1) : "--"}</p>
-                </div>
-              </div>
-              {overallComment && <p className="text-sm text-white/70">{overallComment}</p>}
-              <div className="grid gap-3 sm:grid-cols-2">
-                {featureRatings &&
-                  Object.entries(featureRatings).map(([label, value]) => {
-                    const numeric = parseNumber(value)
-                    return (
-                      <div
-                        key={label}
-                        className="rounded-2xl border border-white/5 bg-white/5 px-4 py-3 text-xs text-white/60"
-                      >
-                        <p className="text-[11px] uppercase tracking-wide">{label}</p>
-                        <p className="mt-1 text-xl font-semibold text-white">
-                          {numeric !== undefined ? numeric.toFixed(1) : value}
-                        </p>
-                      </div>
-                    )
-                  })}
-              </div>
-            </div>
-
-            {analysis && (
-              <div className="rounded-3xl border border-lime-500/20 bg-lime-500/10 p-5 shadow-[0_0_30px_-12px_rgba(190,242,100,0.7)]">
-                <div className="flex flex-col gap-3">
-                  <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-lime-200">Get a full report + hairstyle tips (free)</p>
-                    <p className="text-sm text-white/80">Drop your email to receive the PDF summary and future updates.</p>
-                  </div>
-                  <div className="flex flex-col gap-3 sm:flex-row">
-                    <input
-                      type="email"
-                      value={leadEmail}
-                      onChange={(e) => setLeadEmail(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault()
-                          void submitLead()
-                        }
-                      }}
-                      placeholder="you@example.com"
-                      className="flex-1 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-lime-300 focus:outline-none"
-                    />
-                    <Button
-                      className="whitespace-nowrap bg-lime-400 text-black hover:bg-lime-300"
-                      disabled={leadSubmitting || !leadEmail.trim()}
-                      onClick={() => void submitLead()}
-                    >
-                      {leadSubmitting ? "Sending..." : "Send me the report"}
-                    </Button>
-                  </div>
-                  {leadError && <p className="text-sm text-red-300">{leadError}</p>}
-                </div>
-              </div>
-            )}
-
             <div className="space-y-4">
               <div className="flex flex-wrap gap-2">
                 {detailTabConfig.map((tab) => {
@@ -789,16 +941,23 @@ export function Hero() {
         </div>
       </section>
       {leadDialogOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
-          <div className="w-full max-w-md rounded-3xl border border-white/10 bg-neutral-900 p-6 shadow-2xl shadow-black/50">
-            <p className="text-lg font-semibold text-white">Coming soon</p>
-            <p className="mt-2 text-sm text-white/70">Coming soon. You’ll be notified as soon as this feature is launched.</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
+          <div className="w-full max-w-md rounded-3xl border border-white/10 bg-neutral-900/95 p-6 shadow-2xl shadow-black/50">
+            <p className="text-lg font-semibold text-white">Thanks for helping us shape this feature 👋</p>
+            <div className="mt-3 space-y-3 text-sm text-white/75">
+              <p>We’re validating demand for more detailed face shape analysis and style recommendations.</p>
+              <p>Your interest helps us decide what to build next and which features matter most.</p>
+              <p>If we move forward with this, you’ll be the first to know.</p>
+              <p className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70">
+                No newsletters. No spam. Just product updates.
+              </p>
+            </div>
             <div className="mt-6 flex justify-end">
               <Button
                 className="bg-lime-400 text-black hover:bg-lime-300"
                 onClick={() => setLeadDialogOpen(false)}
               >
-                Got it
+                Sounds good
               </Button>
             </div>
           </div>
@@ -811,23 +970,23 @@ export function Hero() {
           pointer-events: none;
           border-radius: inherit;
           overflow: hidden;
-          background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.07), transparent 55%);
+          background: radial-gradient(circle at 50% 50%, rgba(163, 230, 53, 0.1), transparent 55%);
         }
 
         .scan-line {
           position: absolute;
           left: 0;
           right: 0;
-          height: 6px;
+          height: 4px;
           border-radius: 999px;
-          background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.85), transparent);
-          box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+          background: linear-gradient(180deg, transparent, rgba(163, 230, 53, 1), transparent);
+          box-shadow: 0 0 30px rgba(163, 230, 53, 0.6), 0 0 60px rgba(163, 230, 53, 0.4);
           animation: scanMotion 2.4s linear infinite;
         }
 
         .scan-line--secondary {
           animation-delay: 1.1s;
-          opacity: 0.5;
+          opacity: 0.6;
         }
 
         @keyframes scanMotion {

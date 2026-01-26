@@ -20,6 +20,7 @@ const USER_PROMPT = `
 - 嘴唇
 - 鼻子
 
+总体一句话评价，要给情绪价值（不超过20字）
 
 # 具体维度
 
@@ -43,12 +44,12 @@ const USER_PROMPT = `
 
 ## 得分
 
-总体颜值打分，并给出一句话评价
+总体颜值打分
 
 ## 眼睛
 
+- 眼睛的一句话评价，要给情绪价值（不超过20字）
 - 眼型是什么
-
 - 眼睛特征
   - 形状
   - 大小
@@ -70,6 +71,7 @@ const USER_PROMPT = `
 
 ## 眉毛
 
+- 眉毛的一句话评价，要给情绪价值（不超过20字）
 - 眉毛形状
 - 眉毛特征
   - 弧度
@@ -90,6 +92,7 @@ const USER_PROMPT = `
 
 ## 嘴唇
 
+- 嘴唇的一句话评价，要给情绪价值（不超过20字）
 - 嘴唇的形状
 - 嘴唇特征
   - cupid_bow
@@ -112,6 +115,7 @@ const USER_PROMPT = `
 
 ## 鼻子
 
+- 鼻子的一句话评价，要给情绪价值（不超过20字）
 - 鼻形
 - 鼻子特征
   - 鼻梁
@@ -149,21 +153,25 @@ const USER_PROMPT = `
     "recommendations": string[]
   },
   "eyes": {
+    "overallComment": string,
     "shape": string,
     "measurements": Record<string, string>,
     "scores": Record<string, number>
   },
   "brows": {
+    "overallComment": string,
     "shape": string,
     "measurements": Record<string, string>,
     "scores": Record<string, number>
   },
   "lips": {
+    "overallComment": string,
     "shape": string,
     "measurements": Record<string, string>,
     "scores": Record<string, number>
   },
   "nose": {
+    "overallComment": string,
     "shape": string,
     "measurements": Record<string, string>,
     "scores": Record<string, number>
