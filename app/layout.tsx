@@ -44,8 +44,7 @@ export default function RootLayout({
         <Script id="dynamic-favicon" strategy="beforeInteractive">
           {`
             function updateFavicon() {
-              const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-              const faviconHref = darkMode ? '/icons/face-detector-light.svg' : '/icons/face-detector-dark.svg';
+              const faviconHref = '/favicon.ico';
               let link = document.querySelector("link[rel~='icon']");
               if (!link) {
                 link = document.createElement('link');
