@@ -1,10 +1,7 @@
 const URLS = [
   { url: "/", priority: "1.0", changefreq: "weekly" },
-  { url: "/#pricing", priority: "0.9", changefreq: "weekly" },
-  { url: "/faq", priority: "0.8", changefreq: "monthly" },
   { url: "/About", priority: "0.7", changefreq: "monthly" },
-  { url: "/revisions", priority: "0.6", changefreq: "monthly" },
-  { url: "/3D-architecture-visualization-studio", priority: "0.9", changefreq: "weekly" },
+  { url: "/Blog", priority: "0.6", changefreq: "monthly" },
   { url: "/face-shape-detector-online", priority: "0.9", changefreq: "weekly" },
   { url: "/face-shape-detector-for-men", priority: "0.9", changefreq: "weekly" },
   { url: "/face-shape-detector-for-women", priority: "0.9", changefreq: "weekly" },
