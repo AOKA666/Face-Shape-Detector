@@ -7,9 +7,16 @@ import { InternalLinksMen } from "./_components/internal-links-men"
 import { FAQMen } from "./_components/faq-men"
 import { AppverseFooter } from "@/components/appverse-footer"
 import Script from "next/script"
+import type { Metadata } from "next"
 
 // Force static generation for low TTFB
 export const dynamic = "force-static"
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "https://www.yourface.online/face-shape-detector-for-men",
+  },
+}
 
 export default function MenPage() {
   const pageStructuredData = {

@@ -7,9 +7,16 @@ import { InternalLinksFromPhoto } from "./_components/internal-links-from-photo"
 import { FAQFromPhoto } from "./_components/faq-from-photo"
 import { AppverseFooter } from "@/components/appverse-footer"
 import Script from "next/script"
+import type { Metadata } from "next"
 
 // Force static generation for low TTFB
 export const dynamic = "force-static"
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "https://www.yourface.online/face-shape-detector-from-photo",
+  },
+}
 
 export default function FromPhotoPage() {
   const pageStructuredData = {

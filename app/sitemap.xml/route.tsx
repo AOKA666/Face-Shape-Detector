@@ -5,6 +5,11 @@ const URLS = [
   { url: "/About", priority: "0.7", changefreq: "monthly" },
   { url: "/revisions", priority: "0.6", changefreq: "monthly" },
   { url: "/3D-architecture-visualization-studio", priority: "0.9", changefreq: "weekly" },
+  { url: "/face-shape-detector-online", priority: "0.9", changefreq: "weekly" },
+  { url: "/face-shape-detector-for-men", priority: "0.9", changefreq: "weekly" },
+  { url: "/face-shape-detector-for-women", priority: "0.9", changefreq: "weekly" },
+  { url: "/face-shape-detector-from-photo", priority: "0.9", changefreq: "weekly" },
+  { url: "/what-face-shape-do-i-have", priority: "0.8", changefreq: "weekly" },
 ]
 
 export async function GET(request: Request) {

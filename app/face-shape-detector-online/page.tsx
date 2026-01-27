@@ -7,9 +7,16 @@ import { InternalLinks } from "./_components/internal-links"
 import { FAQOnline } from "./_components/faq-online"
 import { AppverseFooter } from "@/components/appverse-footer"
 import Script from "next/script"
+import type { Metadata } from "next"
 
 // Force static generation for low TTFB
 export const dynamic = "force-static"
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "https://www.yourface.online/face-shape-detector-online",
+  },
+}
 
 export default function OnlinePage() {
   const pageStructuredData = {

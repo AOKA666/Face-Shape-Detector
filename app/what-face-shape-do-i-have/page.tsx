@@ -8,9 +8,16 @@ import { InternalLinks } from "./_components/internal-links"
 import { FAQ } from "./_components/faq"
 import { AppverseFooter } from "@/components/appverse-footer"
 import Script from "next/script"
+import type { Metadata } from "next"
 
 // Force static generation for low TTFB
 export const dynamic = "force-static"
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "https://www.yourface.online/what-face-shape-do-i-have",
+  },
+}
 
 export default function WhatFaceShapePage() {
   const pageStructuredData = {
