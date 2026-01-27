@@ -11,7 +11,7 @@ import { Analytics } from "@vercel/analytics/react"
 const inter = Inter({ subsets: ["latin"], display: "swap" })
 
 export const metadata: Metadata = {
-  title: "FaceDetector | AI Face Shape Detector – Free Online Face Shape Analyzer",
+  title: "AI Face Shape Detector \u2013 Free Online Tool",
   description:
     "Upload your photo to instantly detect your face shape using AI. Get personalized hairstyle, makeup, and styling recommendations based on your unique face shape.",
   generator: "v0.app",
