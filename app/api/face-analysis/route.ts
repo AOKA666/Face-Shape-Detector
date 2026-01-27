@@ -217,12 +217,62 @@ function extractJsonFromText(text: string): Record<string, any> | null {
   }
 }
 
+const MAX_ANALYSIS_PER_IP = 3
+const RATE_LIMIT_WINDOW_MS = 24 * 60 * 60 * 1000
+const ipUsageLog = new Map<string, number[]>()
+
+function getClientIp(request: Request): string | undefined {
+  const xForwardedFor = request.headers.get("x-forwarded-for")
+  if (xForwardedFor) {
+    const ip = xForwardedFor.split(",")[0]?.trim()
+    if (ip) return ip
+  }
+
+  const realIp = request.headers.get("x-real-ip")
+  if (realIp) return realIp
+
+  const forwarded = request.headers.get("forwarded")
+  if (forwarded) {
+    const match = forwarded.match(/for=([^;]+)/i)
+    const ip = match?.[1]?.replace(/^\[|\]$/g, "").trim()
+    if (ip) return ip
+  }
+
+  return undefined
+}
+
+function consumeAnalysisAllowance(ip: string) {
+  const now = Date.now()
+  const windowStart = now - RATE_LIMIT_WINDOW_MS
+  const timestamps = (ipUsageLog.get(ip) ?? []).filter((ts) => ts > windowStart)
+
+  if (timestamps.length >= MAX_ANALYSIS_PER_IP) {
+    ipUsageLog.set(ip, timestamps)
+    const resetAt = Math.min(...timestamps) + RATE_LIMIT_WINDOW_MS
+    return { allowed: false, resetAt }
+  }
+
+  timestamps.push(now)
+  ipUsageLog.set(ip, timestamps)
+  return { allowed: true, remaining: MAX_ANALYSIS_PER_IP - timestamps.length }
+}
+
 export async function POST(request: Request) {
   const body = await request.json().catch(() => ({}))
   const image = body?.image
 
   if (!image) {
     return NextResponse.json({ error: "Missing image data" }, { status: 400 })
+  }
+
+  const clientIp = getClientIp(request) ?? "unknown"
+  const rateLimit = consumeAnalysisAllowance(clientIp)
+  if (!rateLimit.allowed) {
+    const retryAfterSeconds = Math.max(1, Math.ceil((rateLimit.resetAt - Date.now()) / 1000))
+    return NextResponse.json(
+      { error: "You have reached the 24-hour limit of 3 analyses for this IP. Please try again later." },
+      { status: 429, headers: { "Retry-After": `${retryAfterSeconds}` } }
+    )
   }
 
   let imageUrl: string
