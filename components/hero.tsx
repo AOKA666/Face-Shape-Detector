@@ -409,7 +409,7 @@ export function Hero() {
 
   const ensureCaptcha = useCallback(() => {
     if (captchaToken) return captchaToken
-    setError("请先完成人机验证，再上传或分析。")
+    setError("Please complete the CAPTCHA verification first before uploading or analyzing.")
     return null
   }, [captchaToken])
 
