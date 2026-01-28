@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Script from "next/script"
 import { useRouter } from "next/navigation"
 import type React from "react"
 import { useState, useCallback, useRef, useEffect } from "react"
@@ -59,7 +60,7 @@ const summaryFeatureOrder = ["Eyes", "Eyebrows", "Lips", "Nose"] as const
 const probabilityKeyOrder = ["Square", "Round", "Diamond", "Heart", "Oblong", "Oval"]
 
 const MAX_UPLOAD_SIDE = 1024
-const MAX_UPLOAD_SIZE = 2 * 1024 * 1024 // 2 MB
+const MAX_UPLOAD_SIZE = 5 * 1024 * 1024 // 5 MB
 
 function dataUrlToBlob(dataUrl: string): Blob {
   const [meta, base64] = dataUrl.split(",")
@@ -75,85 +76,138 @@ function dataUrlToBlob(dataUrl: string): Blob {
   return new Blob([bytes], { type: mime })
 }
 
-type CosUploadInfo = { uploadUrl: string; fileUrl: string; key: string }
+type UploadInfo = { uploadUrl: string; fileUrl: string; path: string }
 
-async function requestCosUpload(contentType: string, extension?: string): Promise<CosUploadInfo> {
-  const res = await fetch("/api/cos-upload", {
+async function requestUploadInit(params: {
+  contentType: string
+  extension?: string
+  size: number
+  fingerprint: string
+  hash: string
+  width?: number
+  height?: number
+  captchaToken: string
+}): Promise<UploadInfo> {
+  const res = await fetch("/api/upload/init", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ contentType, extension }),
+    body: JSON.stringify(params),
   })
   const payload = await res.json()
   if (!res.ok) {
-    const message = typeof payload?.error === "string" ? payload.error : "Failed to get COS upload URL"
+    const message = typeof payload?.error === "string" ? payload.error : "Failed to init upload"
     throw new Error(message)
   }
-  return payload as CosUploadInfo
+  return payload as UploadInfo
 }
 
-async function setCosAcl(key: string) {
-  const res = await fetch("/api/cos-upload/confirm", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ key }),
-  })
-  const payload = await res.json()
-  if (!res.ok) {
-    const message = typeof payload?.error === "string" ? payload.error : "Failed to set COS ACL"
-    throw new Error(message)
-  }
+async function sha256Hex(blob: Blob): Promise<string> {
+  const buffer = await blob.arrayBuffer()
+  const digest = await crypto.subtle.digest("SHA-256", buffer)
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("")
 }
 
-async function resizeImageFile(file: File, maxSide = MAX_UPLOAD_SIDE): Promise<string> {
+function getFingerprint(): string {
+  if (typeof window === "undefined") return "unknown"
+  const key = "fsd_fingerprint"
+  const existing = localStorage.getItem(key)
+  if (existing) return existing
+  const fp = crypto.randomUUID()
+  localStorage.setItem(key, fp)
+  return fp
+}
+
+async function resizeImageFile(
+  file: File,
+  maxSide = MAX_UPLOAD_SIDE
+): Promise<{ dataUrl: string; width: number; height: number }> {
   const bitmap = await createImageBitmap(file)
   const longest = Math.max(bitmap.width, bitmap.height)
-  if (longest <= maxSide) {
-    const canvas = document.createElement("canvas")
-    canvas.width = bitmap.width
-    canvas.height = bitmap.height
-    const ctx = canvas.getContext("2d")
-    if (ctx) {
-      ctx.imageSmoothingEnabled = true
-      ctx.imageSmoothingQuality = "high"
-      ctx.drawImage(bitmap, 0, 0, bitmap.width, bitmap.height)
-    }
-    bitmap.close()
-    return canvas.toDataURL("image/jpeg", 0.95)
+  let targetWidth = bitmap.width
+  let targetHeight = bitmap.height
+
+  if (longest > maxSide) {
+    const ratio = maxSide / longest
+    targetWidth = Math.max(1, Math.round(bitmap.width * ratio))
+    targetHeight = Math.max(1, Math.round(bitmap.height * ratio))
   }
-  const ratio = maxSide / longest
-  const width = Math.max(1, Math.round(bitmap.width * ratio))
-  const height = Math.max(1, Math.round(bitmap.height * ratio))
 
   const canvas = document.createElement("canvas")
-  canvas.width = width
-  canvas.height = height
+  canvas.width = targetWidth
+  canvas.height = targetHeight
   const ctx = canvas.getContext("2d")
   if (ctx) {
     ctx.imageSmoothingEnabled = true
     ctx.imageSmoothingQuality = "high"
-    ctx.drawImage(bitmap, 0, 0, width, height)
+    ctx.drawImage(bitmap, 0, 0, targetWidth, targetHeight)
   }
   bitmap.close()
 
-  return canvas.toDataURL("image/jpeg", 0.95)
+  return {
+    dataUrl: canvas.toDataURL("image/jpeg", 0.95),
+    width: targetWidth,
+    height: targetHeight,
+  }
 }
 
-function readFileAsDataUrl(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => {
-      if (typeof reader.result === "string") {
-        resolve(reader.result)
-      } else {
-        reject(new Error("Unexpected file reader result"))
+function TurnstileWidget({
+  onToken,
+  onWidgetId,
+}: {
+  onToken: (token: string) => void
+  onWidgetId?: (id: string) => void
+}) {
+  const [scriptReady, setScriptReady] = useState(false)
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+
+  useEffect(() => {
+    if (!scriptReady || !siteKey) return
+    const win = window as any
+    if (!win.turnstile?.render) return
+    const el = containerRef.current
+    if (!el) return
+    const id = win.turnstile.render(el, {
+      sitekey: siteKey,
+      callback: (token: string) => onToken(token),
+      "expired-callback": () => onToken(""),
+      "error-callback": () => onToken(""),
+    })
+    if (onWidgetId) onWidgetId(id)
+    return () => {
+      if (id && win.turnstile?.remove) {
+        win.turnstile.remove(id)
       }
     }
-    reader.onerror = () => {
-      reject(reader.error ?? new Error("Failed to read file"))
+  }, [scriptReady, siteKey, onToken, onWidgetId])
+
+  useEffect(() => {
+    const win = window as any
+    if (win?.turnstile?.render && !scriptReady) {
+      setScriptReady(true)
     }
-    reader.readAsDataURL(file)
-  })
+  }, [scriptReady])
+
+  return (
+    <>
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        async
+        defer
+        onLoad={() => setScriptReady(true)}
+      />
+      <div ref={containerRef} className="mt-4 flex justify-center" />
+      {!siteKey && (
+        <p className="mt-2 text-xs text-red-300 text-center">
+          Turnstile site key missing, please set NEXT_PUBLIC_TURNSTILE_SITE_KEY
+        </p>
+      )}
+    </>
+  )
 }
+
 
 function parseNumber(value: number | string | undefined): number | undefined {
   if (value === undefined || value === null) return undefined
@@ -335,34 +389,65 @@ export function Hero() {
   const [leadSubmitting, setLeadSubmitting] = useState(false)
   const [leadError, setLeadError] = useState<string | null>(null)
   const [leadDialogOpen, setLeadDialogOpen] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const [turnstileId, setTurnstileId] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const fileInputId = "hero-upload-input"
   const analysisCache = useRef<Map<string, AnalysisPayload>>(new Map())
   const pendingController = useRef<AbortController | null>(null)
   const router = useRouter()
   const isAnalyzing = loading
+  const verified = Boolean(captchaToken)
+
+  useEffect(() => {
+    const bypass = process.env.NEXT_PUBLIC_TURNSTILE_BYPASS_TOKEN
+    if (bypass) {
+      setCaptchaToken(bypass)
+      return
+    }
+  }, [])
+
+  const ensureCaptcha = useCallback(() => {
+    if (captchaToken) return captchaToken
+    setError("请先完成人机验证，再上传或分析。")
+    return null
+  }, [captchaToken])
 
   const processFile = useCallback(async (file: File | null) => {
     if (!file) return
+    const tokenCheck = ensureCaptcha()
+    if (!tokenCheck) return
     setError(null)
     setUploadedUrl(null)
     setPreviewImage(null)
     try {
-      const preview = await readFileAsDataUrl(file)
-      setPreviewImage(preview)
-      const needsCompression = file.size > MAX_UPLOAD_SIZE
-      const preparedImage = needsCompression
-        ? await resizeImageFile(file, MAX_UPLOAD_SIDE)
-        : preview
-      setUploadedImage(preparedImage)
+      const prepared = await resizeImageFile(file, MAX_UPLOAD_SIDE)
+      setPreviewImage(prepared.dataUrl)
+      setUploadedImage(prepared.dataUrl)
       setAnalysis(null)
       setRawOutput(null)
       track("upload_start", { site: "faceshapedetector" })
 
       setLoading(true)
-      const blob = dataUrlToBlob(preparedImage)
+      const blob = dataUrlToBlob(prepared.dataUrl)
+      if (blob.size > MAX_UPLOAD_SIZE) {
+        throw new Error("File exceeds the 5 MB limit after compression.")
+      }
       const extension = file.name.split(".").pop()
-      const { uploadUrl, fileUrl, key } = await requestCosUpload(blob.type || "image/jpeg", extension)
+      const fingerprint = getFingerprint()
+      const token = captchaToken
+      const hash = await sha256Hex(blob)
+
+      const { uploadUrl, fileUrl } = await requestUploadInit({
+        contentType: blob.type || "image/jpeg",
+        extension,
+        size: blob.size,
+        fingerprint,
+        hash,
+        width: prepared.width,
+        height: prepared.height,
+        captchaToken: token,
+      })
 
       const uploadRes = await fetch(uploadUrl, {
         method: "PUT",
@@ -370,20 +455,18 @@ export function Hero() {
         body: blob,
       })
       if (!uploadRes.ok) {
-        throw new Error("Upload to COS failed")
+        throw new Error("Upload failed. Please try again.")
       }
-
-      await setCosAcl(key)
 
       setUploadedUrl(fileUrl)
       void analyzeImage(fileUrl)
     } catch (err) {
       console.error("Upload failed", err)
       const message = err instanceof Error ? err.message : "Could not process the image. Please try another photo."
-      setError(`${message} (upload to COS required)`)
+      setError(message)
       setLoading(false)
     }
-  }, [])
+  }, [captchaToken, ensureCaptcha])
 
   const handleDrop = useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
@@ -441,6 +524,8 @@ export function Hero() {
       setError("Please upload an image before analyzing.")
       return
     }
+    const tokenCheck = ensureCaptcha()
+    if (!tokenCheck) return
 
     if (!force) {
       const cached = analysisCache.current.get(image)
@@ -496,7 +581,7 @@ export function Hero() {
       setLoading(false)
       pendingController.current = null
     }
-  }, [])
+  }, [ensureCaptcha])
 
   const submitLead = useCallback(async () => {
     setLeadError(null)
@@ -682,7 +767,9 @@ export function Hero() {
       onDrop={handleDrop}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
-      className={`rounded-2xl border border-dashed bg-white/5 p-6 transition ${isDragging ? "border-lime-400 bg-lime-400/10" : "border-white/20"}`}
+      className={`rounded-2xl border border-dashed bg-white/5 p-6 transition ${
+        isDragging ? "border-lime-400 bg-lime-400/10" : "border-white/20"
+      } ${verified ? "" : "pointer-events-none opacity-60"}`}
     >
       <label
         htmlFor={fileInputId}
@@ -690,7 +777,7 @@ export function Hero() {
       >
         <Upload className="h-10 w-10 text-lime-300" />
         <span>Drag or click to upload a photo</span>
-        <span className="text-xs text-white/50">Supports JPG / PNG / WebP</span>
+        <span className="text-xs text-white/50">Supports JPG / PNG (max 5MB)</span>
       </label>
     </div>
   )
@@ -711,7 +798,15 @@ export function Hero() {
         <h3 className="mb-4 text-center text-sm font-medium uppercase tracking-wider text-lime-300/80">
           Upload a photo to get your analysis
         </h3>
-        {uploadDropArea}
+      {uploadDropArea}
+      <div className="mt-4 flex justify-center">
+        <TurnstileWidget onToken={setCaptchaToken} onWidgetId={setTurnstileId} />
+      </div>
+      {process.env.NEXT_PUBLIC_TURNSTILE_BYPASS_TOKEN && (
+        <p className="mt-2 text-xs text-lime-300 text-center">
+          Using bypass token for local testing
+        </p>
+      )}
       </div>
     </div>
   )
@@ -933,7 +1028,7 @@ export function Hero() {
             id={fileInputId}
             ref={fileInputRef}
             type="file"
-            accept="image/jpeg,image/png,image/webp"
+            accept="image/jpeg,image/png"
             onChange={handleFileSelect}
             className="hidden"
           />
