@@ -330,8 +330,12 @@ export async function POST(request: Request) {
 
   if (!response.ok) {
     const errorBody = await response.text().catch(() => "")
+    const baseMessage =
+      response.status === 401
+        ? "Remote API key validation failed. Please re-run analysis."
+        : "Remote API error. Please re-run analysis."
     return NextResponse.json(
-      { error: "Remote API error", details: errorBody || `${response.status}` },
+      { error: baseMessage, details: errorBody || `${response.status}` },
       { status: response.status }
     )
   }

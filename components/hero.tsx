@@ -391,13 +391,16 @@ export function Hero() {
   const [leadDialogOpen, setLeadDialogOpen] = useState(false)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
   const [turnstileId, setTurnstileId] = useState<string | null>(null)
+  const [captchaDialogVisible, setCaptchaDialogVisible] = useState(false)
+  const [pendingCaptchaAction, setPendingCaptchaAction] = useState<"filePicker" | "dropUpload" | null>(null)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const fileInputId = "hero-upload-input"
   const analysisCache = useRef<Map<string, AnalysisPayload>>(new Map())
   const pendingController = useRef<AbortController | null>(null)
   const router = useRouter()
   const isAnalyzing = loading
-  const verified = Boolean(captchaToken)
+  const bypassToken = process.env.NEXT_PUBLIC_TURNSTILE_BYPASS_TOKEN
+  const droppedFileRef = useRef<File | null>(null)
 
   useEffect(() => {
     const bypass = process.env.NEXT_PUBLIC_TURNSTILE_BYPASS_TOKEN
@@ -468,16 +471,61 @@ export function Hero() {
     }
   }, [captchaToken, ensureCaptcha])
 
+  const handleCaptchaResult = useCallback(
+    (token: string, actionOverride?: "filePicker" | "dropUpload") => {
+      setCaptchaToken(token)
+      if (!token) return
+      const action = actionOverride ?? pendingCaptchaAction
+      setCaptchaDialogVisible(false)
+      setPendingCaptchaAction(null)
+      if (action === "filePicker") {
+        fileInputRef.current?.click()
+        return
+      }
+      if (action === "dropUpload") {
+        const file = droppedFileRef.current
+        droppedFileRef.current = null
+        if (file) {
+          void processFile(file)
+        }
+      }
+    },
+    [pendingCaptchaAction, processFile]
+  )
+
+  const requestCaptcha = useCallback(
+    (action: "filePicker" | "dropUpload", file?: File) => {
+      if (action === "dropUpload") {
+        droppedFileRef.current = file ?? null
+      } else {
+        droppedFileRef.current = null
+      }
+      setPendingCaptchaAction(action)
+      if (bypassToken) {
+        handleCaptchaResult(bypassToken, action)
+        return
+      }
+      setCaptchaDialogVisible(true)
+    },
+    [bypassToken, handleCaptchaResult]
+  )
+
+  const closeCaptchaDialog = useCallback(() => {
+    setCaptchaDialogVisible(false)
+    setPendingCaptchaAction(null)
+    droppedFileRef.current = null
+  }, [])
+
   const handleDrop = useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
       event.preventDefault()
       setIsDragging(false)
       const file = event.dataTransfer.files[0]
       if (file && file.type.startsWith("image/")) {
-        void processFile(file)
+        requestCaptcha("dropUpload", file)
       }
     },
-    [processFile]
+    [requestCaptcha]
   )
 
   const handleDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
@@ -501,8 +549,8 @@ export function Hero() {
   )
 
   const triggerFilePicker = useCallback(() => {
-    fileInputRef.current?.click()
-  }, [])
+    requestCaptcha("filePicker")
+  }, [requestCaptcha])
 
   const clearImage = useCallback(() => {
     setUploadedImage(null)
@@ -514,10 +562,11 @@ export function Hero() {
     setLeadEmail("")
     setLeadError(null)
     setLeadDialogOpen(false)
+    closeCaptchaDialog()
     if (fileInputRef.current) {
       fileInputRef.current.value = ""
     }
-  }, [])
+  }, [closeCaptchaDialog])
 
   const analyzeImage = useCallback(async (image: string, force = false) => {
     if (!image) {
@@ -769,11 +818,15 @@ export function Hero() {
       onDragLeave={handleDragLeave}
       className={`rounded-2xl border border-dashed bg-white/5 p-6 transition ${
         isDragging ? "border-lime-400 bg-lime-400/10" : "border-white/20"
-      } ${verified ? "" : "pointer-events-none opacity-60"}`}
+      }`}
     >
       <label
         htmlFor={fileInputId}
         className="flex flex-col items-center justify-center gap-2 text-sm font-medium text-white/70 cursor-pointer"
+        onClick={(event) => {
+          event.preventDefault()
+          triggerFilePicker()
+        }}
       >
         <Upload className="h-10 w-10 text-lime-300" />
         <span>Drag or click to upload a photo</span>
@@ -783,7 +836,7 @@ export function Hero() {
   )
 
   const initialLayout = (
-    <div className="mt-12 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+    <div className="mt-12 grid gap-6 lg:grid-cols-[1.5fr_1fr] items-center justify-center">
       <div className="relative min-h-[420px] overflow-hidden rounded-[32px] border border-white/10 bg-neutral-900/80">
         <Image
           src="/display.png"
@@ -794,16 +847,13 @@ export function Hero() {
           style={{ objectFit: "contain" }}
         />
       </div>
-      <div className="relative rounded-[32px] border border-white/10 bg-neutral-900/80 p-6 backdrop-blur-sm">
+      <div className="relative min-h-[420px] rounded-[32px] border border-white/10 bg-neutral-900/80 p-6 backdrop-blur-sm flex flex-col items-center justify-center gap-5">
         <h3 className="mb-4 text-center text-sm font-medium uppercase tracking-wider text-lime-300/80">
           Upload a photo to get your analysis
         </h3>
       {uploadDropArea}
-      <div className="mt-4 flex justify-center">
-        <TurnstileWidget onToken={setCaptchaToken} onWidgetId={setTurnstileId} />
-      </div>
-      {process.env.NEXT_PUBLIC_TURNSTILE_BYPASS_TOKEN && (
-        <p className="mt-2 text-xs text-lime-300 text-center">
+      {bypassToken && (
+        <p className="mt-4 text-xs text-lime-300 text-center">
           Using bypass token for local testing
         </p>
       )}
@@ -1035,6 +1085,26 @@ export function Hero() {
           {uploadedImage ? analysisLayout : initialLayout}
         </div>
       </section>
+      {captchaDialogVisible && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4">
+          <div className="w-full max-w-md rounded-3xl border border-white/10 bg-neutral-900/95 p-6 shadow-2xl shadow-black/60">
+            <p className="text-lg font-semibold text-white">Complete the verification</p>
+            <p className="mt-2 text-sm text-white/70">
+              After passing the Turnstile challenge we'll automatically open the file picker or continue processing your dropped photo.
+            </p>
+            <div className="mt-4 flex justify-center">
+              <TurnstileWidget onToken={handleCaptchaResult} onWidgetId={setTurnstileId} />
+            </div>
+            <button
+              type="button"
+              className="mt-6 text-sm font-semibold uppercase tracking-[0.2em] text-white/70 underline decoration-dotted"
+              onClick={closeCaptchaDialog}
+            >
+              取消
+            </button>
+          </div>
+        </div>
+      )}
       {leadDialogOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
           <div className="w-full max-w-md rounded-3xl border border-white/10 bg-neutral-900/95 p-6 shadow-2xl shadow-black/50">
