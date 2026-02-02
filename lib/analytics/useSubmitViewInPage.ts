@@ -4,6 +4,7 @@ import { track } from "../analytics"
 type Params = {
   targetRef: RefObject<Element | null>
   analysisId: string | null
+  enabled?: boolean
   variant?: string
   site?: string
   tool?: string
@@ -18,6 +19,7 @@ const STABLE_MS = 800
 export function useSubmitViewInPage({
   targetRef,
   analysisId,
+  enabled = true,
   variant,
   site = "yourface.online",
   tool = "face_shape",
@@ -28,7 +30,7 @@ export function useSubmitViewInPage({
 
   useEffect(() => {
     const el = targetRef.current
-    if (!el || !analysisId) return
+    if (!el || !analysisId || !enabled) return
 
     const clearTimer = () => {
       if (timerRef.current) {
@@ -76,5 +78,5 @@ export function useSubmitViewInPage({
       observerRef.current?.disconnect()
       observerRef.current = null
     }
-  }, [analysisId, targetRef, variant, site, tool])
+  }, [analysisId, targetRef, enabled, variant, site, tool])
 }

@@ -735,6 +735,7 @@ export function Hero() {
   useSubmitViewInPage({
     targetRef: ctaRef,
     analysisId,
+    enabled: !!analysis && !isAnalyzing,
     variant: analyticsVariant,
     site: ANALYTICS_SITE,
     tool: ANALYTICS_TOOL,
