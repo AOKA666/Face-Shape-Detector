@@ -11,15 +11,10 @@ const SIGNED_URL_EXPIRES_IN = 60
 const IP_RATE_LIMIT = { limit: 10, windowMs: 60 * 1000 }
 const FP_RATE_LIMIT = { limit: 30, windowMs: 60 * 60 * 1000 }
 const GLOBAL_RATE_LIMIT = { limit: 1000, windowMs: 60 * 60 * 1000 }
-const HASH_DEDUP_WINDOW_MS = 5 * 60 * 1000
-
 type RateLog = Map<string, number[]>
 const ipLog: RateLog = new Map()
 const fpLog: RateLog = new Map()
 let globalLog: number[] = []
-
-type HashEntry = { ip: string; fingerprint?: string; timestamp: number }
-const hashLog: Map<string, HashEntry[]> = new Map()
 
 let supabase: SupabaseClient | null = null
 const ensuredBuckets = new Set<string>()
@@ -152,23 +147,6 @@ async function ensureBucketExists(client: SupabaseClient, bucket: string) {
   ensuredBuckets.add(bucket)
 }
 
-function checkDuplicate(hash: string, ip: string, fingerprint?: string) {
-  const now = Date.now()
-  const entries = (hashLog.get(hash) ?? []).filter((item) => now - item.timestamp < HASH_DEDUP_WINDOW_MS)
-
-  const match = entries.find((item) => item.ip === ip || (fingerprint && item.fingerprint === fingerprint))
-  if (match) {
-    return {
-      duplicate: true,
-      retryAfterSeconds: Math.max(1, Math.ceil((match.timestamp + HASH_DEDUP_WINDOW_MS - now) / 1000)),
-    }
-  }
-
-  entries.push({ ip, fingerprint, timestamp: now })
-  hashLog.set(hash, entries)
-  return { duplicate: false }
-}
-
 export async function POST(request: Request) {
   const ip = getClientIp(request) ?? "unknown"
 
@@ -242,13 +220,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Captcha verification failed" }, { status: 403 })
   }
 
-  const dedup = checkDuplicate(hash, ip, fingerprint)
-  if (dedup.duplicate) {
-    return NextResponse.json(
-      { error: "Duplicate upload detected. Please try a different image.", hash },
-      { status: 409, headers: { "Retry-After": `${dedup.retryAfterSeconds}` } }
-    )
-  }
+  // Deduplication disabled to allow repeated uploads of the same image.
 
   let supabaseClient: SupabaseClient
   try {

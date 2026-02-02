@@ -221,6 +221,8 @@ const MAX_ANALYSIS_PER_IP = 3
 const RATE_LIMIT_WINDOW_MS = 24 * 60 * 60 * 1000
 const ipUsageLog = new Map<string, number[]>()
 
+const WHITELIST_IPS = new Set(["127.0.0.1", "::1", "localhost"])
+
 function getClientIp(request: Request): string | undefined {
   const xForwardedFor = request.headers.get("x-forwarded-for")
   if (xForwardedFor) {
@@ -241,7 +243,16 @@ function getClientIp(request: Request): string | undefined {
   return undefined
 }
 
-function consumeAnalysisAllowance(ip: string) {
+function isWhitelistedIp(ip: string | undefined) {
+  if (!ip) return false
+  // Handle cases like "127.0.0.1:3000"
+  const stripped = ip.replace(/^\[|\]$/g, "").split(":")[0]
+  if (WHITELIST_IPS.has(stripped)) return true
+  if (stripped.startsWith("::ffff:127.")) return true
+  return false
+}
+
+function checkAnalysisAllowance(ip: string) {
   const now = Date.now()
   const windowStart = now - RATE_LIMIT_WINDOW_MS
   const timestamps = (ipUsageLog.get(ip) ?? []).filter((ts) => ts > windowStart)
@@ -252,9 +263,15 @@ function consumeAnalysisAllowance(ip: string) {
     return { allowed: false, resetAt }
   }
 
+  return { allowed: true, remaining: MAX_ANALYSIS_PER_IP - timestamps.length }
+}
+
+function commitAnalysisAllowance(ip: string) {
+  const now = Date.now()
+  const windowStart = now - RATE_LIMIT_WINDOW_MS
+  const timestamps = (ipUsageLog.get(ip) ?? []).filter((ts) => ts > windowStart)
   timestamps.push(now)
   ipUsageLog.set(ip, timestamps)
-  return { allowed: true, remaining: MAX_ANALYSIS_PER_IP - timestamps.length }
 }
 
 export async function POST(request: Request) {
@@ -266,13 +283,18 @@ export async function POST(request: Request) {
   }
 
   const clientIp = getClientIp(request) ?? "unknown"
-  const rateLimit = consumeAnalysisAllowance(clientIp)
-  if (!rateLimit.allowed) {
-    const retryAfterSeconds = Math.max(1, Math.ceil((rateLimit.resetAt - Date.now()) / 1000))
-    return NextResponse.json(
-      { error: "You have reached the 24-hour limit of 3 analyses for this IP. Please try again later." },
-      { status: 429, headers: { "Retry-After": `${retryAfterSeconds}` } }
-    )
+  const host = request.headers.get("host") || ""
+  const isLocalHost = host.toLowerCase().startsWith("localhost")
+  const isWhitelisted = isLocalHost || isWhitelistedIp(clientIp)
+  if (!isWhitelisted) {
+    const rateLimit = checkAnalysisAllowance(clientIp)
+    if (!rateLimit.allowed) {
+      const retryAfterSeconds = Math.max(1, Math.ceil((rateLimit.resetAt - Date.now()) / 1000))
+      return NextResponse.json(
+        { error: "You have reached the 24-hour limit of 3 analyses for this IP. Please try again later." },
+        { status: 429, headers: { "Retry-After": `${retryAfterSeconds}` } }
+      )
+    }
   }
 
   let imageUrl: string
@@ -345,6 +367,10 @@ export async function POST(request: Request) {
   const rawContent = extractMessageContent(choice)
   const parsed = extractJsonFromText(rawContent)
 
+  if (!isWhitelisted) {
+    commitAnalysisAllowance(clientIp)
+  }
+
   return NextResponse.json({
     raw: rawContent,
     parsed,
@@ -398,13 +424,26 @@ function parseDataUri(dataUri: string): ParsedDataUri {
 }
 
 async function uploadToCos(image: string): Promise<string> {
-  // If the client already sent an URL, reuse it.
-  if (!image.startsWith("data:")) {
-    return image
+  // Data URL: decode and upload
+  if (image.startsWith("data:")) {
+    const { mime, buffer, extension } = parseDataUri(image)
+    return putToCos(buffer, mime, extension)
   }
 
-  const { mime, buffer, extension } = parseDataUri(image)
+  // Remote URL: fetch then upload to COS to avoid Ark直接拉取失败
+  const res = await fetch(image)
+  if (!res.ok) {
+    throw new Error(`Failed to fetch image (${res.status})`)
+  }
+  const mime = res.headers.get("content-type") ?? "image/jpeg"
+  const extension = mime.split("/")[1] || "jpg"
+  const arrayBuf = await res.arrayBuffer()
+  const buffer = Buffer.from(arrayBuf)
 
+  return putToCos(buffer, mime, extension)
+}
+
+async function putToCos(buffer: Buffer, mime: string, extension: string): Promise<string> {
   const secretId = process.env.COS_SECRET_ID
   const secretKey = process.env.COS_SECRET_KEY
   const region = process.env.COS_REGION

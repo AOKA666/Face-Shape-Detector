@@ -8,6 +8,8 @@ import { useState, useCallback, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Hourglass, Upload, X } from "lucide-react"
 import { track } from "@/lib/analytics"
+import { useResultView } from "@/lib/analytics/useResultView"
+import { useSubmitViewInPage } from "@/lib/analytics/useSubmitViewInPage"
 
 type FeatureScores = Record<string, number | string>
 
@@ -24,6 +26,7 @@ interface SectionBlock {
 }
 
 interface AnalysisPayload {
+  analysisId?: string
   summary?: {
     overallScore?: number
     overallComment?: string
@@ -61,6 +64,10 @@ const probabilityKeyOrder = ["Square", "Round", "Diamond", "Heart", "Oblong", "O
 
 const MAX_UPLOAD_SIDE = 1024
 const MAX_UPLOAD_SIZE = 5 * 1024 * 1024 // 5 MB
+
+const ANALYTICS_SITE = "yourface.online"
+const ANALYTICS_TOOL = "face_shape"
+const ANALYTICS_VARIANT = process.env.NEXT_PUBLIC_EXPERIMENT_VARIANT
 
 function dataUrlToBlob(dataUrl: string): Blob {
   const [meta, base64] = dataUrl.split(",")
@@ -117,6 +124,13 @@ function getFingerprint(): string {
   const fp = crypto.randomUUID()
   localStorage.setItem(key, fp)
   return fp
+}
+
+function generateAnalysisId() {
+  if (typeof crypto !== "undefined" && crypto.randomUUID) {
+    return crypto.randomUUID()
+  }
+  return `${Date.now()}-${Math.random().toString(16).slice(2)}`
 }
 
 async function resizeImageFile(
@@ -382,6 +396,8 @@ export function Hero() {
   const [previewImage, setPreviewImage] = useState<string | null>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [analysis, setAnalysis] = useState<AnalysisPayload | null>(null)
+  const [analysisId, setAnalysisId] = useState<string | null>(null)
+  const [analysisStartAt, setAnalysisStartAt] = useState<number | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [rawOutput, setRawOutput] = useState<string | null>(null)
@@ -401,6 +417,8 @@ export function Hero() {
   const isAnalyzing = loading
   const bypassToken = process.env.NEXT_PUBLIC_TURNSTILE_BYPASS_TOKEN
   const droppedFileRef = useRef<File | null>(null)
+  const ctaRef = useRef<HTMLDivElement | null>(null)
+  const analyticsVariant = ANALYTICS_VARIANT ?? undefined
 
   useEffect(() => {
     const bypass = process.env.NEXT_PUBLIC_TURNSTILE_BYPASS_TOKEN
@@ -429,7 +447,7 @@ export function Hero() {
       setUploadedImage(prepared.dataUrl)
       setAnalysis(null)
       setRawOutput(null)
-      track("upload_start", { site: "faceshapedetector" })
+      track("upload_start", { site: ANALYTICS_SITE })
 
       setLoading(true)
       const blob = dataUrlToBlob(prepared.dataUrl)
@@ -556,6 +574,8 @@ export function Hero() {
     setUploadedImage(null)
     setUploadedUrl(null)
     setAnalysis(null)
+    setAnalysisId(null)
+    setAnalysisStartAt(null)
     setError(null)
     setRawOutput(null)
     setPreviewImage(null)
@@ -576,10 +596,19 @@ export function Hero() {
     const tokenCheck = ensureCaptcha()
     if (!tokenCheck) return
 
+    const newAnalysisId = generateAnalysisId()
+    setAnalysisId(newAnalysisId)
+    setAnalysisStartAt(Date.now())
+    setAnalysis(null)
+    setRawOutput(null)
+    setError(null)
+    setLoading(true)
+
     if (!force) {
       const cached = analysisCache.current.get(image)
       if (cached) {
-        setAnalysis(cached)
+        const cachedWithNewId: AnalysisPayload = { ...cached, analysisId: newAnalysisId }
+        setAnalysis(cachedWithNewId)
         setRawOutput(cached.raw ?? null)
         setError(null)
         setLoading(false)
@@ -587,7 +616,6 @@ export function Hero() {
       }
     } else {
       analysisCache.current.delete(image)
-      setAnalysis(null)
     }
 
     pendingController.current?.abort()
@@ -611,11 +639,10 @@ export function Hero() {
       }
       const parsed = payload?.parsed
       const result: AnalysisPayload = parsed
-        ? { ...parsed, raw: parsed.raw ?? payload?.raw }
-        : { raw: payload?.raw }
+        ? { ...parsed, raw: parsed.raw ?? payload?.raw, analysisId: newAnalysisId }
+        : { raw: payload?.raw, analysisId: newAnalysisId }
       if (result) {
         analysisCache.current.set(image, result)
-        track("result_view", { site: "faceshapedetector" })
       }
       setRawOutput(payload?.raw ?? null)
       setAnalysis(result)
@@ -695,6 +722,23 @@ export function Hero() {
   )
 
   const displayImageSrc = previewImage ?? uploadedImage
+
+  useResultView({
+    analysisId,
+    result: analysis,
+    startAt: analysisStartAt,
+    variant: analyticsVariant,
+    site: ANALYTICS_SITE,
+    tool: ANALYTICS_TOOL,
+  })
+
+  useSubmitViewInPage({
+    targetRef: ctaRef,
+    analysisId,
+    variant: analyticsVariant,
+    site: ANALYTICS_SITE,
+    tool: ANALYTICS_TOOL,
+  })
 
   const renderTabContent = () => {
     if (!analysis) {
@@ -972,7 +1016,10 @@ export function Hero() {
 
         {/* Email Collection - moved below AI Face Summary */}
         {analysis && !isAnalyzing && (
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-[0_0_30px_-12px_rgba(190,242,100,0.4)]">
+          <div
+            ref={ctaRef}
+            className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-[0_0_30px_-12px_rgba(190,242,100,0.4)]"
+          >
             <div className="flex flex-col gap-4">
               <div className="space-y-2">
                 <p className="text-lg font-semibold text-white">Unlock detailed results for your face shape</p>
