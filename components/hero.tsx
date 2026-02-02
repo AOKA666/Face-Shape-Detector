@@ -1019,41 +1019,58 @@ export function Hero() {
         {analysis && !isAnalyzing && (
           <div
             ref={ctaRef}
-            className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-[0_0_30px_-12px_rgba(190,242,100,0.4)]"
+            className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[#1b2310] via-[#0f1810] to-[#0a0f0c] p-[1px] shadow-[0_0_30px_-12px_rgba(190,242,100,0.55)]"
           >
-            <div className="flex flex-col gap-4">
-              <div className="space-y-2">
-                <p className="text-lg font-semibold text-white">Unlock detailed results for your face shape</p>
-                <p className="text-sm text-white/80">Get personalized insights based on your result:</p>
-                <ul className="list-disc space-y-1 pl-5 text-sm text-white/70">
-                  <li>Best hairstyles for your exact face shape</li>
-                  <li>Glasses & accessories that suit you</li>
-                  <li>What to avoid (common mistakes)</li>
-                </ul>
+            <div className="absolute inset-0 opacity-50 blur-3xl bg-[radial-gradient(circle_at_20%_20%,rgba(190,242,100,0.25),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(16,185,129,0.2),transparent_30%)]" />
+            <div className="relative rounded-3xl border border-lime-400/20 bg-white/5 p-6 backdrop-blur-sm">
+              <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-lime-400/40 bg-lime-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-lime-200">
+                <span className="inline-block h-2 w-2 rounded-full bg-lime-300 shadow-[0_0_10px_rgba(190,242,100,0.8)]" />
+                VIP Preview
               </div>
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <input
-                  type="email"
-                  value={leadEmail}
-                  onChange={(e) => setLeadEmail(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault()
-                      void submitLead()
-                    }
-                  }}
-                  placeholder="you@example.com"
-                  className="flex-1 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-lime-300 focus:outline-none"
-                />
-                <Button
-                  className="whitespace-nowrap bg-lime-400 text-black hover:bg-lime-300"
-                  disabled={leadSubmitting || !leadEmail.trim()}
-                  onClick={() => void submitLead()}
-                >
-                  {leadSubmitting ? "Sending..." : "Email me my result"}
-                </Button>
+              <div className="flex flex-col gap-4">
+                <div className="space-y-2">
+                  <p className="text-xl font-bold text-white">Get your personalized styling playbook</p>
+                  <p className="text-sm text-white/75">Sent to your inbox with tips tailored to <span className="font-semibold text-lime-200">this result</span>.</p>
+                  <ul className="space-y-2 text-sm text-white/80">
+                    <li className="flex items-start gap-2">
+                      <span className="mt-1 inline-block h-2 w-2 rounded-full bg-lime-300" />
+                      Hairstyles & glasses that flatter your face shape
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-1 inline-block h-2 w-2 rounded-full bg-lime-300" />
+                      Mistakes to avoid (with quick fixes)
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-1 inline-block h-2 w-2 rounded-full bg-lime-300" />
+                      Priority updates when new features drop
+                    </li>
+                  </ul>
+                </div>
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <input
+                    type="email"
+                    value={leadEmail}
+                    onChange={(e) => setLeadEmail(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault()
+                        void submitLead()
+                      }
+                    }}
+                    placeholder="you@example.com"
+                    className="flex-1 rounded-2xl border border-lime-400/30 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/60 focus:border-lime-300 focus:outline-none focus:ring-2 focus:ring-lime-300/30"
+                  />
+                  <Button
+                    className="whitespace-nowrap bg-gradient-to-r from-lime-300 via-lime-400 to-emerald-300 text-black hover:from-lime-200 hover:via-lime-300 hover:to-emerald-200 shadow-[0_10px_30px_-12px_rgba(190,242,100,0.7)]"
+                    disabled={leadSubmitting || !leadEmail.trim()}
+                    onClick={() => void submitLead()}
+                  >
+                    {leadSubmitting ? "Sending..." : "Email me my result"}
+                  </Button>
+                </div>
+                <p className="text-xs text-white/60">No spam. We only send your tailored tips and product updates.</p>
+                {leadError && <p className="text-sm text-red-300">{leadError}</p>}
               </div>
-              {leadError && <p className="text-sm text-red-300">{leadError}</p>}
             </div>
           </div>
         )}
