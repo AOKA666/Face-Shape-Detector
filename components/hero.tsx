@@ -419,6 +419,8 @@ export function Hero() {
   const droppedFileRef = useRef<File | null>(null)
   const ctaRef = useRef<HTMLDivElement | null>(null)
   const analyticsVariant = ANALYTICS_VARIANT ?? undefined
+  const uploadViewTracked = useRef(false)
+  const ctaSubmitTracked = useRef<Set<string>>(new Set())
 
   useEffect(() => {
     const bypass = process.env.NEXT_PUBLIC_TURNSTILE_BYPASS_TOKEN
@@ -447,7 +449,6 @@ export function Hero() {
       setUploadedImage(prepared.dataUrl)
       setAnalysis(null)
       setRawOutput(null)
-      track("upload_start", { site: ANALYTICS_SITE })
 
       setLoading(true)
       const blob = dataUrlToBlob(prepared.dataUrl)
@@ -582,6 +583,7 @@ export function Hero() {
     setLeadEmail("")
     setLeadError(null)
     setLeadDialogOpen(false)
+    ctaSubmitTracked.current.clear()
     closeCaptchaDialog()
     if (fileInputRef.current) {
       fileInputRef.current.value = ""
@@ -603,6 +605,13 @@ export function Hero() {
     setRawOutput(null)
     setError(null)
     setLoading(true)
+    track("upload_start", {
+      site: ANALYTICS_SITE,
+      analysis_id: newAnalysisId,
+      tool: ANALYTICS_TOOL,
+      variant: analyticsVariant,
+      startAt: Date.now(),
+    })
 
     if (!force) {
       const cached = analysisCache.current.get(image)
@@ -679,13 +688,23 @@ export function Hero() {
       }
       setLeadEmail("")
       setLeadDialogOpen(true)
+      if (analysisId && !ctaSubmitTracked.current.has(analysisId)) {
+        track("cta_submit", {
+          site: ANALYTICS_SITE,
+          analysis_id: analysisId,
+          placement: "inpage",
+          variant: analyticsVariant,
+          tool: ANALYTICS_TOOL,
+        })
+        ctaSubmitTracked.current.add(analysisId)
+      }
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to save email"
       setLeadError(message)
     } finally {
       setLeadSubmitting(false)
     }
-  }, [leadEmail])
+  }, [leadEmail, analysisId, analyticsVariant])
 
   const overallScore = analysis?.summary?.overallScore
   const featureRatings = analysis?.summary?.featureRatings
@@ -722,6 +741,12 @@ export function Hero() {
   )
 
   const displayImageSrc = previewImage ?? uploadedImage
+
+  useEffect(() => {
+    if (uploadViewTracked.current) return
+    track("upload_view", { site: ANALYTICS_SITE, placement: "hero_upload", variant: analyticsVariant, tool: ANALYTICS_TOOL })
+    uploadViewTracked.current = true
+  }, [analyticsVariant])
 
   useResultView({
     analysisId,
