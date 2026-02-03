@@ -1040,7 +1040,10 @@ export function Hero() {
           </div>
         )}
 
-        {/* Email Collection - moved below AI Face Summary */}
+      </div>
+
+      {/* Right Column: Detail Tabs + Content - moved to top */}
+      <div className="space-y-6 rounded-3xl border border-white/10 bg-neutral-950/60 p-6 shadow-2xl shadow-black/40">
         {analysis && !isAnalyzing && (
           <div
             ref={ctaRef}
@@ -1099,10 +1102,6 @@ export function Hero() {
             </div>
           </div>
         )}
-      </div>
-
-      {/* Right Column: Detail Tabs + Content - moved to top */}
-      <div className="space-y-6 rounded-3xl border border-white/10 bg-neutral-950/60 p-6 shadow-2xl shadow-black/40">
         {isAnalyzing ? (
           <div className="flex h-full flex-col items-center justify-center gap-6 py-16 text-center">
             <p className="text-sm uppercase tracking-[0.4em] text-white/60">analyzing...</p>
