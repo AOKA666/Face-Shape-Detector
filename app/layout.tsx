@@ -3,7 +3,6 @@ import "./globals.css"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import Script from "next/script"
-import Plasma from "@/components/plasma"
 import { Suspense } from "react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"
@@ -98,8 +97,10 @@ export default function RootLayout({
         </noscript>
         {/* End Google Tag Manager (noscript) */}
         <Suspense fallback={null}>
-          <div className="fixed inset-0 z-0 bg-black">
-            <Plasma color="#8b5cf6" speed={0.8} direction="forward" scale={1.5} opacity={0.4} mouseInteractive={true} />
+          <div className="fixed inset-0 z-0 bg-black overflow-hidden">
+            <div className="absolute inset-0 opacity-70 blur-3xl">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,#4c1d95_0,#0b0b0f_35%),radial-gradient(circle_at_80%_0%,#312e81_0,#0b0b0f_30%),radial-gradient(circle_at_50%_80%,#0f172a_0,#0b0b0f_28%)]" />
+            </div>
           </div>
           <div className="relative z-10">{children}</div>
         </Suspense>
