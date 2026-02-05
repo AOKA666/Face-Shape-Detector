@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { Square, Circle } from "lucide-react"
 
 // Custom rectangle icon since Rectangle doesn't exist in lucide-react
@@ -25,18 +26,21 @@ export function CommonMaleFaceShapes() {
     {
       icon: <Square className="h-6 w-6 text-lime-300" />,
       name: "Square Face",
+      image: "square-face.png",
       description: "Strong jawline with equal width and length. Works well with textured crops and side parts.",
       tips: ["Avoid boxy cuts", "Add texture and movement", "Side-swept styles work great"],
     },
     {
       icon: <Circle className="h-6 w-6 text-lime-300" />,
       name: "Oval Face",
+      image: "oval-face.png",
       description: "Balanced proportions with slightly rounded jaw. The most versatile face shape for men.",
       tips: ["Almost any style works", "Pompadour is a great choice", "Classic side part looks sharp"],
     },
     {
       icon: <RectangleIcon className="h-6 w-6 text-lime-300" />,
       name: "Rectangle Face",
+      image: "rectangle-face.png",
       description: "Longer than wide with a strong forehead and jaw. Can handle volume and length.",
       tips: ["Add width with side volume", "Avoid extra height on top", "Crew cuts work well"],
     },
@@ -57,6 +61,17 @@ export function CommonMaleFaceShapes() {
               key={index}
               className="rounded-2xl border border-white/10 bg-neutral-900/50 p-8 backdrop-blur-sm"
             >
+              <div className="mb-6 overflow-hidden rounded-2xl bg-white/5">
+                <div className="relative aspect-square w-full">
+                  <Image
+                    src={`/images/for-man/${shape.image}`}
+                    alt={`${shape.name} illustration for men`}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                </div>
+              </div>
               <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-lime-400/20">
                 {shape.icon}
               </div>

@@ -1,11 +1,21 @@
+import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { User } from "lucide-react"
 
 export function HeroMen() {
   return (
-    <section className="relative isolate overflow-hidden bg-gradient-to-b from-neutral-900 via-neutral-950 to-black">
-      <div className="container mx-auto px-4 py-20">
+    <section className="relative isolate overflow-hidden">
+      <div className="absolute inset-0">
+        <Image
+          src="/images/for-man/hero-man.png"
+          alt="Stylish man looking toward the camera, highlighting masculine grooming"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-neutral-900/70" />
+      </div>
+      <div className="container mx-auto px-4 py-20 relative z-10">
         <div className="text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-lime-300">Face Shape Detector for Men</p>
           <h1 className="mt-6 text-3xl font-extrabold leading-tight text-white sm:text-4xl lg:text-5xl">

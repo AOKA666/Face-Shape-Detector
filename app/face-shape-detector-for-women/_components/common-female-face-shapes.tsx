@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { Circle, Heart } from "lucide-react"
 
 // Custom oval icon
@@ -25,18 +26,21 @@ export function CommonFemaleFaceShapes() {
     {
       icon: <OvalIcon className="h-6 w-6 text-lime-300" />,
       name: "Oval Face",
+      image: "oval-face.png",
       description: "Balanced proportions with a gently rounded jaw. The most versatile face shape - almost any style looks great.",
       tips: ["Experiment freely with styles", "Most bangs work beautifully", "Versatile for accessories"],
     },
     {
       icon: <Heart className="h-6 w-6 text-lime-300" />,
       name: "Heart Face",
+      image: "heart-face.png",
       description: "Wider forehead with a narrow, pointed chin. Heart-shaped faces look stunning with soft, sweeping styles.",
       tips: ["Side-swept bangs flatter", "Soft layers balance features", "Avoid heavy top volume"],
     },
     {
       icon: <Circle className="h-6 w-6 text-lime-300" />,
       name: "Round Face",
+      image: "round-face.png",
       description: "Soft curves with equal width and length. Round faces look best with styles that add angles and definition.",
       tips: ["Angled cuts add definition", "Side parts elongate face", "Long layers work wonderfully"],
     },
@@ -57,6 +61,17 @@ export function CommonFemaleFaceShapes() {
               key={index}
               className="rounded-2xl border border-white/10 bg-neutral-900/50 p-8 backdrop-blur-sm"
             >
+              <div className="mb-6 overflow-hidden rounded-2xl bg-white/5">
+                <div className="relative aspect-square w-full">
+                  <Image
+                    src={`/images/for-woman/${shape.image}`}
+                    alt={`${shape.name} illustration for women`}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                </div>
+              </div>
               <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-lime-400/20">
                 {shape.icon}
               </div>

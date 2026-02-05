@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { Scissors, User } from "lucide-react"
 
 export function HairstylesByFaceShapeMen() {
@@ -28,6 +29,19 @@ export function HairstylesByFaceShapeMen() {
     },
   ]
 
+  const illustrations = [
+    {
+      src: "buzz cut.png",
+      alt: "Man with a textured buzz cut paired with clean skin",
+      label: "Buzz Cut Focus",
+    },
+    {
+      src: "beard.png",
+      alt: "Bearded male profile showing how stubble reshapes the jawline",
+      label: "Beard & Contours",
+    },
+  ]
+
   return (
     <section className="relative isolate overflow-hidden py-20 bg-neutral-900">
       <div className="container mx-auto px-4">
@@ -36,6 +50,22 @@ export function HairstylesByFaceShapeMen() {
           <p className="mt-4 text-lg text-white/60">
             Discover the best hair and beard styles for your unique face shape
           </p>
+        </div>
+        <div className="grid gap-4 mb-10 md:grid-cols-2">
+          {illustrations.map((item) => (
+            <div key={item.label} className="rounded-2xl border border-white/10 bg-neutral-900/50 p-4 backdrop-blur-sm">
+              <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-white/5">
+                <Image
+                  src={`/images/for-man/${item.src}`}
+                  alt={item.alt}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+              <p className="mt-3 text-center text-sm font-semibold text-white/80">{item.label}</p>
+            </div>
+          ))}
         </div>
         <div className="grid gap-8 md:grid-cols-2">
           {categories.map((category, index) => (

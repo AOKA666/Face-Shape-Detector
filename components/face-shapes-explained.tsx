@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 const faceShapes = [
@@ -47,6 +48,17 @@ export function FaceShapesExplained() {
               </CardTitle>
             </CardHeader>
             <CardContent>
+              <div className="mb-4 overflow-hidden rounded-2xl bg-white/10">
+                <div className="relative aspect-square w-full">
+                  <Image
+                    src={`/images/faces-shape/${shape.name} Face Shape.png`}
+                    alt={`${shape.name} face shape illustration`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-contain"
+                  />
+                </div>
+              </div>
               <p className="text-sm text-neutral-300">{shape.description}</p>
             </CardContent>
           </Card>
