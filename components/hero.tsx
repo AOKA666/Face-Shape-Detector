@@ -909,7 +909,7 @@ export function Hero() {
     <div className="mt-12 grid gap-6 lg:grid-cols-[1.5fr_1fr] items-center justify-center">
       <div className="relative min-h-[420px] overflow-hidden rounded-[32px] border border-white/10 bg-neutral-900/80">
         <Image
-          src="/display.png"
+          src="/display.gif"
           alt="Face shape detector preview"
           fill
           className="rounded-[32px] object-contain bg-black"
