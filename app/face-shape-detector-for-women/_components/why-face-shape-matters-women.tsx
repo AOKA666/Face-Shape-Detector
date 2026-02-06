@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { Scissors, Sparkles } from "lucide-react"
 
 export function WhyFaceShapeMattersWomen() {
@@ -7,6 +8,10 @@ export function WhyFaceShapeMattersWomen() {
     {
       icon: <Scissors className="h-6 w-6 text-lime-300" />,
       title: "Hairstyles",
+      image: {
+        src: "hairstyles (2).png",
+        alt: "Side profile of a woman with layered hair highlighting face framing",
+      },
       description: "The right hairstyle can frame your face beautifully, enhance your best features, and express your personal style.",
       benefits: [
         "Creates visual harmony",
@@ -18,6 +23,10 @@ export function WhyFaceShapeMattersWomen() {
     {
       icon: <Sparkles className="h-6 w-6 text-lime-300" />,
       title: "Makeup & Accessories",
+      image: {
+        src: "makeup-accessories.png",
+        alt: "Makeup palette, brushes, and earrings arranged for feminine styling",
+      },
       description: "Knowing your face shape helps you choose makeup techniques and accessories that highlight your unique features.",
       benefits: [
         "Flattering makeup looks",
@@ -43,6 +52,15 @@ export function WhyFaceShapeMattersWomen() {
               key={index}
               className="rounded-2xl border border-white/10 bg-neutral-900/50 p-8 backdrop-blur-sm"
             >
+              <div className="relative mb-6 aspect-square w-full overflow-hidden rounded-xl bg-white/5">
+                <Image
+                  src={`/images/for-woman/${reason.image.src}`}
+                  alt={reason.image.alt}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
               <div className="mb-4 flex items-center gap-3">
                 <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-lime-400/20">
                   {reason.icon}

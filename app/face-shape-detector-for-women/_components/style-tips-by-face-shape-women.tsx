@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { Scissors, Sparkles } from "lucide-react"
 
 export function StyleTipsByFaceShapeWomen() {
@@ -7,6 +8,10 @@ export function StyleTipsByFaceShapeWomen() {
     {
       icon: <Scissors className="h-6 w-6 text-lime-300" />,
       title: "Hairstyles",
+      image: {
+        src: "hairstyles.png",
+        alt: "Woman with soft waves showing a flattering hairstyle for oval face shapes",
+      },
       items: [
         "Long waves - Perfect for oval and heart faces",
         "Pixie cut - Great for oval and heart shapes",
@@ -18,6 +23,10 @@ export function StyleTipsByFaceShapeWomen() {
     {
       icon: <Sparkles className="h-6 w-6 text-lime-300" />,
       title: "Bangs & Layers",
+      image: {
+        src: "bangs-layers.png",
+        alt: "Woman with curtain bangs and layered cut that frames her cheeks",
+      },
       items: [
         "Curtain bangs - Soften heart face foreheads",
         "Wispy bangs - Complement round face shapes",
@@ -29,6 +38,10 @@ export function StyleTipsByFaceShapeWomen() {
     {
       icon: <Sparkles className="h-6 w-6 text-lime-300" />,
       title: "Accessories",
+      image: {
+        src: "accessories.png",
+        alt: "Curated hair accessories including clips and headbands for styling",
+      },
       items: [
         "Statement earrings - Draw attention up for heart faces",
         "Delicate necklaces - Elongate round face shapes",
@@ -54,6 +67,15 @@ export function StyleTipsByFaceShapeWomen() {
               key={index}
               className="rounded-2xl border border-white/10 bg-neutral-900/50 p-8 backdrop-blur-sm"
             >
+              <div className="relative mb-6 aspect-square w-full overflow-hidden rounded-xl bg-white/5">
+                <Image
+                  src={`/images/for-woman/${category.image.src}`}
+                  alt={category.image.alt}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+              </div>
               <div className="mb-6 flex items-center gap-3">
                 <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-lime-400/20">
                   {category.icon}
