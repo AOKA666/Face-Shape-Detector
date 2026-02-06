@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { Camera, User } from "lucide-react"
 
 export function SupportedPhotos() {
@@ -8,12 +9,14 @@ export function SupportedPhotos() {
       icon: <Camera className="h-6 w-6 text-lime-300" />,
       title: "Selfies",
       description: "Selfies work perfectly for face shape analysis. Just ensure good lighting and your face is clearly visible in the frame.",
+      image: { src: "selfie.png", alt: "Selfie example suitable for face shape analysis" },
       features: ["Quick and convenient", "Works with front camera", "Natural expression"],
     },
     {
       icon: <User className="h-6 w-6 text-lime-300" />,
       title: "Portraits",
       description: "Professional or casual portraits provide excellent results. Clear, high-quality images give the most accurate analysis.",
+      image: { src: "portrait.png", alt: "Portrait photo example for face shape detection" },
       features: ["High-quality results", "Professional lighting", "Detailed analysis"],
     },
   ]
@@ -33,6 +36,15 @@ export function SupportedPhotos() {
               key={index}
               className="rounded-2xl border border-white/10 bg-neutral-900/50 p-8 backdrop-blur-sm"
             >
+              <div className="relative mb-6 aspect-square w-full overflow-hidden rounded-2xl bg-white/5">
+                <Image
+                  src={`/images/from-photo/${type.image.src}`}
+                  alt={type.image.alt}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
               <div className="mb-4 flex items-center gap-3">
                 <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-lime-400/20">
                   {type.icon}

@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { CheckCircle } from "lucide-react"
 
 export function PhotoRequirements() {
@@ -7,12 +8,20 @@ export function PhotoRequirements() {
     {
       title: "Clear Face",
       description: "Your face should be clearly visible without obstructions like hands, hair, or accessories covering key features.",
-      tips: ["Remove glasses if possible", "Pull hair back from face", "No hands covering face"],
+      tips: [
+        { text: "Remove glasses if possible", image: { src: "remove-glasses.png", alt: "Removing glasses to keep face unobstructed" } },
+        { text: "Pull hair back from face", image: { src: "pull-hair-back.png", alt: "Hair pulled back to reveal the full face" } },
+        { text: "No hands covering face", image: { src: "no-hands-over.png", alt: "Hands kept away from the face for clarity" } },
+      ],
     },
     {
       title: "Front-Facing",
       description: "For the most accurate analysis, use a photo taken from the front with your head level and looking directly at the camera.",
-      tips: ["Look straight at camera", "Keep head level", "Avoid extreme angles"],
+      tips: [
+        { text: "Look straight at camera", image: { src: "look-straight.png", alt: "Looking straight at the camera for alignment" } },
+        { text: "Keep head level", image: { src: "head-level.png", alt: "Keeping head level and centered" } },
+        { text: "Avoid extreme angles", image: { src: "extreme-angles.png", alt: "Avoiding tilted or extreme photo angles" } },
+      ],
     },
   ]
 
@@ -42,10 +51,21 @@ export function PhotoRequirements() {
                 {req.tips.map((tip, i) => (
                   <div
                     key={i}
-                    className="flex items-start gap-3 rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm text-white/80"
+                    className="flex items-center gap-4 rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm text-white/80"
                   >
-                    <span className="mt-0.5 h-2 w-2 rounded-full bg-lime-400 flex-shrink-0" />
-                    {tip}
+                    <div className="relative h-16 w-16 overflow-hidden rounded-lg bg-white/10 flex-shrink-0">
+                      <Image
+                        src={`/images/from-photo/${tip.image.src}`}
+                        alt={tip.image.alt}
+                        fill
+                        className="object-contain"
+                        sizes="64px"
+                      />
+                    </div>
+                    <div className="flex-1 flex items-center gap-2">
+                      <span className="h-2 w-2 rounded-full bg-lime-400 flex-shrink-0" />
+                      <span>{tip.text}</span>
+                    </div>
                   </div>
                 ))}
               </div>

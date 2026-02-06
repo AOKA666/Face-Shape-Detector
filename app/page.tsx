@@ -68,9 +68,9 @@ export default function Page() {
       <main className="min-h-[100dvh] text-white">
         <SiteHeader />
         <Hero />
+        <HowToUse />
         <WhyChooseUs />
         <WhatCanDetect />
-        <HowToUse />
         <FaceShapesExplained />
         <HairstylesGuide />
         <UserReviews />

@@ -1,16 +1,21 @@
 "use client"
 
+import Image from "next/image"
 import { Info } from "lucide-react"
 
 export function Intro() {
   const points = [
     {
       title: "What's Face Shape?",
-      description: "Face shape refers to the overall outline and proportions of your face. It's determined by your bone structure, including your jawline, forehead, cheekbones, and chin. Understanding your face shape helps you choose hairstyles, makeup, and accessories that flatter your features.",
+      description:
+        "Face shape refers to the overall outline and proportions of your face. It's determined by your bone structure, including your jawline, forehead, cheekbones, and chin. Understanding your face shape helps you choose hairstyles, makeup, and accessories that flatter your features.",
+      image: { src: "what-is-face-shape.png", alt: "Illustration explaining what face shape means" },
     },
     {
       title: "Why Many People Don't Know",
-      description: "Most people struggle to identify their face shape because it requires looking at the face objectively, which can be challenging. Hair styling, makeup techniques, and even head tilting in mirrors can distort perception. Many people are unsure what they're looking for or how to measure facial proportions accurately.",
+      description:
+        "Most people struggle to identify their face shape because it requires looking at the face objectively, which can be challenging. Hair styling, makeup techniques, and even head tilting in mirrors can distort perception. Many people are unsure what they're looking for or how to measure facial proportions accurately.",
+      image: { src: "why-do-not-know.png", alt: "Confused person wondering about their face shape" },
     },
   ]
 
@@ -29,6 +34,15 @@ export function Intro() {
               key={index}
               className="rounded-2xl border border-white/10 bg-neutral-900/50 p-8 backdrop-blur-sm"
             >
+              <div className="relative mb-4 aspect-[4/3] w-full overflow-hidden rounded-xl bg-white/5">
+                <Image
+                  src={`/images/my-face-shape/${point.image.src}`}
+                  alt={point.image.alt}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
               <div className="mb-4 flex items-center gap-3">
                 <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-lime-400/20">
                   <Info className="h-6 w-6 text-lime-300" />
