@@ -1,7 +1,6 @@
 "use client"
 
 import Image from "next/image"
-import Script from "next/script"
 import { useRouter } from "next/navigation"
 import type React from "react"
 import { useState, useCallback, useRef, useEffect } from "react"
@@ -93,7 +92,6 @@ async function requestUploadInit(params: {
   hash: string
   width?: number
   height?: number
-  captchaToken: string
 }): Promise<UploadInfo> {
   const res = await fetch("/api/upload/init", {
     method: "POST",
@@ -165,63 +163,6 @@ async function resizeImageFile(
     height: targetHeight,
   }
 }
-
-function TurnstileWidget({
-  onToken,
-  onWidgetId,
-}: {
-  onToken: (token: string) => void
-  onWidgetId?: (id: string) => void
-}) {
-  const [scriptReady, setScriptReady] = useState(false)
-  const containerRef = useRef<HTMLDivElement | null>(null)
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
-
-  useEffect(() => {
-    if (!scriptReady || !siteKey) return
-    const win = window as any
-    if (!win.turnstile?.render) return
-    const el = containerRef.current
-    if (!el) return
-    const id = win.turnstile.render(el, {
-      sitekey: siteKey,
-      callback: (token: string) => onToken(token),
-      "expired-callback": () => onToken(""),
-      "error-callback": () => onToken(""),
-    })
-    if (onWidgetId) onWidgetId(id)
-    return () => {
-      if (id && win.turnstile?.remove) {
-        win.turnstile.remove(id)
-      }
-    }
-  }, [scriptReady, siteKey, onToken, onWidgetId])
-
-  useEffect(() => {
-    const win = window as any
-    if (win?.turnstile?.render && !scriptReady) {
-      setScriptReady(true)
-    }
-  }, [scriptReady])
-
-  return (
-    <>
-      <Script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-        async
-        defer
-        onLoad={() => setScriptReady(true)}
-      />
-      <div ref={containerRef} className="mt-4 flex justify-center" />
-      {!siteKey && (
-        <p className="mt-2 text-xs text-red-300 text-center">
-          Turnstile site key missing, please set NEXT_PUBLIC_TURNSTILE_SITE_KEY
-        </p>
-      )}
-    </>
-  )
-}
-
 
 function parseNumber(value: number | string | undefined): number | undefined {
   if (value === undefined || value === null) return undefined
@@ -405,198 +346,22 @@ export function Hero() {
   const [leadSubmitting, setLeadSubmitting] = useState(false)
   const [leadError, setLeadError] = useState<string | null>(null)
   const [leadDialogOpen, setLeadDialogOpen] = useState(false)
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
-  const [turnstileId, setTurnstileId] = useState<string | null>(null)
-  const [captchaDialogVisible, setCaptchaDialogVisible] = useState(false)
-  const [pendingCaptchaAction, setPendingCaptchaAction] = useState<"filePicker" | "dropUpload" | null>(null)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const fileInputId = "hero-upload-input"
   const analysisCache = useRef<Map<string, AnalysisPayload>>(new Map())
   const pendingController = useRef<AbortController | null>(null)
   const router = useRouter()
   const isAnalyzing = loading
-  const bypassToken = process.env.NEXT_PUBLIC_TURNSTILE_BYPASS_TOKEN
-  const droppedFileRef = useRef<File | null>(null)
   const ctaRef = useRef<HTMLDivElement | null>(null)
   const analyticsVariant = ANALYTICS_VARIANT ?? undefined
   const uploadViewTracked = useRef(false)
   const ctaSubmitTracked = useRef<Set<string>>(new Set())
-
-  useEffect(() => {
-    const bypass = process.env.NEXT_PUBLIC_TURNSTILE_BYPASS_TOKEN
-    if (bypass) {
-      setCaptchaToken(bypass)
-      return
-    }
-  }, [])
-
-  const ensureCaptcha = useCallback(() => {
-    if (captchaToken) return captchaToken
-    setError("Please complete the CAPTCHA verification first before uploading or analyzing.")
-    return null
-  }, [captchaToken])
-
-  const processFile = useCallback(async (file: File | null) => {
-    if (!file) return
-    const tokenCheck = ensureCaptcha()
-    if (!tokenCheck) return
-    setError(null)
-    setUploadedUrl(null)
-    setPreviewImage(null)
-    try {
-      const prepared = await resizeImageFile(file, MAX_UPLOAD_SIDE)
-      setPreviewImage(prepared.dataUrl)
-      setUploadedImage(prepared.dataUrl)
-      setAnalysis(null)
-      setRawOutput(null)
-
-      setLoading(true)
-      const blob = dataUrlToBlob(prepared.dataUrl)
-      if (blob.size > MAX_UPLOAD_SIZE) {
-        throw new Error("File exceeds the 5 MB limit after compression.")
-      }
-      const extension = file.name.split(".").pop()
-      const fingerprint = getFingerprint()
-      const token = captchaToken
-      const hash = await sha256Hex(blob)
-
-      const { uploadUrl, fileUrl } = await requestUploadInit({
-        contentType: blob.type || "image/jpeg",
-        extension,
-        size: blob.size,
-        fingerprint,
-        hash,
-        width: prepared.width,
-        height: prepared.height,
-        captchaToken: token,
-      })
-
-      const uploadRes = await fetch(uploadUrl, {
-        method: "PUT",
-        headers: { "Content-Type": blob.type || "application/octet-stream" },
-        body: blob,
-      })
-      if (!uploadRes.ok) {
-        throw new Error("Upload failed. Please try again.")
-      }
-
-      setUploadedUrl(fileUrl)
-      void analyzeImage(fileUrl)
-    } catch (err) {
-      console.error("Upload failed", err)
-      const message = err instanceof Error ? err.message : "Could not process the image. Please try another photo."
-      setError(message)
-      setLoading(false)
-    }
-  }, [captchaToken, ensureCaptcha])
-
-  const handleCaptchaResult = useCallback(
-    (token: string, actionOverride?: "filePicker" | "dropUpload") => {
-      setCaptchaToken(token)
-      if (!token) return
-      const action = actionOverride ?? pendingCaptchaAction
-      setCaptchaDialogVisible(false)
-      setPendingCaptchaAction(null)
-      if (action === "filePicker") {
-        fileInputRef.current?.click()
-        return
-      }
-      if (action === "dropUpload") {
-        const file = droppedFileRef.current
-        droppedFileRef.current = null
-        if (file) {
-          void processFile(file)
-        }
-      }
-    },
-    [pendingCaptchaAction, processFile]
-  )
-
-  const requestCaptcha = useCallback(
-    (action: "filePicker" | "dropUpload", file?: File) => {
-      if (action === "dropUpload") {
-        droppedFileRef.current = file ?? null
-      } else {
-        droppedFileRef.current = null
-      }
-      setPendingCaptchaAction(action)
-      if (bypassToken) {
-        handleCaptchaResult(bypassToken, action)
-        return
-      }
-      setCaptchaDialogVisible(true)
-    },
-    [bypassToken, handleCaptchaResult]
-  )
-
-  const closeCaptchaDialog = useCallback(() => {
-    setCaptchaDialogVisible(false)
-    setPendingCaptchaAction(null)
-    droppedFileRef.current = null
-  }, [])
-
-  const handleDrop = useCallback(
-    (event: React.DragEvent<HTMLDivElement>) => {
-      event.preventDefault()
-      setIsDragging(false)
-      const file = event.dataTransfer.files[0]
-      if (file && file.type.startsWith("image/")) {
-        requestCaptcha("dropUpload", file)
-      }
-    },
-    [requestCaptcha]
-  )
-
-  const handleDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault()
-    setIsDragging(true)
-  }, [])
-
-  const handleDragLeave = useCallback((event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault()
-    setIsDragging(false)
-  }, [])
-
-  const handleFileSelect = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files?.[0]
-      if (file && file.type.startsWith("image/")) {
-        void processFile(file)
-      }
-    },
-    [processFile]
-  )
-
-  const triggerFilePicker = useCallback(() => {
-    requestCaptcha("filePicker")
-  }, [requestCaptcha])
-
-  const clearImage = useCallback(() => {
-    setUploadedImage(null)
-    setUploadedUrl(null)
-    setAnalysis(null)
-    setAnalysisId(null)
-    setAnalysisStartAt(null)
-    setError(null)
-    setRawOutput(null)
-    setPreviewImage(null)
-    setLeadEmail("")
-    setLeadError(null)
-    setLeadDialogOpen(false)
-    ctaSubmitTracked.current.clear()
-    closeCaptchaDialog()
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ""
-    }
-  }, [closeCaptchaDialog])
 
   const analyzeImage = useCallback(async (image: string, force = false) => {
     if (!image) {
       setError("Please upload an image before analyzing.")
       return
     }
-    const tokenCheck = ensureCaptcha()
-    if (!tokenCheck) return
 
     const newAnalysisId = generateAnalysisId()
     setAnalysisId(newAnalysisId)
@@ -666,7 +431,111 @@ export function Hero() {
       setLoading(false)
       pendingController.current = null
     }
-  }, [ensureCaptcha])
+  }, [analyticsVariant])
+
+  const processFile = useCallback(async (file: File | null) => {
+    if (!file) return
+    setError(null)
+    setUploadedUrl(null)
+    setPreviewImage(null)
+    try {
+      const prepared = await resizeImageFile(file, MAX_UPLOAD_SIDE)
+      setPreviewImage(prepared.dataUrl)
+      setUploadedImage(prepared.dataUrl)
+      setAnalysis(null)
+      setRawOutput(null)
+
+      setLoading(true)
+      const blob = dataUrlToBlob(prepared.dataUrl)
+      if (blob.size > MAX_UPLOAD_SIZE) {
+        throw new Error("File exceeds the 5 MB limit after compression.")
+      }
+      const extension = file.name.split(".").pop()
+      const fingerprint = getFingerprint()
+      const hash = await sha256Hex(blob)
+
+      const { uploadUrl, fileUrl } = await requestUploadInit({
+        contentType: blob.type || "image/jpeg",
+        extension,
+        size: blob.size,
+        fingerprint,
+        hash,
+        width: prepared.width,
+        height: prepared.height,
+      })
+
+      const uploadRes = await fetch(uploadUrl, {
+        method: "PUT",
+        headers: { "Content-Type": blob.type || "application/octet-stream" },
+        body: blob,
+      })
+      if (!uploadRes.ok) {
+        throw new Error("Upload failed. Please try again.")
+      }
+
+      setUploadedUrl(fileUrl)
+      void analyzeImage(fileUrl)
+    } catch (err) {
+      console.error("Upload failed", err)
+      const message = err instanceof Error ? err.message : "Could not process the image. Please try another photo."
+      setError(message)
+      setLoading(false)
+    }
+  }, [analyzeImage])
+
+  const handleDrop = useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault()
+      setIsDragging(false)
+      const file = event.dataTransfer.files[0]
+      if (file && file.type.startsWith("image/")) {
+        void processFile(file)
+      }
+    },
+    [processFile]
+  )
+
+  const handleDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    setIsDragging(true)
+  }, [])
+
+  const handleDragLeave = useCallback((event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    setIsDragging(false)
+  }, [])
+
+  const handleFileSelect = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0]
+      if (file && file.type.startsWith("image/")) {
+        void processFile(file)
+      }
+    },
+    [processFile]
+  )
+
+  const triggerFilePicker = useCallback(() => {
+    fileInputRef.current?.click()
+  }, [])
+
+  const clearImage = useCallback(() => {
+    setUploadedImage(null)
+    setUploadedUrl(null)
+    setAnalysis(null)
+    setAnalysisId(null)
+    setAnalysisStartAt(null)
+    setError(null)
+    setRawOutput(null)
+    setPreviewImage(null)
+    setLeadEmail("")
+    setLeadError(null)
+    setLeadDialogOpen(false)
+    ctaSubmitTracked.current.clear()
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""
+    }
+  }, [])
 
   const submitLead = useCallback(async () => {
     setLeadError(null)
@@ -922,11 +791,6 @@ export function Hero() {
           Upload a photo to get your analysis
         </h3>
       {uploadDropArea}
-      {bypassToken && (
-        <p className="mt-4 text-xs text-lime-300 text-center">
-          Using bypass token for local testing
-        </p>
-      )}
       </div>
     </div>
   )
@@ -1174,26 +1038,6 @@ export function Hero() {
           {uploadedImage ? analysisLayout : initialLayout}
         </div>
       </section>
-      {captchaDialogVisible && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4">
-          <div className="w-full max-w-md rounded-3xl border border-white/10 bg-neutral-900/95 p-6 shadow-2xl shadow-black/60">
-            <p className="text-lg font-semibold text-white">Complete the verification</p>
-            <p className="mt-2 text-sm text-white/70">
-              After passing the Turnstile challenge we'll automatically open the file picker or continue processing your dropped photo.
-            </p>
-            <div className="mt-4 flex justify-center">
-              <TurnstileWidget onToken={handleCaptchaResult} onWidgetId={setTurnstileId} />
-            </div>
-            <button
-              type="button"
-              className="mt-6 text-sm font-semibold uppercase tracking-[0.2em] text-white/70 underline decoration-dotted"
-              onClick={closeCaptchaDialog}
-            >
-              取消
-            </button>
-          </div>
-        </div>
-      )}
       {leadDialogOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
           <div className="w-full max-w-md rounded-3xl border border-white/10 bg-neutral-900/95 p-6 shadow-2xl shadow-black/50">

@@ -69,30 +69,6 @@ function consumeGlobalLimit() {
   return { allowed: true }
 }
 
-async function verifyTurnstile(token: string, ip?: string) {
-  const secret = process.env.TURNSTILE_SECRET_KEY
-  const bypassToken = process.env.TURNSTILE_BYPASS_TOKEN
-
-  if (bypassToken && token === bypassToken) return true
-  if (!secret) {
-    throw new Error("TURNSTILE_SECRET_KEY is not configured")
-  }
-
-  const form = new URLSearchParams()
-  form.append("secret", secret)
-  form.append("response", token)
-  if (ip) form.append("remoteip", ip)
-
-  const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-    method: "POST",
-    body: form,
-  })
-
-  if (!res.ok) return false
-  const data = await res.json().catch(() => ({}))
-  return Boolean(data?.success)
-}
-
 function sanitizeExtension(ext?: string, fallback = "jpg") {
   if (!ext || typeof ext !== "string") return fallback
   const clean = ext.replace(/[^a-z0-9]/gi, "").toLowerCase()
@@ -156,13 +132,8 @@ export async function POST(request: Request) {
   const extension: string | undefined = body?.extension
   const fingerprint: string | undefined = body?.fingerprint
   const hash: string | undefined = body?.hash
-  const captchaToken: string | undefined = body?.captchaToken
   const width: number | undefined = body?.width
   const height: number | undefined = body?.height
-
-  if (!captchaToken) {
-    return NextResponse.json({ error: "Missing Turnstile token" }, { status: 403 })
-  }
 
   if (!contentType || !ALLOWED_TYPES.has(contentType)) {
     return NextResponse.json({ error: "Only image/jpeg and image/png are allowed" }, { status: 400 })
@@ -210,14 +181,6 @@ export async function POST(request: Request) {
       { error: "Upload service is busy. Please retry shortly." },
       { status: 429, headers: { "Retry-After": `${globalLimit.retryAfterSeconds}` } }
     )
-  }
-
-  const captchaOk = await verifyTurnstile(captchaToken, ip).catch((error) => {
-    console.error("Turnstile verification error", error)
-    return false
-  })
-  if (!captchaOk) {
-    return NextResponse.json({ error: "Captcha verification failed" }, { status: 403 })
   }
 
   // Deduplication disabled to allow repeated uploads of the same image.
