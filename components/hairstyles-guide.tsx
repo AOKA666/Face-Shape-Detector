@@ -5,33 +5,33 @@ import { Scissors } from "lucide-react"
 const hairstyleGuide = [
   {
     shape: "Oval",
+    slug: "oval-face-hair",
     styles: "Almost any hairstyle works! Try layers, bobs, or long waves.",
-    image: "Oval Face Shape-Hair.png",
   },
   {
     shape: "Round",
+    slug: "round-face-hair",
     styles: "Add height with volume at the crown. Long layers and side-swept bangs work well.",
-    image: "Round Face-Hair.png",
   },
   {
     shape: "Square",
+    slug: "square-face-hair",
     styles: "Soften angles with waves, layers, and side parts. Avoid blunt cuts.",
-    image: "Square Face-Hair.png",
   },
   {
     shape: "Heart",
+    slug: "heart-face-hair",
     styles: "Side-swept bangs and chin-length bobs balance a wider forehead.",
-    image: "Heart Face-Hair.png",
   },
   {
     shape: "Diamond",
+    slug: "diamond-face-hair",
     styles: "Add width at forehead and chin. Try side-swept bangs and textured layers.",
-    image: "Diamond Face-Hair.png",
   },
   {
     shape: "Oblong",
+    slug: "oblong-face-hair",
     styles: "Add width with waves or curls. Avoid long, straight styles.",
-    image: "Oblong Face-Hair.png",
   },
 ]
 
@@ -53,15 +53,15 @@ export function HairstylesGuide() {
             </CardHeader>
             <CardContent>
               <div className="mb-4 overflow-hidden rounded-2xl bg-white/10">
-                <div className="relative aspect-square w-full">
-                  <Image
-                    src={`/images/hair-style/${item.image}`}
-                    alt={`Hairstyle suggestion for ${item.shape} face shape`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-contain"
-                  />
-                </div>
+                  <div className="relative aspect-square w-full">
+                    <Image
+                      src={`/images/hair-style/${item.slug}.png`}
+                      alt={`Hairstyle suggestion for ${item.shape} face shape`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-contain"
+                    />
+                  </div>
               </div>
               <p className="text-sm text-neutral-300">{item.styles}</p>
             </CardContent>

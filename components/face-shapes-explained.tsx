@@ -4,27 +4,33 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 const faceShapes = [
   {
     name: "Oval",
+    slug: "oval-face-shape",
     description:
       "Balanced proportions with a slightly narrower forehead and jaw. Considered the most versatile face shape.",
   },
   {
     name: "Round",
+    slug: "round-face-shape",
     description: "Equal width and length with soft angles. Cheekbones are the widest part of the face.",
   },
   {
     name: "Heart",
+    slug: "heart-face-shape",
     description: "Wider forehead and cheekbones with a narrow, pointed chin.",
   },
   {
     name: "Diamond",
+    slug: "diamond-face-shape",
     description: "Narrow forehead and jawline with wide, high cheekbones.",
   },
   {
     name: "Square",
+    slug: "square-face-shape",
     description: "Equal width at forehead, cheekbones, and jaw with a strong, angular jawline.",
   },
   {
     name: "Oblong",
+    slug: "oblong-face-shape",
     description: "Face length is greater than width with a long, straight cheek line.",
   },
 ]
@@ -49,15 +55,15 @@ export function FaceShapesExplained() {
             </CardHeader>
             <CardContent>
               <div className="mb-4 overflow-hidden rounded-2xl bg-white/10">
-                <div className="relative aspect-square w-full">
-                  <Image
-                    src={`/images/faces-shape/${shape.name} Face Shape.png`}
-                    alt={`${shape.name} face shape illustration`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-contain"
-                  />
-                </div>
+                  <div className="relative aspect-square w-full">
+                    <Image
+                      src={`/images/faces-shape/${shape.slug}.png`}
+                      alt={`${shape.name} face shape illustration`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-contain"
+                    />
+                  </div>
               </div>
               <p className="text-sm text-neutral-300">{shape.description}</p>
             </CardContent>
