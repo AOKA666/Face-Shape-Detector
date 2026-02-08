@@ -3,7 +3,13 @@
     "allow": [
       "Bash(node -e \"console.log\\(require\\(''lucide-react''\\).Rectangle\\)\")",
       "Bash(node -e \"console.log\\(Object.keys\\(require\\(''lucide-react''\\)\\).filter\\(k => k.includes\\(''rect''\\) || k.includes\\(''Rect''\\)\\)\\)\")",
-      "Bash(node -e \"const lucide = require\\(''lucide-react''\\); console.log\\(''Download:'', typeof lucide.Download\\); console.log\\(''Globe:'', typeof lucide.Globe\\); console.log\\(''Smartphone:'', typeof lucide.Smartphone\\)\")"
+      "Bash(node -e \"const lucide = require\\(''lucide-react''\\); console.log\\(''Download:'', typeof lucide.Download\\); console.log\\(''Globe:'', typeof lucide.Globe\\); console.log\\(''Smartphone:'', typeof lucide.Smartphone\\)\")",
+      "Bash(curl -I \"http://localhost:3000/images/faces-shape/Oval Face Shape.png\")",
+      "Bash(netstat -ano)",
+      "Bash(findstr \":3000\")",
+      "Bash(npm run dev)",
+      "Bash(curl -I \"http://localhost:3000/images/faces-shape/Oval%20Face%20Shape.png\")",
+      "Bash(curl -I \"http://localhost:3000/images/hair-style/Oval%20Face%20Shape-Hair.png\")"
     ]
   }
 }
