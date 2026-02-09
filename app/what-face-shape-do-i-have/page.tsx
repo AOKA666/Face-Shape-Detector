@@ -76,7 +76,6 @@ export default function WhatFaceShapePage() {
           __html: JSON.stringify(pageStructuredData),
         }}
       />
-
       <Script
         id="faq-structured-data"
         type="application/ld+json"

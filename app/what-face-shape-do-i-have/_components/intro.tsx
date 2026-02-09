@@ -22,11 +22,19 @@ export function Intro() {
   return (
     <section className="relative isolate overflow-hidden py-20 bg-neutral-950">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white sm:text-4xl">What Face Shape Do I Have?</h1>
           <p className="mt-4 text-lg text-white/60">
             Understanding your face shape is the first step to enhancing your natural beauty
           </p>
+        </div>
+        <div className="flex justify-center mb-8">
+          <a
+            href="https://www.yourface.online/"
+            className="flex w-fit items-center gap-2 rounded-full border border-white/20 bg-lime-400 text-black px-6 py-2 text-sm font-semibold transition hover:bg-lime-300 hover:border-white/40 hover:scale-105"
+          >
+            Check My Face Shape
+          </a>
         </div>
         <div className="grid gap-8 md:grid-cols-2">
           {points.map((point, index) => (

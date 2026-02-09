@@ -48,10 +48,10 @@ export function FAQMen() {
                 value={`item-${index}`}
                 className="border-white/10 rounded-2xl px-6 mb-4 bg-neutral-900/50"
               >
-                <AccordionTrigger className="text-left text-white hover:text-lime-300 transition-colors">
+                <AccordionTrigger className="text-left text-xl sm:text-2xl text-white hover:text-lime-300 hover:no-underline">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-white/70 pt-4 pb-6">
+                <AccordionContent className="text-xl sm:text-2xl text-neutral-300 pt-4 pb-6">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>

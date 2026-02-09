@@ -9,7 +9,9 @@
       "Bash(findstr \":3000\")",
       "Bash(npm run dev)",
       "Bash(curl -I \"http://localhost:3000/images/faces-shape/Oval%20Face%20Shape.png\")",
-      "Bash(curl -I \"http://localhost:3000/images/hair-style/Oval%20Face%20Shape-Hair.png\")"
+      "Bash(curl -I \"http://localhost:3000/images/hair-style/Oval%20Face%20Shape-Hair.png\")",
+      "Bash(ls \"c:\\\\Users\\\\18441\\\\Desktop\\\\Face-Shape-Detector\\\\public\\\\images\"\" 2>/dev/null || echo \"Directory not found \")",
+      "Bash(ls \"c:\\\\Users\\\\18441\\\\Desktop\\\\Face-Shape-Detector\\\\public\\\\images\"\" 2>/dev/null || echo \"Not found \")"
     ]
   }
 }
