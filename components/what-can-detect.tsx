@@ -1,58 +1,63 @@
-import { Scan, Eye, CircleDot, Minus, Heart } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import Image from "next/image"
+import { Card, CardContent } from "@/components/ui/card"
 
 const detections = [
   {
-    icon: Scan,
-    title: "Face Shape Detection",
-    description: "Oval, Round, Square, Heart, Diamond, Oblong and more.",
+    image: "eyes.webp",
+    title: "Detect Your Eye Shape",
+    description: "Struggling to choose right eye makeup? Our smart tool works alongside the face shape analysis feature to detect face shape and your eye shape, size, and spacing. It even identifies under-eye areas to recommend makeup styles that truly suit your natural features",
   },
   {
-    icon: Eye,
-    title: "Eye Shape Analysis",
-    description: "Identify your eye shape for better makeup and glasses recommendations.",
+    image: "lips.webp",
+    title: "Choose the Right Lipstick Shade for Your Shape",
+    description: "Not sure which lipstick shade is right for you? Our face shape checker analyzes your unique facial features to recommend colors that naturally flatter your look, making it easier to choose shades that truly suit you.",
   },
   {
-    icon: CircleDot,
+    image: "eyebrows.webp",
+    title: "Find the Best Eyebrow Shape for Your Face",
+    description: "Using insights from online face shape detector, this tool reviews your facial structure and eyebrow details to recommend brow shapes that truly suit you. Get tailored suggestions that highlight your features and complement your natural look.",
+  },
+  {
+    image: "nose.webp",
     title: "Nose Shape Analysis",
     description: "Understand your nose profile for contouring and styling tips.",
-  },
-  {
-    icon: Minus,
-    title: "Eyebrow Shape Recommendation",
-    description: "Get the perfect eyebrow shape that complements your face.",
-  },
-  {
-    icon: Heart,
-    title: "Lipstick & Makeup Suggestions",
-    description: "Personalized makeup recommendations based on your face shape.",
   },
 ]
 
 export function WhatCanDetect() {
   return (
-    <section id="features" className="container mx-auto px-4 py-16 sm:py-20">
-      <h2 className="mb-12 text-center text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+    <section id="features" className="container mx-auto px-4 py-12 sm:py-20">
+      <h2 className="mb-10 text-center text-2xl sm:text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
         What Can Our Face Shape Analyzer Detect
       </h2>
 
-      <div className="space-y-8">
+      <div className="grid gap-8 sm:gap-12 lg:gap-16 max-w-4xl mx-auto">
         {detections.map((item, index) => (
-          <div key={index} className="w-full max-w-2xl mx-auto">
-            <Card className="border border-white/20 bg-neutral-900/60 backdrop-blur-sm">
-              <div className="flex h-full flex-col justify-center items-center text-center p-8">
-                <CardHeader className="flex flex-col items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-lime-300/10">
-                    <item.icon className="h-6 w-6 text-lime-300" />
-                  </div>
-                  <CardTitle className="text-xl sm:text-2xl text-white whitespace-nowrap">{item.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <p className="text-base text-neutral-300 leading-relaxed">{item.description}</p>
-                </CardContent>
+          <Card
+            key={index}
+            className="border border-white/20 bg-neutral-900/60 backdrop-blur-sm overflow-hidden"
+          >
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 p-4 sm:p-6">
+              <div className="relative w-full sm:w-1/3 h-48 sm:h-64 flex-shrink-0 rounded-xl overflow-hidden bg-white/5">
+                <Image
+                  src={`/images/capabilities/${item.image}`}
+                  alt={item.title}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 640px) 100vw, 300px"
+                />
               </div>
-            </Card>
-          </div>
+
+              <CardContent className="flex-1 pt-0 sm:pt-0">
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-3 leading-tight">
+                  {item.title}
+                </h3>
+                <p className="text-sm sm:text-base text-neutral-300 leading-relaxed">
+                  {item.description}
+                </p>
+              </CardContent>
+            </div>
+          </Card>
         ))}
       </div>
     </section>

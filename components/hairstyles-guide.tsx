@@ -1,72 +1,92 @@
-import Image from "next/image"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Scissors } from "lucide-react"
 
 const hairstyleGuide = [
   {
-    shape: "Oval",
-    slug: "oval-face-hair",
-    styles: "Almost any hairstyle works! Try layers, bobs, or long waves.",
-  },
-  {
     shape: "Round",
-    slug: "round-face-hair",
-    styles: "Add height with volume at the crown. Long layers and side-swept bangs work well.",
+    menStyles: ["Short sides with volume on top", "Textured quiff", "Side-parted styles"],
+    womenStyles: ["Long layers", "Side-swept bangs", "High ponytails"],
   },
   {
     shape: "Square",
-    slug: "square-face-hair",
-    styles: "Soften angles with waves, layers, and side parts. Avoid blunt cuts.",
+    menStyles: ["Crew cut", "Short textured crop", "Slicked-back styles"],
+    womenStyles: ["Soft waves", "Curtain bangs", "Long layered cuts"],
+  },
+  {
+    shape: "Oval",
+    menStyles: ["Buzz cut", "Pompadour", "Side part"],
+    womenStyles: ["Blunt bob", "Long waves", "Pixie cut"],
   },
   {
     shape: "Heart",
-    slug: "heart-face-hair",
-    styles: "Side-swept bangs and chin-length bobs balance a wider forehead.",
+    menStyles: ["Medium-length styles with side sweep", "Textured fringe"],
+    womenStyles: ["Chin-length bob", "Curtain/side bangs", "Loose waves"],
   },
   {
     shape: "Diamond",
-    slug: "diamond-face-hair",
-    styles: "Add width at forehead and chin. Try side-swept bangs and textured layers.",
+    menStyles: ["Fringe", "Side-parted medium styles", "Slight volume on sides"],
+    womenStyles: ["Shoulder-length cuts", "Textured bobs", "Deep side parts"],
   },
   {
     shape: "Oblong",
-    slug: "oblong-face-hair",
-    styles: "Add width with waves or curls. Avoid long, straight styles.",
+    menStyles: ["Shorter sides with moderate top volume", "Side-swept bangs", "Textured crop or fringe to shorten face"],
+    womenStyles: ["Shoulder-length or layered cuts", "Side-swept bangs", "Wavy or curly styles to add width"],
   },
 ]
 
 export function HairstylesGuide() {
   return (
-    <section className="container mx-auto px-4 py-16 sm:py-20">
-      <h2 className="mb-10 text-center text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+    <section className="container mx-auto px-4 py-12 sm:py-20">
+      <h2 className="mb-4 text-center text-2xl sm:text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
         Best Hairstyles for Each Face Shape
       </h2>
+      <p className="mx-auto mb-10 max-w-3xl text-center text-sm sm:text-base text-neutral-300">
+        Discover hairstyles that flatter your face shape. Upload a photo to detect face shape and get personalized hairstyle recommendations for men and women.
+      </p>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {hairstyleGuide.map((item, index) => (
-          <Card key={index} className="liquid-glass border border-white/20">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-3 text-lg text-white">
-                <Scissors className="h-5 w-5 text-lime-300" />
-                Hairstyles for {item.shape} Face
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="mb-4 overflow-hidden rounded-2xl bg-white/10">
-                  <div className="relative aspect-square w-full">
-                    <Image
-                      src={`/images/hair-style/${item.slug}.png`}
-                      alt={`Hairstyle suggestion for ${item.shape} face shape`}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-contain"
-                    />
-                  </div>
-              </div>
-              <p className="text-sm text-neutral-300">{item.styles}</p>
-            </CardContent>
-          </Card>
-        ))}
+      <div className="overflow-hidden rounded-2xl border border-white/20 bg-neutral-900/60 backdrop-blur-sm">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-white/20 bg-white/5">
+              <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider text-lime-300">
+                Face Shape
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider text-lime-300">
+                Men's Hairstyle
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider text-lime-300">
+                Women's Hairstyle
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {hairstyleGuide.map((item, index) => (
+              <tr
+                key={index}
+                className={`border-b border-white/10 transition ${
+                  index % 2 === 0 ? "bg-white/[0.02]" : "bg-transparent"
+                }`}
+              >
+                <td className="px-6 py-5 text-base sm:text-lg font-semibold text-white">
+                  {item.shape}
+                </td>
+                <td className="px-6 py-5 text-sm sm:text-base text-neutral-300">
+                  <ul className="space-y-1">
+                    {item.menStyles.map((style, i) => (
+                      <li key={i}>• {style}</li>
+                    ))}
+                  </ul>
+                </td>
+                <td className="px-6 py-5 text-sm sm:text-base text-neutral-300">
+                  <ul className="space-y-1">
+                    {item.womenStyles.map((style, i) => (
+                      <li key={i}>• {style}</li>
+                    ))}
+                  </ul>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </section>
   )
