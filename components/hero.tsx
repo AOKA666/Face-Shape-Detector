@@ -755,39 +755,40 @@ export function Hero() {
       onDrop={handleDrop}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
-      className={`rounded-2xl border border-dashed bg-white/5 p-6 transition ${
+      className={`rounded-2xl border border-dashed bg-white/5 p-3 sm:p-6 transition ${
         isDragging ? "border-lime-400 bg-lime-400/10" : "border-white/20"
       }`}
     >
       <label
         htmlFor={fileInputId}
-        className="flex flex-col items-center justify-center gap-2 text-sm font-medium text-white/70 cursor-pointer"
+        className="flex flex-col items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm font-medium text-white/70 cursor-pointer"
         onClick={(event) => {
           event.preventDefault()
           triggerFilePicker()
         }}
       >
-        <Upload className="h-10 w-10 text-lime-300" />
-        <span>Drag or click to upload a photo</span>
-        <span className="text-xs text-white/50">Supports JPG / PNG (max 5MB)</span>
+        <Upload className="h-8 w-8 sm:h-10 sm:w-10 text-lime-300" />
+        <span className="hidden sm:block">Drag or click to upload a photo</span>
+        <span className="block sm:hidden">Tap to upload a photo</span>
+        <span className="text-[10px] sm:text-xs text-white/50">Supports JPG / PNG (max 5MB)</span>
       </label>
     </div>
   )
 
   const initialLayout = (
-    <div className="mt-12 grid gap-6 lg:grid-cols-[1.5fr_1fr] items-center justify-center">
-      <div className="relative min-h-[420px] overflow-hidden rounded-[32px] border border-white/10 bg-neutral-900/80">
+    <div className="mt-4 sm:mt-12 grid gap-4 sm:gap-6 lg:grid-cols-[1.5fr_1fr] items-center justify-center">
+      <div className="relative min-h-[280px] sm:min-h-[420px] overflow-hidden">
         <Image
-          src="/display.gif"
+          src="/display.png"
           alt="Face shape detector preview"
           fill
-          className="rounded-[32px] object-contain bg-black"
+          className="object-contain"
           sizes="(min-width: 1024px) 50vw, 100vw"
           style={{ objectFit: "contain" }}
         />
       </div>
-      <div className="relative min-h-[420px] rounded-[32px] border border-white/10 bg-neutral-900/80 p-6 backdrop-blur-sm flex flex-col items-center justify-center gap-5">
-        <h3 className="mb-4 text-center text-sm font-medium uppercase tracking-wider text-lime-300/80">
+      <div className="relative min-h-[280px] sm:min-h-[420px] rounded-[32px] border border-white/10 bg-neutral-900/80 p-4 sm:p-6 backdrop-blur-sm flex flex-col items-center justify-center gap-5">
+        <h3 className="mb-2 sm:mb-4 text-center text-xs sm:text-sm font-medium uppercase tracking-wider text-lime-300/80">
           Upload a photo to get your analysis
         </h3>
       {uploadDropArea}
@@ -1003,7 +1004,7 @@ export function Hero() {
   return (
     <>
       <section className="relative isolate overflow-hidden bg-gradient-to-b from-neutral-900 via-neutral-950 to-black">
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto px-4 py-4 sm:py-16">
           {(uploadedImage || previewImage) && (
             <div className="flex justify-start mb-8">
               <button
@@ -1019,11 +1020,11 @@ export function Hero() {
             </div>
           )}
           <div className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-lime-300">Face Intelligence</p>
-            <h1 className="mt-6 text-3xl font-extrabold leading-tight text-white sm:text-4xl lg:text-5xl">
+            <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.3em] text-lime-300">Face Intelligence</p>
+            <h1 className="mt-2 sm:mt-6 text-2xl sm:text-3xl font-extrabold leading-tight text-white sm:text-4xl lg:text-5xl">
               Reimagining facial insights with AI
             </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-base text-white/70 sm:text-lg">
+            <p className="mx-auto mt-2 sm:mt-4 max-w-2xl text-sm text-white/70 sm:text-base lg:text-lg">
               Upload one photo to unlock multidimensional facial scores, measurements, and aesthetic tips; layout mirrors the reference for easy web presentation.
             </p>
           </div>
