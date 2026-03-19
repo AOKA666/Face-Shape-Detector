@@ -1003,7 +1003,10 @@ export function Hero() {
 
   return (
     <>
-      <section className="relative isolate overflow-hidden bg-gradient-to-b from-neutral-900 via-neutral-950 to-black">
+      <section
+        id="hero"
+        className="relative isolate overflow-hidden bg-gradient-to-b from-neutral-900 via-neutral-950 to-black scroll-mt-20"
+      >
         <div className="container mx-auto px-4 py-4 sm:py-16">
           {(uploadedImage || previewImage) && (
             <div className="flex justify-start mb-8">

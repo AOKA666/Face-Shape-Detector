@@ -4,13 +4,33 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Twitter, Youtube, Instagram, Scan, ArrowRight, BookOpen, Sparkles, Users } from "lucide-react"
-import { BLOG_POSTS } from "@/lib/blog-posts"
 
 const categoryIconMap = {
   Guide: BookOpen,
   Trends: Sparkles,
   Beauty: Users,
 } as const
+
+const footerBlogPosts = [
+  {
+    slug: "how-to-tell-your-face-shape-from-a-selfie",
+    category: "Guide" as const,
+    title: "How to Tell Your Face Shape From a Selfie",
+    excerpt: "Use simple visual checks for forehead, cheekbones, jawline, and face length.",
+  },
+  {
+    slug: "best-glasses-for-your-face-shape",
+    category: "Trends" as const,
+    title: "Best Glasses for Your Face Shape",
+    excerpt: "Frame recommendations for oval, round, square, heart, diamond, and oblong faces.",
+  },
+  {
+    slug: "how-accurate-are-ai-face-shape-detectors",
+    category: "Guide" as const,
+    title: "How Accurate Are AI Face Shape Detectors?",
+    excerpt: "What affects detection quality and how to get more reliable results.",
+  },
+]
 
 export function AppverseFooter({ showLatestArticles = true }: { showLatestArticles?: boolean }) {
   return (
@@ -22,7 +42,7 @@ export function AppverseFooter({ showLatestArticles = true }: { showLatestArticl
             asChild
             className="rounded-full bg-lime-400 px-6 py-2 text-sm font-medium text-black shadow-[0_0_20px_rgba(163,230,53,0.35)] hover:bg-lime-300"
           >
-            <a href="#hero">Try Face Detection Now</a>
+            <Link href="/#hero">Try Face Detection Now</Link>
           </Button>
         </div>
       </div>
@@ -44,7 +64,7 @@ export function AppverseFooter({ showLatestArticles = true }: { showLatestArticl
 
               {/* Blog Posts Grid */}
               <div className="grid gap-4 md:grid-cols-3">
-                {BLOG_POSTS.map((post) => {
+                {footerBlogPosts.map((post) => {
                   const Icon = categoryIconMap[post.category]
                   return (
                     <Link
