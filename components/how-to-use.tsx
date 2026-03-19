@@ -28,19 +28,19 @@ export function HowToUse() {
         How to Use the AI Face Shape Detector Online
       </h2>
 
-      <div className="space-y-12">
+      <div className="grid gap-4 md:grid-cols-3">
         {steps.map((item, index) => (
           <div
             key={index}
-            className="w-full max-w-2xl mx-auto"
+            className="w-full"
           >
-            <div className="rounded-2xl border border-white/15 bg-neutral-900/60 p-8 flex flex-col items-center text-center">
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-lime-300/10 ring-2 ring-lime-300/30">
-                <item.icon className="h-8 w-8 text-lime-300" />
+            <div className="rounded-2xl border border-white/15 bg-neutral-900/60 p-6 flex h-full flex-col items-center text-center">
+              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-lime-300/10 ring-2 ring-lime-300/30">
+                <item.icon className="h-5 w-5 text-lime-300" />
               </div>
               <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-lime-300">{item.step}</p>
-              <h3 className="mb-3 text-xl sm:text-2xl font-bold text-white whitespace-nowrap">{item.title}</h3>
-              <p className="text-base text-neutral-200 leading-relaxed">{item.description}</p>
+              <h3 className="mb-3 text-lg sm:text-xl font-bold text-white">{item.title}</h3>
+              <p className="text-sm text-neutral-200 leading-relaxed">{item.description}</p>
             </div>
           </div>
         ))}

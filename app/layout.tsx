@@ -6,6 +6,7 @@ import Script from "next/script"
 import { Suspense } from "react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"
+import { BackToTopControl } from "@/components/back-to-top-control"
 
 const inter = Inter({ subsets: ["latin"], display: "swap" })
 
@@ -103,6 +104,7 @@ export default function RootLayout({
             </div>
           </div>
           <div className="relative z-10">{children}</div>
+          <BackToTopControl />
         </Suspense>
 
         {/* Vercel Speed Insights and Analytics components */}

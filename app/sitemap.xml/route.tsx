@@ -1,12 +1,19 @@
+import { BLOG_POSTS } from "@/lib/blog-posts"
+
 const URLS = [
   { url: "/", priority: "1.0", changefreq: "weekly" },
   { url: "/about", priority: "0.7", changefreq: "monthly" },
-  { url: "/Blog", priority: "0.6", changefreq: "monthly" },
+  { url: "/blog", priority: "0.6", changefreq: "weekly" },
   { url: "/face-shape-detector-online", priority: "0.9", changefreq: "weekly" },
   { url: "/face-shape-detector-for-men", priority: "0.9", changefreq: "weekly" },
   { url: "/face-shape-detector-for-women", priority: "0.9", changefreq: "weekly" },
   { url: "/face-shape-detector-from-photo", priority: "0.9", changefreq: "weekly" },
   { url: "/what-face-shape-do-i-have", priority: "0.8", changefreq: "weekly" },
+  ...BLOG_POSTS.map((post) => ({
+    url: `/blog/${post.slug}`,
+    priority: "0.5",
+    changefreq: "monthly",
+  })),
 ]
 
 export async function GET(request: Request) {

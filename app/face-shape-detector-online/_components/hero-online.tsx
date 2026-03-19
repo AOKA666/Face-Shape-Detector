@@ -19,7 +19,7 @@ export function HeroOnline() {
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-lime-300">Face Shape Detector Online</p>
           <h1 className="mt-6 text-3xl font-extrabold leading-tight text-white sm:text-4xl lg:text-5xl">
-            Online Face Shape Detector (No App Needed)
+            Face Shape Detector Online
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base text-white/80 sm:text-lg">
             Use directly in your browser - no downloads, no installations, instant results

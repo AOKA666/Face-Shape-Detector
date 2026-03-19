@@ -13,7 +13,7 @@ export function SiteHeader() {
 
   const links = [
     { href: "#faq", label: "FAQ", icon: HelpCircle },
-    { href: "#blog", label: "Blog", icon: FileText },
+    { href: "/blog", label: "Blog", icon: FileText },
     { href: "/about", label: "About", icon: Info },
   ]
 

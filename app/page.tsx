@@ -7,12 +7,21 @@ import { FaceShapesExplained } from "@/components/face-shapes-explained"
 import { HairstylesGuide } from "@/components/hairstyles-guide"
 import { UserReviews } from "@/components/user-reviews"
 import { FAQSection } from "@/components/faq-section"
-import { LearnMore } from "@/components/learn-more"
 import { AppverseFooter } from "@/components/appverse-footer"
 import Script from "next/script"
+import type { Metadata } from "next"
 
 // Force static generation for low TTFB
 export const dynamic = "force-static"
+
+export const metadata: Metadata = {
+  title: "Face Shape Detector Online Free | AI Face Shape Analysis",
+  description:
+    "Upload a selfie to instantly detect your face shape with AI. Get accurate face shape analysis plus hairstyle, glasses, and styling recommendations.",
+  alternates: {
+    canonical: "https://www.yourface.online/",
+  },
+}
 
 export default function Page() {
   const pageStructuredData = {
@@ -75,7 +84,6 @@ export default function Page() {
         <HairstylesGuide />
         <UserReviews />
         <FAQSection />
-        <LearnMore />
         <AppverseFooter />
       </main>
 

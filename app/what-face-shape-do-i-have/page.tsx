@@ -14,6 +14,9 @@ import type { Metadata } from "next"
 export const dynamic = "force-static"
 
 export const metadata: Metadata = {
+  title: "What Face Shape Do I Have? | Free AI Face Shape Test",
+  description:
+    "Not sure what face shape you have? Upload a photo or learn the key measurements to identify your face shape quickly and accurately.",
   alternates: {
     canonical: "https://www.yourface.online/what-face-shape-do-i-have",
   },
@@ -24,9 +27,9 @@ export default function WhatFaceShapePage() {
     "@context": "https://schema.org",
     "@type": "Article",
     "@id": "https://faceshapedetector.com/what-face-shape-do-i-have",
-    headline: "What Face Shape Do I Have? Complete Guide to Face Shape Analysis",
+    headline: "What Face Shape Do I Have?",
     description:
-      "Learn what face shape you have and how to find it. Discover different face shapes like oval, round, square, and heart with our comprehensive guide.",
+      "Not sure what face shape you have? Upload a photo or learn the key measurements to identify your face shape quickly and accurately.",
     url: "https://faceshapedetector.com/what-face-shape-do-i-have",
   }
 

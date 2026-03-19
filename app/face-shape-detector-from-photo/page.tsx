@@ -13,6 +13,9 @@ import type { Metadata } from "next"
 export const dynamic = "force-static"
 
 export const metadata: Metadata = {
+  title: "Face Shape Detector From Photo | Free AI Analysis",
+  description:
+    "Upload a photo and let AI detect your face shape instantly. Fast, free, and designed for accurate face shape analysis from selfies and portraits.",
   alternates: {
     canonical: "https://www.yourface.online/face-shape-detector-from-photo",
   },

@@ -1022,7 +1022,7 @@ export function Hero() {
           <div className="text-center">
             <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.3em] text-lime-300">Face Intelligence</p>
             <h1 className="mt-2 sm:mt-6 text-2xl sm:text-3xl font-extrabold leading-tight text-white sm:text-4xl lg:text-5xl">
-              Reimagining facial insights with AI
+              Face Shape Detector Online Free
             </h1>
             <p className="mx-auto mt-2 sm:mt-4 max-w-2xl text-sm text-white/70 sm:text-base lg:text-lg">
               Upload one photo to unlock multidimensional facial scores, measurements, and aesthetic tips; layout mirrors the reference for easy web presentation.

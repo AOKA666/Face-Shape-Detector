@@ -9,7 +9,7 @@ export function HeroFromPhoto() {
         <div className="text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-lime-300">Face Shape Detector from Photo</p>
           <h1 className="mt-6 text-3xl font-extrabold leading-tight text-white sm:text-4xl lg:text-5xl">
-            Detect Face Shape from a Photo
+            Detect Your Face Shape From a Photo
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base text-white/70 sm:text-lg">
             Upload any photo to get instant face shape analysis results
