@@ -1031,7 +1031,7 @@ export function Hero() {
               Face Shape Detector Online Free
             </h1>
             <p className="mx-auto mt-2 sm:mt-4 max-w-2xl text-sm text-white/70 sm:text-base lg:text-lg">
-              Upload one photo to unlock multidimensional facial scores, measurements, and aesthetic tips; layout mirrors the reference for easy web presentation.
+              Upload a selfie to detect your face shape instantly with AI. Get face shape analysis plus hairstyle, glasses, and styling recommendations.
             </p>
           </div>
           <input

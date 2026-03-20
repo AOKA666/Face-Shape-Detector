@@ -13,6 +13,30 @@ const categoryIconMap = {
 
 const footerBlogPosts = [
   {
+    slug: "what-face-shape-do-i-have-a-simple-step-by-step-guide",
+    category: "Guide" as const,
+    title: "What Face Shape Do I Have? A Simple Step-by-Step Guide",
+    excerpt: "A practical step-by-step method to identify your face shape accurately from a clear photo.",
+  },
+  {
+    slug: "best-hairstyles-for-round-face-shape",
+    category: "Trends" as const,
+    title: "Best Hairstyles for Round Face Shape",
+    excerpt: "Haircut ideas that add definition, balance proportions, and flatter round face shapes.",
+  },
+  {
+    slug: "best-hairstyles-for-square-face-shape",
+    category: "Trends" as const,
+    title: "Best Hairstyles for Square Face Shape",
+    excerpt: "Styles that soften strong jawlines while keeping your look sharp and structured.",
+  },
+  {
+    slug: "best-beard-styles-for-your-face-shape",
+    category: "Trends" as const,
+    title: "Best Beard Styles for Your Face Shape",
+    excerpt: "Choose beard lengths and outlines that complement your natural facial proportions.",
+  },
+  {
     slug: "how-to-tell-your-face-shape-from-a-selfie",
     category: "Guide" as const,
     title: "How to Tell Your Face Shape From a Selfie",
