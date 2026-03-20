@@ -102,7 +102,7 @@ export function Pricing() {
 
   return (
     <section id="pricing" className="text-white" itemScope itemType="https://schema.org/PriceSpecification">
-      <div className="container mx-auto px-4 py-16 sm:py-20">
+      <div className="mx-auto max-w-4xl px-4 py-16 sm:py-20">
         <div className="mx-auto max-w-3xl text-center">
           <div
             className="mx-auto mb-4 inline-flex items-center rounded-full px-3 py-1 text-xs font-medium text-white"

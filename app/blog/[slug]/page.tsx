@@ -168,7 +168,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <main className="min-h-[100dvh] text-white">
       <SiteHeader />
-      <article className="container mx-auto max-w-3xl px-4 py-10 sm:py-14">
+      <article className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
         <p className="text-xs uppercase tracking-wider text-lime-300">{post.category}</p>
         <h1 className="mt-2 text-3xl font-bold leading-tight sm:text-4xl">{post.title}</h1>
         <p className="mt-3 text-sm text-neutral-400">

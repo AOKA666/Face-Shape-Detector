@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react"
 export function LogoSection() {
   return (
     <section className="bg-[#0a0a0a] text-white py-16 sm:py-20">
-      <div className="container mx-auto px-4">
+      <div className="mx-auto max-w-4xl px-4">
         <div className="flex flex-col items-center text-center">
           {/* Badge */}
           <div className="mb-6 inline-flex items-center rounded-full bg-gradient-to-r from-purple-600/20 to-purple-500/20 border border-purple-500/30 px-4 py-2 text-sm font-medium text-purple-300">

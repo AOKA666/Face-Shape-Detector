@@ -776,8 +776,8 @@ export function Hero() {
   )
 
   const initialLayout = (
-    <div className="mt-4 sm:mt-12 grid gap-4 sm:gap-6 lg:grid-cols-[1.5fr_1fr] items-center justify-center">
-      <div className="relative min-h-[280px] sm:min-h-[420px] overflow-hidden">
+    <div className="mx-auto mt-4 grid max-w-5xl gap-4 sm:mt-12 sm:gap-6 lg:gap-4 lg:grid-cols-2 items-stretch justify-center">
+      <div className="relative h-full min-h-[280px] sm:min-h-[420px] overflow-hidden">
         <Image
           src="/display.png"
           alt="Face shape detector preview"
@@ -787,7 +787,10 @@ export function Hero() {
           style={{ objectFit: "contain" }}
         />
       </div>
-      <div className="relative min-h-[280px] sm:min-h-[420px] rounded-[32px] border border-white/10 bg-neutral-900/80 p-4 sm:p-6 backdrop-blur-sm flex flex-col items-center justify-center gap-5">
+      <div
+        id="upload-box"
+        className="relative h-full min-h-[280px] sm:min-h-[420px] rounded-[32px] border border-white/10 bg-neutral-900/80 p-4 sm:p-6 backdrop-blur-sm flex flex-col items-center justify-center gap-5 scroll-mt-24 sm:scroll-mt-28"
+      >
         <h3 className="mb-2 sm:mb-4 text-center text-xs sm:text-sm font-medium uppercase tracking-wider text-lime-300/80">
           Upload a photo to get your analysis
         </h3>

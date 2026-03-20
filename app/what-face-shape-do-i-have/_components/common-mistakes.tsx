@@ -30,7 +30,7 @@ export function CommonMistakes() {
 
   return (
     <section className="relative isolate overflow-hidden py-20 bg-neutral-900">
-      <div className="container mx-auto px-4">
+      <div className="mx-auto max-w-4xl px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-white sm:text-4xl">Common Mistakes</h2>
           <p className="mt-4 text-lg text-white/60">

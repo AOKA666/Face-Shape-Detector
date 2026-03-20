@@ -5,7 +5,7 @@ import { Scan } from "lucide-react"
 export function ToolCTA() {
   return (
     <section className="relative isolate overflow-hidden py-20 bg-gradient-to-b from-neutral-900 via-neutral-950 to-black">
-      <div className="container mx-auto px-4">
+      <div className="mx-auto max-w-4xl px-4">
         <div className="text-center">
           <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-lime-400/20">
             <Scan className="h-8 w-8 text-lime-300" />

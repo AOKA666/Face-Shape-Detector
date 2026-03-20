@@ -42,7 +42,7 @@ export function AppverseFooter({ showLatestArticles = true }: { showLatestArticl
             asChild
             className="rounded-full bg-lime-400 px-6 py-2 text-sm font-medium text-black shadow-[0_0_20px_rgba(163,230,53,0.35)] hover:bg-lime-300"
           >
-            <Link href="/#hero">Try Face Detection Now</Link>
+            <Link href="/#upload-box">Try Face Detection Now</Link>
           </Button>
         </div>
       </div>

@@ -32,7 +32,7 @@ const faqs = [
 
 export function FAQSection() {
   return (
-    <section id="faq" className="container mx-auto px-4 py-16 sm:py-20">
+    <section id="faq" className="mx-auto max-w-4xl px-4 py-16 sm:py-20">
       <h2 className="mb-10 text-center text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
         Frequently Asked Questions About Face Shape Detection
       </h2>

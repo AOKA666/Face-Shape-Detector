@@ -18,7 +18,7 @@ export default function BlogPage() {
   return (
     <main className="min-h-[100dvh] text-white">
       <SiteHeader />
-      <section className="container mx-auto px-4 py-10 sm:py-14">
+      <section className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
         <h1 className="text-3xl font-bold sm:text-4xl">Blog</h1>
         <p className="mt-2 text-sm text-neutral-300 sm:text-base">
           Actionable guides on face shape analysis, hairstyles, and makeup choices.

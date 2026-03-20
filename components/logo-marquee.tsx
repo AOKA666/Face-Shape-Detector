@@ -51,7 +51,7 @@ export function LogoMarquee() {
 
   return (
     <section className="text-white py-16 sm:py-20 overflow-hidden">
-      <div className="container mx-auto px-4">
+      <div className="mx-auto max-w-4xl px-4">
         {/* Header */}
         <div className="flex flex-col items-center justify-between mb-12 sm:flex-row sm:items-center">
           <h2 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl text-center sm:text-left">

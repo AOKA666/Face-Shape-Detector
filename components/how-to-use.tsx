@@ -23,8 +23,8 @@ const steps = [
 
 export function HowToUse() {
   return (
-    <section className="container mx-auto px-4 py-16 sm:py-20">
-      <h2 className="mb-10 text-center text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+    <section className="mx-auto max-w-4xl px-4 py-16 sm:py-20">
+      <h2 className="mb-10 text-center text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:whitespace-nowrap">
         How to Use the AI Face Shape Detector Online
       </h2>
 

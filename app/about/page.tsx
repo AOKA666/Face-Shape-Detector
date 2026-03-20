@@ -85,7 +85,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-neutral-950 via-black to-neutral-950 text-white">
       <SiteHeader />
-      <main className="container mx-auto max-w-5xl px-4 py-12">
+      <main className="mx-auto max-w-4xl px-4 py-12">
         <header className="mb-12 text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-lime-300">About Us</p>
           <h1 className="mt-4 text-4xl font-bold leading-tight md:text-5xl">

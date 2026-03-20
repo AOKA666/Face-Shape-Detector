@@ -26,7 +26,7 @@ const detections = [
 
 export function WhatCanDetect() {
   return (
-    <section id="features" className="container mx-auto px-4 py-12 sm:py-20">
+    <section id="features" className="mx-auto max-w-4xl px-4 py-12 sm:py-20">
       <h2 className="mb-10 text-center text-2xl sm:text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
         What Can Our Face Shape Analyzer Detect
       </h2>

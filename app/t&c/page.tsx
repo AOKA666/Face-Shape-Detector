@@ -19,7 +19,7 @@ export default function TermsPage() {
     <>
       <SiteHeader />
       <section className="bg-[#0a0a0a] text-white py-16">
-        <div className="container mx-auto px-4">
+        <div className="mx-auto max-w-4xl px-4">
           <div className="max-w-4xl mx-auto">
             <div className="relative overflow-hidden rounded-3xl border border-neutral-800 bg-[#0f0f0f] p-6 sm:p-10 shadow-xl">
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(163,230,53,0.10),transparent_55%)]" />

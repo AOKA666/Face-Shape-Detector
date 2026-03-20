@@ -35,7 +35,7 @@ const hairstyleGuide = [
 
 export function HairstylesGuide() {
   return (
-    <section className="container mx-auto px-4 py-12 sm:py-20">
+    <section className="mx-auto max-w-4xl px-4 py-12 sm:py-20">
       <h2 className="mb-4 text-center text-2xl sm:text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
         Best Hairstyles for Each Face Shape
       </h2>

@@ -21,7 +21,7 @@ export function Intro() {
 
   return (
     <section className="relative isolate overflow-hidden py-20 bg-neutral-950">
-      <div className="container mx-auto px-4">
+      <div className="mx-auto max-w-4xl px-4">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white sm:text-4xl">What Face Shape Do I Have?</h1>
           <p className="mt-4 text-lg text-white/60">
