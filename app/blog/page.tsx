@@ -35,7 +35,7 @@ export default function BlogPage() {
               <h2 className="mt-2 text-lg font-semibold">{post.title}</h2>
               <p className="mt-2 text-sm text-neutral-300">{post.excerpt}</p>
               <p className="mt-3 text-xs text-neutral-400">
-                {post.publishedAt} · {post.readingTime} min read
+                {post.publishedAt} | {post.readingTime} min read
               </p>
             </Link>
           ))}

@@ -154,7 +154,7 @@ function estimateReadingTime(content: string) {
 }
 
 function loadBlogPost(fileName: string): BlogPost {
-  const filePath = path.join(process.cwd(), fileName)
+  const filePath = path.join(process.cwd(), "blog", fileName)
   const markdown = fs.readFileSync(filePath, "utf8")
   const { frontMatter, content } = parseFrontMatter(markdown)
 

@@ -9,7 +9,7 @@ import { AppverseFooter } from "@/components/appverse-footer"
 export const dynamic = "force-static"
 
 type BlogPostPageProps = {
-  params: Promise<{ slug: string }>
+  params: { slug: string }
 }
 
 export async function generateStaticParams() {
@@ -17,7 +17,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
-  const { slug } = await params
+  const { slug } = params
   const post = getBlogPostBySlug(slug)
 
   if (!post) {
@@ -159,7 +159,7 @@ function renderMarkdown(content: string): ReactNode[] {
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const { slug } = await params
+  const { slug } = params
   const post = getBlogPostBySlug(slug)
   if (!post) notFound()
 
@@ -172,7 +172,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <p className="text-xs uppercase tracking-wider text-lime-300">{post.category}</p>
         <h1 className="mt-2 text-3xl font-bold leading-tight sm:text-4xl">{post.title}</h1>
         <p className="mt-3 text-sm text-neutral-400">
-          {post.publishedAt} · {post.readingTime} min read
+          {post.publishedAt} | {post.readingTime} min read
         </p>
 
         <div className="mt-8 space-y-5">{renderMarkdown(post.content)}</div>
