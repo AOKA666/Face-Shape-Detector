@@ -1,21 +1,27 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowRight, User, Users } from "lucide-react"
+import { ArrowRight, Scan, Sparkles, Scissors } from "lucide-react"
 
 export function InternalLinks() {
   const links = [
     {
-      title: "For Men",
-      description: "Explore face shape analysis and hairstyles for men",
-      icon: <User className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
-      href: "/face-shape-detector-for-men",
+      title: "How to Tell Your Face Shape From a Selfie",
+      description: "Quick selfie-based method to validate your first face shape guess.",
+      icon: <Scan className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
+      href: "/blog/how-to-tell-your-face-shape-from-a-selfie",
     },
     {
-      title: "For Women",
-      description: "Discover face shape analysis and beauty tips for women",
-      icon: <Users className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
-      href: "/face-shape-detector-for-women",
+      title: "How Accurate Are AI Face Shape Detectors?",
+      description: "Understand confidence, input quality, and common misclassification scenarios.",
+      icon: <Sparkles className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
+      href: "/blog/how-accurate-are-ai-face-shape-detectors",
+    },
+    {
+      title: "Best Hairstyles for Oval Face Shape",
+      description: "Style ideas once your proportions are confirmed.",
+      icon: <Scissors className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
+      href: "/blog/best-hairstyles-for-oval-face-shape",
     },
   ]
 
@@ -28,7 +34,7 @@ export function InternalLinks() {
             Explore more about face shapes and styling
           </p>
         </div>
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-3">
           {links.map((link, index) => (
             <Link
               key={index}

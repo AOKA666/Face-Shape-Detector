@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Menu, Tag, HelpCircle, FileText, Info, Scan, ChevronDown, User, Users, Image as ImageIcon, HelpCircle as FaceIcon } from "lucide-react"
+import { Menu, HelpCircle, FileText, Info, Scan, ChevronDown, User, Users, Image as ImageIcon, HelpCircle as FaceIcon } from "lucide-react"
 import { useState } from "react"
 import { usePathname } from "next/navigation"
 
@@ -12,7 +12,7 @@ export function SiteHeader() {
   const pathname = usePathname()
 
   const links = [
-    { href: "#faq", label: "FAQ", icon: HelpCircle },
+    { href: "/#faq", label: "FAQ", icon: HelpCircle },
     { href: "/blog", label: "Blog", icon: FileText },
     { href: "/about", label: "About", icon: Info },
   ]
@@ -84,7 +84,7 @@ export function SiteHeader() {
                          hover:bg-lime-300 hover:shadow-md hover:scale-[1.02]
                          transition-all"
             >
-              <Link href="#hero">Try Now</Link>
+              <Link href="/face-shape-detector-online">Try Now</Link>
             </Button>
           </div>
 
@@ -153,7 +153,7 @@ export function SiteHeader() {
                                hover:bg-lime-300 hover:shadow-md hover:scale-[1.02]
                                transition-all"
                   >
-                    <Link href="#hero">Try Now</Link>
+                    <Link href="/face-shape-detector-online">Try Now</Link>
                   </Button>
                 </div>
               </SheetContent>

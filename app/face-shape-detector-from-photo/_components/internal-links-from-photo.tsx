@@ -1,21 +1,27 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowRight, Scan, Image as ImageIcon } from "lucide-react"
+import { ArrowRight, BookOpen, Scan, Sparkles } from "lucide-react"
 
 export function InternalLinksFromPhoto() {
   const links = [
     {
-      title: "Online",
-      description: "Try our face shape detector directly in your browser",
+      title: "How to Tell Your Face Shape From a Selfie",
+      description: "Learn the best photo setup before running AI face shape analysis.",
       icon: <Scan className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
-      href: "/face-shape-detector-online",
+      href: "/blog/how-to-tell-your-face-shape-from-a-selfie",
     },
     {
-      title: "Face Shape Detector",
-      description: "Discover your face shape and get personalized recommendations",
-      icon: <ImageIcon className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
-      href: "/#hero",
+      title: "How Accurate Are AI Face Shape Detectors?",
+      description: "See what impacts model accuracy and how to improve your result quality.",
+      icon: <Sparkles className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
+      href: "/blog/how-accurate-are-ai-face-shape-detectors",
+    },
+    {
+      title: "What Face Shape Do I Have?",
+      description: "Use a structured checklist if your result sits between two face shape types.",
+      icon: <BookOpen className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
+      href: "/blog/what-face-shape-do-i-have-a-simple-step-by-step-guide",
     },
   ]
 
@@ -28,7 +34,7 @@ export function InternalLinksFromPhoto() {
             Explore more about face shape analysis
           </p>
         </div>
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-3">
           {links.map((link, index) => (
             <Link
               key={index}

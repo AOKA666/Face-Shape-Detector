@@ -7,6 +7,7 @@ import { CommonMistakes } from "./_components/common-mistakes"
 import { InternalLinks } from "./_components/internal-links"
 import { FAQ } from "./_components/faq"
 import { AppverseFooter } from "@/components/appverse-footer"
+import { FaceDetectorCTA } from "@/components/face-detector-cta"
 import Script from "next/script"
 import type { Metadata } from "next"
 
@@ -25,12 +26,19 @@ export const metadata: Metadata = {
 export default function WhatFaceShapePage() {
   const pageStructuredData = {
     "@context": "https://schema.org",
-    "@type": "Article",
-    "@id": "https://faceshapedetector.com/what-face-shape-do-i-have",
-    headline: "What Face Shape Do I Have?",
+    "@type": "WebApplication",
+    "@id": "https://www.yourface.online/what-face-shape-do-i-have",
+    name: "What Face Shape Do I Have? | Free AI Face Shape Test",
     description:
       "Not sure what face shape you have? Upload a photo or learn the key measurements to identify your face shape quickly and accurately.",
-    url: "https://faceshapedetector.com/what-face-shape-do-i-have",
+    url: "https://www.yourface.online/what-face-shape-do-i-have",
+    applicationCategory: "UtilityApplication",
+    operatingSystem: "Any",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
   }
 
   const faqStructuredData = {
@@ -64,6 +72,14 @@ export default function WhatFaceShapePage() {
         <FaceShapeTypesExplained />
         <HowToFindFaceShape />
         <ToolCTA />
+        <section className="mx-auto max-w-6xl px-4">
+          <FaceDetectorCTA
+            title="Find Your Face Shape Online"
+            description="Upload a clear photo and use AI to confirm your face shape before choosing haircut, beard, or glasses styles."
+            ctaText="Try the Face Shape Detector"
+            href="/face-shape-detector-online"
+          />
+        </section>
         <CommonMistakes />
         <InternalLinks />
         <FAQ />

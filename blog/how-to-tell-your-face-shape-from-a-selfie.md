@@ -181,3 +181,10 @@ Once you know your shape, use it for:
 If you want to tell your face shape from a selfie, focus on four things: widest area, face length, jawline shape, and overall balance. Do not rely on vibes. Use proportion.
 
 If you want a faster answer, upload a clear front-facing photo to an AI face shape detector and compare the result with the manual method.
+
+## Related Tools and Guides
+
+- Try our [face shape detector online](/face-shape-detector-online) if you want a quick second opinion after your manual selfie check.
+- Use [detect your face shape from a photo](/face-shape-detector-from-photo) when you already have a portrait and want fast AI feedback.
+- If you are still unsure between categories, start with [what face shape do I have](/what-face-shape-do-i-have) for a guided breakdown.
+- Continue with [What Face Shape Do I Have? A Simple Step-by-Step Guide](/blog/what-face-shape-do-i-have-a-simple-step-by-step-guide) for a full decision flow.

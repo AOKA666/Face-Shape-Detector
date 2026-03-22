@@ -6,6 +6,7 @@ import { WhyFaceShapeMattersWomen } from "./_components/why-face-shape-matters-w
 import { InternalLinksWomen } from "./_components/internal-links-women"
 import { FAQWomen } from "./_components/faq-women"
 import { AppverseFooter } from "@/components/appverse-footer"
+import { FaceDetectorCTA } from "@/components/face-detector-cta"
 import Script from "next/script"
 import type { Metadata } from "next"
 
@@ -25,11 +26,11 @@ export default function WomenPage() {
   const pageStructuredData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "@id": "https://faceshapedetector.com/face-shape-detector-for-women",
+    "@id": "https://www.yourface.online/face-shape-detector-for-women",
     name: "Face Shape Detector for Women | Hairstyles & Beauty Tips",
     description:
       "Find your face shape with our AI tool for women. Get face shape analysis plus hairstyle, makeup, and styling recommendations tailored to your features.",
-    url: "https://faceshapedetector.com/face-shape-detector-for-women",
+    url: "https://www.yourface.online/face-shape-detector-for-women",
     applicationCategory: "UtilityApplication",
     operatingSystem: "Any",
     offers: {
@@ -70,6 +71,14 @@ export default function WomenPage() {
         <CommonFemaleFaceShapes />
         <StyleTipsByFaceShapeWomen />
         <WhyFaceShapeMattersWomen />
+        <section className="mx-auto max-w-6xl px-4">
+          <FaceDetectorCTA
+            title="Find Your Face Shape Online"
+            description="Detect your face shape online, then apply hairstyle, makeup, and accessory recommendations with confidence."
+            ctaText="Try the Face Shape Detector"
+            href="/face-shape-detector-online"
+          />
+        </section>
         <InternalLinksWomen />
         <FAQWomen />
         <AppverseFooter />

@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import Image from "next/image"
 import { useRouter } from "next/navigation"
@@ -792,7 +792,7 @@ export function Hero() {
         className="relative h-full min-h-[280px] sm:min-h-[420px] rounded-[32px] border border-white/10 bg-neutral-900/80 p-4 sm:p-6 backdrop-blur-sm flex flex-col items-center justify-center gap-5 scroll-mt-24 sm:scroll-mt-28"
       >
         <h3 className="mb-2 sm:mb-4 text-center text-xs sm:text-sm font-medium uppercase tracking-wider text-lime-300/80">
-          Upload a photo to get your analysis
+          Upload a photo to detect your face shape online
         </h3>
       {uploadDropArea}
       </div>
@@ -1026,12 +1026,12 @@ export function Hero() {
             </div>
           )}
           <div className="text-center">
-            <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.3em] text-lime-300">Face Intelligence</p>
+            <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.3em] text-lime-300">AI Face Shape Detector Online</p>
             <h1 className="mt-2 sm:mt-6 text-2xl sm:text-3xl font-extrabold leading-tight text-white sm:text-4xl lg:text-5xl">
               Face Shape Detector Online Free
             </h1>
             <p className="mx-auto mt-2 sm:mt-4 max-w-2xl text-sm text-white/70 sm:text-base lg:text-lg">
-              Upload a selfie to detect your face shape instantly with AI. Get face shape analysis plus hairstyle, glasses, and styling recommendations.
+              Upload a selfie to detect face shape from photo instantly with our AI face shape analysis. Use this free face shape detector online to get accurate results plus hairstyle, glasses, and styling recommendations in seconds.
             </p>
           </div>
           <input
@@ -1119,3 +1119,4 @@ export function Hero() {
     </>
   )
 }
+

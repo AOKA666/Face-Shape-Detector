@@ -133,3 +133,10 @@ So, how accurate are AI face shape detectors?
 **Accurate enough to be useful. Not accurate enough to be unquestionable.**
 
 Use them as a fast, objective starting point. Then sanity-check the result with your own proportions. That combo is usually the smartest approach.
+
+## Related Tools and Guides
+
+- Test accuracy directly with our [AI face shape detector](/face-shape-detector-online) using a clean, front-facing photo.
+- For camera-roll workflows, [detect your face shape from a photo](/face-shape-detector-from-photo) and compare repeated uploads.
+- If your question is still broad, use [what face shape do I have](/what-face-shape-do-i-have) for a structured manual+AI method.
+- Read [How to Tell Your Face Shape From a Selfie](/blog/how-to-tell-your-face-shape-from-a-selfie) to improve your input quality before testing.

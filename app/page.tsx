@@ -1,8 +1,9 @@
-import { SiteHeader } from "@/components/site-header"
+﻿import { SiteHeader } from "@/components/site-header"
 import { Hero } from "@/components/hero"
 import { WhyChooseUs } from "@/components/why-choose-us"
 import { WhatCanDetect } from "@/components/what-can-detect"
 import { HowToUse } from "@/components/how-to-use"
+import { LearnMore } from "@/components/learn-more"
 import { FaceShapesExplained } from "@/components/face-shapes-explained"
 import { HairstylesGuide } from "@/components/hairstyles-guide"
 import { UserReviews } from "@/components/user-reviews"
@@ -24,14 +25,40 @@ export const metadata: Metadata = {
 }
 
 export default function Page() {
-  const pageStructuredData = {
+  const websiteStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://www.yourface.online/#website",
+    url: "https://www.yourface.online/",
+    name: "YourFace Online",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: "https://www.yourface.online/blog?query={search_term_string}",
+      "query-input": "required name=search_term_string",
+    },
+  }
+
+  const webPageStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "https://www.yourface.online/#webpage",
+    url: "https://www.yourface.online/",
+    name: "Face Shape Detector Online Free | AI Face Shape Analysis",
+    description:
+      "Use our free face shape detector online to detect face shape from photo with AI face shape analysis in seconds.",
+    isPartOf: {
+      "@id": "https://www.yourface.online/#website",
+    },
+  }
+
+  const appStructuredData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "@id": "https://faceshapedetector.com/",
-    name: "AI Face Shape Detector – Free Online Face Shape Analyzer from Photo",
+    "@id": "https://www.yourface.online/",
+    name: "AI Face Shape Detector - Free Online Face Shape Analyzer from Photo",
     description:
       "Upload your photo to instantly detect your face shape using AI. Get personalized hairstyle, makeup, and styling recommendations based on your unique face shape.",
-    url: "https://faceshapedetector.com/",
+    url: "https://www.yourface.online/",
     applicationCategory: "UtilityApplication",
     operatingSystem: "Any",
     offers: {
@@ -77,6 +104,7 @@ export default function Page() {
       <main className="min-h-[100dvh] text-white">
         <SiteHeader />
         <Hero />
+        <LearnMore />
         <HowToUse />
         <WhyChooseUs />
         <WhatCanDetect />
@@ -87,13 +115,30 @@ export default function Page() {
         <AppverseFooter />
       </main>
 
-      {/* JSON-LD structured data */}
       <Script
-        id="page-structured-data"
+        id="website-structured-data"
         type="application/ld+json"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(pageStructuredData),
+          __html: JSON.stringify(websiteStructuredData),
+        }}
+      />
+
+      <Script
+        id="webpage-structured-data"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(webPageStructuredData),
+        }}
+      />
+
+      <Script
+        id="app-structured-data"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(appStructuredData),
         }}
       />
 

@@ -6,6 +6,7 @@ import { WhyFaceShapeMattersMen } from "./_components/why-face-shape-matters-men
 import { InternalLinksMen } from "./_components/internal-links-men"
 import { FAQMen } from "./_components/faq-men"
 import { AppverseFooter } from "@/components/appverse-footer"
+import { FaceDetectorCTA } from "@/components/face-detector-cta"
 import Script from "next/script"
 import type { Metadata } from "next"
 
@@ -25,11 +26,11 @@ export default function MenPage() {
   const pageStructuredData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "@id": "https://faceshapedetector.com/face-shape-detector-for-men",
+    "@id": "https://www.yourface.online/face-shape-detector-for-men",
     name: "Face Shape Detector for Men | Find the Best Cut & Style",
     description:
       "Use our AI face shape detector for men to identify your face shape and discover better hairstyles, beard styles, and glasses choices.",
-    url: "https://faceshapedetector.com/face-shape-detector-for-men",
+    url: "https://www.yourface.online/face-shape-detector-for-men",
     applicationCategory: "UtilityApplication",
     operatingSystem: "Any",
     offers: {
@@ -70,6 +71,14 @@ export default function MenPage() {
         <CommonMaleFaceShapes />
         <HairstylesByFaceShapeMen />
         <WhyFaceShapeMattersMen />
+        <section className="mx-auto max-w-6xl px-4">
+          <FaceDetectorCTA
+            title="Upload a Photo to Detect Your Face Shape"
+            description="Use the AI face shape detector to choose better men's haircuts, beard shapes, and glasses with less guesswork."
+            ctaText="Try the Face Shape Detector"
+            href="/face-shape-detector-online"
+          />
+        </section>
         <InternalLinksMen />
         <FAQMen />
         <AppverseFooter />

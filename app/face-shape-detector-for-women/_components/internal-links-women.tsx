@@ -1,21 +1,27 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowRight, Image as ImageIcon, User } from "lucide-react"
+import { ArrowRight, BookOpen, Scissors, Sparkles } from "lucide-react"
 
 export function InternalLinksWomen() {
   const links = [
     {
-      title: "For Men",
-      description: "Explore face shape analysis and hairstyles for men",
-      icon: <User className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
-      href: "/face-shape-detector-for-men",
+      title: "Best Hairstyles for Round Face Shape",
+      description: "Cuts that add structure and vertical balance for softer face outlines.",
+      icon: <Scissors className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
+      href: "/blog/best-hairstyles-for-round-face-shape",
     },
     {
-      title: "What Face Shape Do I Have",
-      description: "Upload any photo to get instant face shape analysis",
-      icon: <ImageIcon className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
-      href: "/#hero",
+      title: "Best Glasses for Your Face Shape",
+      description: "Select frame shapes that flatter your forehead, cheekbones, and jawline.",
+      icon: <Sparkles className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
+      href: "/blog/best-glasses-for-your-face-shape",
+    },
+    {
+      title: "What Face Shape Do I Have?",
+      description: "Use this guide when you are still deciding between two face shape types.",
+      icon: <BookOpen className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
+      href: "/blog/what-face-shape-do-i-have-a-simple-step-by-step-guide",
     },
   ]
 
@@ -28,7 +34,7 @@ export function InternalLinksWomen() {
             Explore more about face shapes and styling
           </p>
         </div>
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-3">
           {links.map((link, index) => (
             <Link
               key={index}

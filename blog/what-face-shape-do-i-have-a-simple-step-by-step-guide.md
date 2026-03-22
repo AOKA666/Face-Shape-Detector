@@ -187,3 +187,10 @@ Once you know your face shape, you can start using it right away:
 If you keep asking yourself, **what face shape do I have**, the simplest answer is this: compare your forehead, cheekbones, jawline, and face length in a clear front-facing view, then match those proportions to the main face shape categories.
 
 Do it manually first. Then use an AI tool if you want confirmation. That is the fastest no-BS approach.
+
+## Related Tools and Guides
+
+- Run the full [AI face shape detector](/face-shape-detector-online) to validate your manual measurement.
+- If your decision is photo-first, use [online face shape analysis from a photo](/face-shape-detector-from-photo) for instant classification.
+- For a practical walkthrough using pictures, read [How to Tell Your Face Shape From a Selfie](/blog/how-to-tell-your-face-shape-from-a-selfie).
+- If you want style advice by gender, compare [face shape detector for men](/face-shape-detector-for-men) and [face shape detector for women](/face-shape-detector-for-women).

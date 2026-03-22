@@ -66,7 +66,7 @@ export function AppverseFooter({ showLatestArticles = true }: { showLatestArticl
             asChild
             className="rounded-full bg-lime-400 px-6 py-2 text-sm font-medium text-black shadow-[0_0_20px_rgba(163,230,53,0.35)] hover:bg-lime-300"
           >
-            <Link href="/#upload-box">Try Face Detection Now</Link>
+            <Link href="/face-shape-detector-online">Try Face Detection Now</Link>
           </Button>
         </div>
       </div>
@@ -157,7 +157,7 @@ export function AppverseFooter({ showLatestArticles = true }: { showLatestArticl
                     </Link>
                   </li>
                   <li>
-                    <Link href="#faq" className="hover:text-lime-300">
+                    <Link href="/#faq" className="hover:text-lime-300">
                       FAQ
                     </Link>
                   </li>
@@ -197,10 +197,10 @@ export function AppverseFooter({ showLatestArticles = true }: { showLatestArticl
           <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs text-neutral-500 sm:flex-row">
             <p>© {new Date().getFullYear()} FaceDetector. All rights reserved.</p>
             <div className="flex items-center gap-6">
-              <Link href="#privacy" className="hover:text-lime-300">
+              <Link href="/t&c" className="hover:text-lime-300">
                 Privacy Policy
               </Link>
-              <Link href="#terms" className="hover:text-lime-300">
+              <Link href="/t&c" className="hover:text-lime-300">
                 Terms of Service
               </Link>
             </div>

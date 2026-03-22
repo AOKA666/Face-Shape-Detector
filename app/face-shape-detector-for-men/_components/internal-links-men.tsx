@@ -1,21 +1,27 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowRight, Image as ImageIcon, User } from "lucide-react"
+import { ArrowRight, BookOpen, Scissors, Glasses } from "lucide-react"
 
 export function InternalLinksMen() {
   const links = [
     {
-      title: "For Women",
-      description: "Explore face shape analysis and hairstyles for women",
-      icon: <User className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
-      href: "/#hairstyles-guide",
+      title: "Best Beard Styles for Your Face Shape",
+      description: "Match beard shape and length to your face proportions.",
+      icon: <BookOpen className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
+      href: "/blog/best-beard-styles-for-your-face-shape",
     },
     {
-      title: "From Photo",
-      description: "Upload any photo to get instant face shape analysis",
-      icon: <ImageIcon className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
-      href: "/#hero",
+      title: "Best Hairstyles for Square Face Shape",
+      description: "Haircut ideas that keep a strong jawline sharp but balanced.",
+      icon: <Scissors className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
+      href: "/blog/best-hairstyles-for-square-face-shape",
+    },
+    {
+      title: "Best Glasses for Your Face Shape",
+      description: "Choose frames that complement your jawline and forehead proportions.",
+      icon: <Glasses className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
+      href: "/blog/best-glasses-for-your-face-shape",
     },
   ]
 
@@ -28,7 +34,7 @@ export function InternalLinksMen() {
             Explore more about face shapes and styling
           </p>
         </div>
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-3">
           {links.map((link, index) => (
             <Link
               key={index}

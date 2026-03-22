@@ -6,6 +6,7 @@ import { SupportedPhotos } from "./_components/supported-photos"
 import { InternalLinksFromPhoto } from "./_components/internal-links-from-photo"
 import { FAQFromPhoto } from "./_components/faq-from-photo"
 import { AppverseFooter } from "@/components/appverse-footer"
+import { FaceDetectorCTA } from "@/components/face-detector-cta"
 import Script from "next/script"
 import type { Metadata } from "next"
 
@@ -25,11 +26,11 @@ export default function FromPhotoPage() {
   const pageStructuredData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "@id": "https://faceshapedetector.com/face-shape-detector-from-photo",
+    "@id": "https://www.yourface.online/face-shape-detector-from-photo",
     name: "Face Shape Detector from Photo - Instant Analysis",
     description:
       "Upload any photo to get instant face shape analysis. Discover your face shape with AI-powered technology. Free, secure, and no data storage.",
-    url: "https://faceshapedetector.com/face-shape-detector-from-photo",
+    url: "https://www.yourface.online/face-shape-detector-from-photo",
     applicationCategory: "UtilityApplication",
     operatingSystem: "Any",
     offers: {
@@ -70,6 +71,14 @@ export default function FromPhotoPage() {
         <PhotoRequirements />
         <PrivacySecurity />
         <SupportedPhotos />
+        <section className="mx-auto max-w-6xl px-4">
+          <FaceDetectorCTA
+            title="Find Your Face Shape Online"
+            description="Run online face shape analysis in seconds and compare your result with hairstyle and glasses guides."
+            ctaText="Try the Face Shape Detector"
+            href="/face-shape-detector-online"
+          />
+        </section>
         <InternalLinksFromPhoto />
         <FAQFromPhoto />
         <AppverseFooter />

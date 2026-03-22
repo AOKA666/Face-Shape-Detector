@@ -3,9 +3,6 @@
 
   const lines = [
     "# robots.txt",
-    "User-agent: Googlebot",
-    "Allow: /",
-    "",
     "User-agent: *",
     "Allow: /",
     "Disallow: /api/",

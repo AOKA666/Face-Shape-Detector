@@ -6,6 +6,7 @@ import { UseCases } from "./_components/use-cases"
 import { InternalLinks } from "./_components/internal-links"
 import { FAQOnline } from "./_components/faq-online"
 import { AppverseFooter } from "@/components/appverse-footer"
+import { FaceDetectorCTA } from "@/components/face-detector-cta"
 import Script from "next/script"
 import type { Metadata } from "next"
 
@@ -25,11 +26,11 @@ export default function OnlinePage() {
   const pageStructuredData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "@id": "https://faceshapedetector.com/face-shape-detector-online",
+    "@id": "https://www.yourface.online/face-shape-detector-online",
     name: "Face Shape Detector Online - No App Required",
     description:
       "Use our free online face shape detector directly in your browser. No download needed, works on any device. Instant AI-powered face analysis.",
-    url: "https://faceshapedetector.com/face-shape-detector-online",
+    url: "https://www.yourface.online/face-shape-detector-online",
     applicationCategory: "UtilityApplication",
     operatingSystem: "Any",
     offers: {
@@ -78,6 +79,14 @@ export default function OnlinePage() {
         <WhyOnlineMatters />
         <ComparisonSection />
         <UseCases />
+        <section className="mx-auto max-w-6xl px-4">
+          <FaceDetectorCTA
+            title="Upload a Photo to Detect Your Face Shape"
+            description="Use our free AI face shape detector online and get a fast, clean result without installing anything."
+            ctaText="Try the Face Shape Detector"
+            href="/face-shape-detector-from-photo"
+          />
+        </section>
         <InternalLinks />
         <FAQOnline />
         <AppverseFooter />

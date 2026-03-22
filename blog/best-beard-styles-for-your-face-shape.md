@@ -185,3 +185,10 @@ A decent trim can improve your look faster than a new skincare routine and with 
 The best beard styles for your face shape are the ones that make your face look more balanced, not more extreme. Use the beard to adjust proportion: add length where needed, reduce width where needed, and do not blindly copy someone whose bone structure is doing half the work.
 
 If you are not sure what your face shape is, use a face shape detector first. That gives you a much better starting point than random beard optimism.
+
+## Related Tools and Guides
+
+- Start with [face shape detector for men](/face-shape-detector-for-men) to map your jawline and beard-friendly proportions.
+- You can also run a quick [face shape detector online](/face-shape-detector-online) for a neutral baseline.
+- If you are checking with an existing image, [detect your face shape from a photo](/face-shape-detector-from-photo) first.
+- Pair beard planning with [Best Hairstyles for Square Face Shape](/blog/best-hairstyles-for-square-face-shape) for a complete grooming strategy.
