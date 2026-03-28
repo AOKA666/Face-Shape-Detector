@@ -25,7 +25,7 @@ export function HowToUse() {
   return (
     <section className="mx-auto max-w-4xl px-4 py-16 sm:py-20">
       <h2 className="mb-10 text-center text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:whitespace-nowrap">
-        How to Use the AI Face Shape Detector Online
+        How It Works
       </h2>
 
       <div className="grid gap-4 md:grid-cols-3">

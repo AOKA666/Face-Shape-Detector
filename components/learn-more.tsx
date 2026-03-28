@@ -16,6 +16,12 @@ const articles = [
     href: "/blog/how-to-tell-your-face-shape-from-a-selfie",
   },
   {
+    icon: BookOpen,
+    title: "Face Shape Types Explained",
+    description: "Understand oval, round, square, heart, diamond, and oblong patterns before styling choices.",
+    href: "/blog/face-shape-types-explained",
+  },
+  {
     icon: Sparkles,
     title: "Best Glasses for Your Face Shape",
     description: "Find frame styles that balance round, square, oval, heart, diamond, and oblong face shapes.",
@@ -28,16 +34,10 @@ const articles = [
     href: "/blog/best-hairstyles-for-round-face-shape",
   },
   {
-    icon: Scissors,
-    title: "Best Hairstyles for Square Face Shape",
-    description: "Cuts that soften strong angles while keeping a sharp, intentional style.",
-    href: "/blog/best-hairstyles-for-square-face-shape",
-  },
-  {
-    icon: BookOpen,
-    title: "Best Beard Styles for Your Face Shape",
-    description: "Use beard shape and length to add balance for each face type.",
-    href: "/blog/best-beard-styles-for-your-face-shape",
+    icon: Sparkles,
+    title: "How Accurate Are AI Face Shape Detectors?",
+    description: "See what impacts AI face shape accuracy and how to improve your input quality.",
+    href: "/blog/how-accurate-are-ai-face-shape-detectors",
   },
 ]
 
@@ -45,7 +45,7 @@ export function LearnMore() {
   return (
     <section className="mx-auto max-w-4xl px-4 py-16 sm:py-20">
       <h2 className="mb-10 text-center text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-        Learn More About Face Shapes & Styling
+        Recommended Guides
       </h2>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

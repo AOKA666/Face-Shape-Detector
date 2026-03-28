@@ -194,3 +194,4 @@ Do it manually first. Then use an AI tool if you want confirmation. That is the 
 - If your decision is photo-first, use [online face shape analysis from a photo](/face-shape-detector-from-photo) for instant classification.
 - For a practical walkthrough using pictures, read [How to Tell Your Face Shape From a Selfie](/blog/how-to-tell-your-face-shape-from-a-selfie).
 - If you want style advice by gender, compare [face shape detector for men](/face-shape-detector-for-men) and [face shape detector for women](/face-shape-detector-for-women).
+- Review category traits in [Face Shape Types Explained](/blog/face-shape-types-explained) when you are between two shapes.

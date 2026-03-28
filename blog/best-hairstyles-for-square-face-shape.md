@@ -167,3 +167,4 @@ If you are stuck between square and oblong, check your face length carefully or 
 - If your decision starts with a portrait, [detect face shape from photo](/face-shape-detector-from-photo) in seconds.
 - Explore [face shape detector for men](/face-shape-detector-for-men) for male-specific cut and beard combinations.
 - Read [Best Hairstyles for Oval Face Shape](/blog/best-hairstyles-for-oval-face-shape) if you are deciding between balanced and angular face patterns.
+- Use [Face Shape Types Explained](/blog/face-shape-types-explained) for a clean visual reference across all categories.

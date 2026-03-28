@@ -140,3 +140,4 @@ Use them as a fast, objective starting point. Then sanity-check the result with 
 - For camera-roll workflows, [detect your face shape from a photo](/face-shape-detector-from-photo) and compare repeated uploads.
 - If your question is still broad, use [what face shape do I have](/what-face-shape-do-i-have) for a structured manual+AI method.
 - Read [How to Tell Your Face Shape From a Selfie](/blog/how-to-tell-your-face-shape-from-a-selfie) to improve your input quality before testing.
+- Use [Face Shape Types Explained](/blog/face-shape-types-explained) to sanity-check AI output categories.

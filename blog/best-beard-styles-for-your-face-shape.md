@@ -192,3 +192,4 @@ If you are not sure what your face shape is, use a face shape detector first. Th
 - You can also run a quick [face shape detector online](/face-shape-detector-online) for a neutral baseline.
 - If you are checking with an existing image, [detect your face shape from a photo](/face-shape-detector-from-photo) first.
 - Pair beard planning with [Best Hairstyles for Square Face Shape](/blog/best-hairstyles-for-square-face-shape) for a complete grooming strategy.
+- Cross-check category traits in [Face Shape Types Explained](/blog/face-shape-types-explained) before trimming.

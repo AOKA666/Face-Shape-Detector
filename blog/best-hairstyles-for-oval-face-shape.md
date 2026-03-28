@@ -153,3 +153,4 @@ If you are unsure whether your face is oval or oblong, that difference matters. 
 - If you only have a selfie handy, [online face shape analysis from a photo](/face-shape-detector-from-photo) gives you a quick classification.
 - For women-focused styling direction, use [face shape detector for women](/face-shape-detector-for-women).
 - Next, compare with [Best Glasses for Your Face Shape](/blog/best-glasses-for-your-face-shape) to keep your full look balanced.
+- If you are still between oval and oblong, read [Face Shape Types Explained](/blog/face-shape-types-explained).

@@ -43,6 +43,12 @@ const footerBlogPosts = [
     excerpt: "Use simple visual checks for forehead, cheekbones, jawline, and face length.",
   },
   {
+    slug: "face-shape-types-explained",
+    category: "Guide" as const,
+    title: "Face Shape Types Explained",
+    excerpt: "Understand oval, round, square, heart, diamond, and oblong categories quickly.",
+  },
+  {
     slug: "best-glasses-for-your-face-shape",
     category: "Trends" as const,
     title: "Best Glasses for Your Face Shape",

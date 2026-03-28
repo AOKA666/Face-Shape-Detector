@@ -1,12 +1,10 @@
-﻿import { SiteHeader } from "@/components/site-header"
+import { SiteHeader } from "@/components/site-header"
 import { Hero } from "@/components/hero"
 import { WhyChooseUs } from "@/components/why-choose-us"
-import { WhatCanDetect } from "@/components/what-can-detect"
 import { HowToUse } from "@/components/how-to-use"
 import { LearnMore } from "@/components/learn-more"
 import { FaceShapesExplained } from "@/components/face-shapes-explained"
-import { HairstylesGuide } from "@/components/hairstyles-guide"
-import { UserReviews } from "@/components/user-reviews"
+import { StylingByUseCase } from "@/components/styling-by-use-case"
 import { FAQSection } from "@/components/faq-section"
 import { AppverseFooter } from "@/components/appverse-footer"
 import Script from "next/script"
@@ -16,9 +14,9 @@ import type { Metadata } from "next"
 export const dynamic = "force-static"
 
 export const metadata: Metadata = {
-  title: "Face Shape Detector Online Free | AI Face Shape Analysis",
+  title: "Face Shape Detector | Free AI Face Shape Analysis Online",
   description:
-    "Upload a selfie to instantly detect your face shape with AI. Get accurate face shape analysis plus hairstyle, glasses, and styling recommendations.",
+    "Use a free AI face shape detector to identify oval, round, square, heart, diamond, or oblong face shape from a selfie. Get hairstyle and glasses guidance.",
   alternates: {
     canonical: "https://www.yourface.online/",
   },
@@ -43,7 +41,7 @@ export default function Page() {
     "@type": "WebPage",
     "@id": "https://www.yourface.online/#webpage",
     url: "https://www.yourface.online/",
-    name: "Face Shape Detector Online Free | AI Face Shape Analysis",
+    name: "Face Shape Detector | Free AI Face Shape Analysis Online",
     description:
       "Use our free face shape detector online to detect face shape from photo with AI face shape analysis in seconds.",
     isPartOf: {
@@ -104,13 +102,11 @@ export default function Page() {
       <main className="min-h-[100dvh] text-white">
         <SiteHeader />
         <Hero />
-        <LearnMore />
         <HowToUse />
         <WhyChooseUs />
-        <WhatCanDetect />
         <FaceShapesExplained />
-        <HairstylesGuide />
-        <UserReviews />
+        <LearnMore />
+        <StylingByUseCase />
         <FAQSection />
         <AppverseFooter />
       </main>

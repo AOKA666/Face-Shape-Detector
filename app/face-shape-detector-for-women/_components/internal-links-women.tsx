@@ -6,6 +6,12 @@ import { ArrowRight, BookOpen, Scissors, Sparkles } from "lucide-react"
 export function InternalLinksWomen() {
   const links = [
     {
+      title: "Face Shape Types Explained",
+      description: "Check shape definitions before committing to a haircut or makeup direction.",
+      icon: <BookOpen className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
+      href: "/blog/face-shape-types-explained",
+    },
+    {
       title: "Best Hairstyles for Round Face Shape",
       description: "Cuts that add structure and vertical balance for softer face outlines.",
       icon: <Scissors className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
@@ -29,12 +35,12 @@ export function InternalLinksWomen() {
     <section className="relative isolate overflow-hidden py-20 bg-neutral-900">
       <div className="mx-auto max-w-4xl px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">Related Resources</h2>
+          <h2 className="text-3xl font-bold text-white sm:text-4xl">Related Guides</h2>
           <p className="mt-4 text-lg text-white/60">
             Explore more about face shapes and styling
           </p>
         </div>
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2">
           {links.map((link, index) => (
             <Link
               key={index}

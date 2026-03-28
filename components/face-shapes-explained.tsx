@@ -39,7 +39,7 @@ export function FaceShapesExplained() {
   return (
     <section className="mx-auto max-w-4xl px-4 py-16 sm:py-20">
       <h2 className="mb-10 text-center text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-        Different Types of Face Shapes Explained
+        Common Face Shapes
       </h2>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

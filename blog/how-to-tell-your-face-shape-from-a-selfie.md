@@ -188,3 +188,4 @@ If you want a faster answer, upload a clear front-facing photo to an AI face sha
 - Use [detect your face shape from a photo](/face-shape-detector-from-photo) when you already have a portrait and want fast AI feedback.
 - If you are still unsure between categories, start with [what face shape do I have](/what-face-shape-do-i-have) for a guided breakdown.
 - Continue with [What Face Shape Do I Have? A Simple Step-by-Step Guide](/blog/what-face-shape-do-i-have-a-simple-step-by-step-guide) for a full decision flow.
+- Compare shape definitions in [Face Shape Types Explained](/blog/face-shape-types-explained) before picking styles.

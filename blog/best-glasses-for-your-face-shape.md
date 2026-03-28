@@ -222,3 +222,4 @@ If you are unsure, use a face shape detector first. It is much cheaper than buyi
 - For selfie-first users, [detect your face shape from a photo](/face-shape-detector-from-photo) and then shortlist frame styles.
 - If your confusion is category-level, use [what face shape do I have](/what-face-shape-do-i-have) for a guided comparison.
 - Continue with [Best Hairstyles for Oval Face Shape](/blog/best-hairstyles-for-oval-face-shape) to align your haircut and glasses strategy.
+- Pair this with [Face Shape Types Explained](/blog/face-shape-types-explained) for a faster category check.

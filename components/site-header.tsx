@@ -3,29 +3,30 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Menu, HelpCircle, FileText, Info, Scan, ChevronDown, User, Users, Image as ImageIcon, HelpCircle as FaceIcon } from "lucide-react"
+import { Menu, Info, Scan, ChevronDown, BookOpen } from "lucide-react"
 import { useState } from "react"
 import { usePathname } from "next/navigation"
 
 export function SiteHeader() {
-  const [onlineDropdownOpen, setOnlineDropdownOpen] = useState(false)
+  const [guidesDropdownOpen, setGuidesDropdownOpen] = useState(false)
   const pathname = usePathname()
 
-  const links = [
-    { href: "/#faq", label: "FAQ", icon: HelpCircle },
-    { href: "/blog", label: "Blog", icon: FileText },
-    { href: "/about", label: "About", icon: Info },
+  const navLinks = [
+    { href: "/", label: "Home" },
+    { href: "/face-shape-detector-online", label: "Face Shape Detector" },
+    { href: "/about", label: "About" },
   ]
 
-  const dropdownItems = [
-    { href: "/face-shape-detector-online", label: "Online Detector", icon: <Scan className="h-4 w-4" /> },
-    { href: "/face-shape-detector-for-men", label: "For Men", icon: <User className="h-4 w-4" /> },
-    { href: "/face-shape-detector-for-women", label: "For Women", icon: <Users className="h-4 w-4" /> },
-    { href: "/face-shape-detector-from-photo", label: "From Photo", icon: <ImageIcon className="h-4 w-4" /> },
-    { href: "/what-face-shape-do-i-have", label: "What Face Shape", icon: <FaceIcon className="h-4 w-4" /> },
+  const guideItems = [
+    { href: "/blog#featured", label: "Featured Guides" },
+    { href: "/blog#basics", label: "Face Shape Basics" },
+    { href: "/blog#hairstyles", label: "Hairstyles by Face Shape" },
+    { href: "/blog#glasses", label: "Glasses & Accessories" },
+    { href: "/blog#beard", label: "Beard & Grooming" },
+    { href: "/blog#ai-analysis", label: "AI & Analysis" },
   ]
 
-  const activeItem = dropdownItems.find(item => pathname === item.href)
+  const isGuidesActive = pathname.startsWith("/blog")
 
   return (
     <header className="sticky top-0 z-50 p-4">
@@ -38,42 +39,52 @@ export function SiteHeader() {
           </Link>
 
           <nav className="hidden items-center gap-6 text-sm text-white/90 md:flex">
-            {/* Online with dropdown */}
+            {navLinks.slice(0, 2).map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`transition-colors ${
+                  pathname === link.href ? "text-lime-300" : "hover:text-lime-300"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
             <div
               className="relative"
-              onMouseEnter={() => setOnlineDropdownOpen(true)}
-              onMouseLeave={() => setOnlineDropdownOpen(false)}
+              onMouseEnter={() => setGuidesDropdownOpen(true)}
+              onMouseLeave={() => setGuidesDropdownOpen(false)}
             >
               <button
-                className="flex items-center gap-1 hover:text-lime-300 transition-colors"
+                className={`flex items-center gap-1 transition-colors ${
+                  isGuidesActive ? "text-lime-300" : "hover:text-lime-300"
+                }`}
               >
-                {activeItem ? activeItem.label : "Home"}
+                Guides
                 <ChevronDown className="h-3 w-3" />
               </button>
-              {onlineDropdownOpen && (
-                <div className="absolute left-0 top-full min-w-[160px] rounded-xl border border-white/10 bg-neutral-900/95 backdrop-blur-sm p-2 shadow-xl -translate-y-1">
-                  {dropdownItems.map((item) => (
+              {guidesDropdownOpen && (
+                <div className="absolute left-0 top-full min-w-[220px] rounded-xl border border-white/10 bg-neutral-900/95 p-2 shadow-xl backdrop-blur-sm -translate-y-1">
+                  {guideItems.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
-                      className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors ${
-                        pathname === item.href
-                          ? "bg-lime-400/20 text-lime-300"
-                          : "text-white/90 hover:bg-white/10 hover:text-lime-300"
-                      }`}
+                      className="block rounded-lg px-3 py-2 text-sm text-white/90 transition-colors hover:bg-white/10 hover:text-lime-300"
                     >
-                      {item.icon}
                       {item.label}
                     </Link>
                   ))}
                 </div>
               )}
             </div>
-            {links.map((l) => (
-              <Link key={l.href} href={l.href} className="hover:text-lime-300 transition-colors">
-                {l.label}
-              </Link>
-            ))}
+            <Link
+              href={navLinks[2].href}
+              className={`transition-colors ${
+                pathname === navLinks[2].href ? "text-lime-300" : "hover:text-lime-300"
+              }`}
+            >
+              {navLinks[2].label}
+            </Link>
           </nav>
 
           {/* Desktop CTA */}
@@ -109,40 +120,31 @@ export function SiteHeader() {
                 </div>
 
                 <nav className="flex flex-col gap-1 mt-2 text-gray-200">
-                  {/* Mobile Online links */}
-                  <div className="mb-2 pb-2 border-b border-gray-800">
-                    <div className="text-xs text-gray-500 uppercase tracking-wider px-4 py-2 mb-2">{activeItem ? activeItem.label : "Home"}</div>
-                    {dropdownItems.map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className={`flex items-center gap-3 px-4 py-3 transition-colors ${
-                          pathname === item.href
-                            ? "bg-lime-400/20 text-lime-300"
-                            : "hover:bg-gray-900 hover:text-lime-300"
-                        }`}
-                      >
-                        <span className={`inline-flex items-center justify-center w-5 h-5 ${
-                          pathname === item.href ? "text-lime-300" : "text-gray-400"
-                        }`}>
-                          {item.icon}
-                        </span>
-                        <span className="text-sm">{item.label}</span>
-                      </Link>
-                    ))}
-                  </div>
-                  {links.map((l) => (
+                  {navLinks.map((link) => (
                     <Link
-                      key={l.href}
-                      href={l.href}
+                      key={link.href}
+                      href={link.href}
                       className="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 hover:text-lime-300 transition-colors"
                     >
                       <span className="inline-flex items-center justify-center w-5 h-5 text-gray-400">
-                        <l.icon className="h-4 w-4" />
+                        {link.label === "About" ? <Info className="h-4 w-4" /> : <Scan className="h-4 w-4" />}
                       </span>
-                      <span className="text-sm">{l.label}</span>
+                      <span className="text-sm">{link.label}</span>
                     </Link>
                   ))}
+                  <div className="mt-1 border-t border-gray-800 pt-2">
+                    <div className="px-4 py-2 text-xs uppercase tracking-wider text-gray-500">Guides</div>
+                    {guideItems.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-200 transition-colors hover:bg-gray-900 hover:text-lime-300"
+                      >
+                        <BookOpen className="h-4 w-4 text-gray-400" />
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
                 </nav>
 
                 {/* CTA Button at Bottom */}

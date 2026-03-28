@@ -167,3 +167,4 @@ If you are not sure whether your face is round or oval, use a face shape detecto
 - Prefer uploading an existing picture? [Detect your face shape from a photo](/face-shape-detector-from-photo) before committing to a haircut.
 - Compare this with [Best Hairstyles for Square Face Shape](/blog/best-hairstyles-for-square-face-shape) to avoid misclassification between rounded and angular patterns.
 - For complete shape identification, use [what face shape do I have](/what-face-shape-do-i-have).
+- Validate category boundaries using [Face Shape Types Explained](/blog/face-shape-types-explained).

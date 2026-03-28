@@ -19,6 +19,7 @@ export type BlogPost = {
 const BLOG_FILES = [
   "how-to-tell-your-face-shape-from-a-selfie.md",
   "what-face-shape-do-i-have-a-simple-step-by-step-guide.md",
+  "face-shape-types-explained.md",
   "best-glasses-for-your-face-shape.md",
   "best-hairstyles-for-round-face-shape.md",
   "best-hairstyles-for-square-face-shape.md",
@@ -35,36 +36,49 @@ const RELATED_POSTS: Record<string, string[]> = {
   ],
   "what-face-shape-do-i-have-a-simple-step-by-step-guide": [
     "how-to-tell-your-face-shape-from-a-selfie",
+    "face-shape-types-explained",
     "how-accurate-are-ai-face-shape-detectors",
     "best-hairstyles-for-round-face-shape",
     "best-hairstyles-for-square-face-shape",
   ],
+  "face-shape-types-explained": [
+    "what-face-shape-do-i-have-a-simple-step-by-step-guide",
+    "how-to-tell-your-face-shape-from-a-selfie",
+    "best-hairstyles-for-round-face-shape",
+    "best-glasses-for-your-face-shape",
+  ],
   "best-glasses-for-your-face-shape": [
+    "face-shape-types-explained",
     "what-face-shape-do-i-have-a-simple-step-by-step-guide",
     "how-to-tell-your-face-shape-from-a-selfie",
     "best-hairstyles-for-oval-face-shape",
   ],
   "best-hairstyles-for-round-face-shape": [
+    "face-shape-types-explained",
     "what-face-shape-do-i-have-a-simple-step-by-step-guide",
     "best-glasses-for-your-face-shape",
     "best-hairstyles-for-square-face-shape",
   ],
   "best-hairstyles-for-square-face-shape": [
+    "face-shape-types-explained",
     "what-face-shape-do-i-have-a-simple-step-by-step-guide",
     "best-glasses-for-your-face-shape",
     "best-hairstyles-for-oval-face-shape",
   ],
   "best-hairstyles-for-oval-face-shape": [
+    "face-shape-types-explained",
     "what-face-shape-do-i-have-a-simple-step-by-step-guide",
     "best-glasses-for-your-face-shape",
     "best-hairstyles-for-square-face-shape",
   ],
   "best-beard-styles-for-your-face-shape": [
+    "face-shape-types-explained",
     "what-face-shape-do-i-have-a-simple-step-by-step-guide",
     "best-glasses-for-your-face-shape",
     "how-to-tell-your-face-shape-from-a-selfie",
   ],
   "how-accurate-are-ai-face-shape-detectors": [
+    "face-shape-types-explained",
     "how-to-tell-your-face-shape-from-a-selfie",
     "what-face-shape-do-i-have-a-simple-step-by-step-guide",
     "best-glasses-for-your-face-shape",
