@@ -42,6 +42,24 @@ const DEFAULT_CTA: CtaConfig = {
 }
 
 const CTA_BY_SLUG: Record<string, CtaConfig> = {
+  "how-to-measure-your-face-shape": {
+    href: "/what-face-shape-do-i-have",
+    ctaText: "Measure and Confirm Your Face Shape",
+    title: "Need a More Accurate Face Shape Check?",
+    description: "Use our guided face shape page and AI support to validate your proportions before making styling decisions.",
+  },
+  "oval-vs-round-face": {
+    href: "/face-shape-detector-from-photo",
+    ctaText: "Check Oval vs Round With a Photo",
+    title: "Still Stuck Between Oval and Round?",
+    description: "Upload a clear front-facing image and compare your proportions with AI-assisted analysis.",
+  },
+  "heart-vs-diamond-face-shape": {
+    href: "/face-shape-detector-online",
+    ctaText: "Compare Your Face Shape Online",
+    title: "Need Help Separating Heart From Diamond?",
+    description: "Use our face shape detector to validate where your face is widest before choosing styles.",
+  },
   "how-to-tell-your-face-shape-from-a-selfie": {
     href: "/face-shape-detector-from-photo",
     ctaText: "Upload a Photo to Detect Your Face Shape",
@@ -84,11 +102,41 @@ const CTA_BY_SLUG: Record<string, CtaConfig> = {
     title: "Confirm Oval Face Shape Before Styling",
     description: "Check your proportions first, then pick an oval-friendly cut with more confidence.",
   },
+  "best-hairstyles-for-heart-face-shape": {
+    href: "/face-shape-detector-for-women",
+    ctaText: "Try the Face Shape Detector for Women",
+    title: "Confirm Heart Face Shape Before Your Next Cut",
+    description: "Use a clear photo to validate heart-shaped proportions before choosing bangs, bobs, or layered styles.",
+  },
+  "best-hairstyles-for-diamond-face-shape": {
+    href: "/face-shape-detector-for-women",
+    ctaText: "Check Diamond Face Shape Online",
+    title: "Validate Diamond Face Shape First",
+    description: "Confirm whether your cheekbones are the widest point before choosing a cut designed for diamond faces.",
+  },
+  "best-hairstyles-for-oblong-face-shape": {
+    href: "/face-shape-detector-for-men",
+    ctaText: "Try the Face Shape Detector",
+    title: "Check If Your Face Is Oblong or Oval",
+    description: "Use our detector to compare face length and width before choosing a style that adds more balance.",
+  },
   "best-beard-styles-for-your-face-shape": {
     href: "/face-shape-detector-for-men",
     ctaText: "Try the Face Shape Detector for Men",
     title: "Get Beard Suggestions Based on Your Face Shape",
     description: "Identify your face shape first, then pick beard styles that add balance instead of bulk.",
+  },
+  "best-sunglasses-for-your-face-shape": {
+    href: "/face-shape-detector-online",
+    ctaText: "Find Your Face Shape Before Choosing Sunglasses",
+    title: "Start With Your Face Shape",
+    description: "Use our detector to identify your proportions before buying sunglasses that work against your features.",
+  },
+  "best-hats-for-your-face-shape": {
+    href: "/face-shape-detector-from-photo",
+    ctaText: "Check Your Face Shape From a Photo",
+    title: "Choose Hat Shapes With Better Proportion",
+    description: "Run a quick face shape check before picking brim width, crown height, and hat structure.",
   },
   "how-accurate-are-ai-face-shape-detectors": {
     href: "/face-shape-detector-from-photo",
@@ -121,6 +169,42 @@ const FAQ_BY_SLUG: Partial<Record<string, FaqItem[]>> = {
       question: "How can I reduce wrong frame purchases?",
       answer:
         "Start with [face shape detector online](/face-shape-detector-online), shortlist frame geometries, then test in-store.",
+    },
+  ],
+  "how-to-measure-your-face-shape": [
+    {
+      question: "Do I need exact measurements to identify my face shape?",
+      answer:
+        "No. You need relative comparison more than perfect precision. Look for which areas are widest and whether the face is longer than it is wide.",
+    },
+    {
+      question: "Can I measure my face shape from a photo instead of a tape measure?",
+      answer:
+        "Yes. A clear front-facing photo can work well, especially if you compare it with our [face shape detector from photo](/face-shape-detector-from-photo).",
+    },
+  ],
+  "oval-vs-round-face": [
+    {
+      question: "What is the biggest difference between oval and round face shape?",
+      answer:
+        "Oval faces are longer than they are wide, while round faces have width and length that are much closer.",
+    },
+    {
+      question: "How can I check whether I am oval or round?",
+      answer:
+        "Compare face length with cheekbone width, then confirm with [what face shape do I have](/what-face-shape-do-i-have) or [face shape detector online](/face-shape-detector-online).",
+    },
+  ],
+  "heart-vs-diamond-face-shape": [
+    {
+      question: "What is the easiest way to separate heart and diamond face shape?",
+      answer:
+        "Check the widest point. If the forehead is widest, heart is more likely. If the cheekbones are widest, diamond is more likely.",
+    },
+    {
+      question: "Can hairstyles help distinguish heart and diamond face shapes?",
+      answer:
+        "Yes, but do not rely on styling alone. Use your proportions first, then compare with [face shape types explained](/blog/face-shape-types-explained).",
     },
   ],
 }
