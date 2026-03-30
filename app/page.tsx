@@ -20,6 +20,19 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://www.yourface.online/",
   },
+  openGraph: {
+    type: "website",
+    url: "https://www.yourface.online/",
+    title: "Face Shape Detector | Free AI Face Shape Analysis Online",
+    description:
+      "Use a free AI face shape detector to identify oval, round, square, heart, diamond, or oblong face shape from a selfie. Get hairstyle and glasses guidance.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Face Shape Detector | Free AI Face Shape Analysis Online",
+    description:
+      "Use a free AI face shape detector to identify oval, round, square, heart, diamond, or oblong face shape from a selfie. Get hairstyle and glasses guidance.",
+  },
 }
 
 export default function Page() {
@@ -114,7 +127,7 @@ export default function Page() {
       <Script
         id="website-structured-data"
         type="application/ld+json"
-        strategy="afterInteractive"
+        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(websiteStructuredData),
         }}
@@ -123,7 +136,7 @@ export default function Page() {
       <Script
         id="webpage-structured-data"
         type="application/ld+json"
-        strategy="afterInteractive"
+        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(webPageStructuredData),
         }}
@@ -132,7 +145,7 @@ export default function Page() {
       <Script
         id="app-structured-data"
         type="application/ld+json"
-        strategy="afterInteractive"
+        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(appStructuredData),
         }}
@@ -141,7 +154,7 @@ export default function Page() {
       <Script
         id="faq-structured-data"
         type="application/ld+json"
-        strategy="afterInteractive"
+        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(faqStructuredData),
         }}

@@ -12,9 +12,42 @@ import { ScrollProgressIndicator } from "@/components/scroll-progress-indicator"
 const inter = Inter({ subsets: ["latin"], display: "swap" })
 
 export const metadata: Metadata = {
-  title: "AI Face Shape Detector \u2013 Free Online Tool",
+  metadataBase: new URL("https://www.yourface.online"),
+  title: {
+    default: "Face Shape Detector | Free AI Face Shape Analysis Online",
+    template: "%s | YourFace Online",
+  },
   description:
     "Upload your photo to instantly detect your face shape using AI. Get personalized hairstyle, makeup, and styling recommendations based on your unique face shape.",
+  applicationName: "YourFace Online",
+  keywords: [
+    "face shape detector",
+    "ai face shape detector",
+    "face shape detector online",
+    "face shape analysis",
+    "detect face shape from photo",
+  ],
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    url: "https://www.yourface.online/",
+    siteName: "YourFace Online",
+    title: "Face Shape Detector | Free AI Face Shape Analysis Online",
+    description:
+      "Upload your photo to instantly detect your face shape using AI. Get personalized hairstyle, makeup, and styling recommendations based on your unique face shape.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Face Shape Detector | Free AI Face Shape Analysis Online",
+    description:
+      "Upload your photo to instantly detect your face shape using AI. Get personalized hairstyle, makeup, and styling recommendations based on your unique face shape.",
+  },
   generator: "v0.app",
 }
 
@@ -88,6 +121,21 @@ export default function RootLayout({
         )}
       </head>
       <body>
+        <Script
+          id="organization-structured-data"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "@id": "https://www.yourface.online/#organization",
+              name: "YourFace Online",
+              url: "https://www.yourface.online/",
+              logo: "https://www.yourface.online/favicon.ico",
+            }),
+          }}
+        />
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe

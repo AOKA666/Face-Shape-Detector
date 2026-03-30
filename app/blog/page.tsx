@@ -1,5 +1,6 @@
 import Link from "next/link"
 import type { Metadata } from "next"
+import Script from "next/script"
 import { BLOG_POSTS, type BlogPost } from "@/lib/blog-posts"
 import { SiteHeader } from "@/components/site-header"
 import { AppverseFooter } from "@/components/appverse-footer"
@@ -12,6 +13,19 @@ export const metadata: Metadata = {
     "Browse face shape guides for basics, hairstyles, glasses, beard grooming, and AI analysis tips.",
   alternates: {
     canonical: "https://www.yourface.online/blog",
+  },
+  openGraph: {
+    type: "website",
+    url: "https://www.yourface.online/blog",
+    title: "Face Shape Guides | Hairstyles, Glasses & Styling Tips",
+    description:
+      "Browse face shape guides for basics, hairstyles, glasses, beard grooming, and AI analysis tips.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Face Shape Guides | Hairstyles, Glasses & Styling Tips",
+    description:
+      "Browse face shape guides for basics, hairstyles, glasses, beard grooming, and AI analysis tips.",
   },
 }
 
@@ -110,8 +124,32 @@ function PostCard({ post }: { post: BlogPost }) {
 }
 
 export default function BlogPage() {
+  const blogCollectionStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": "https://www.yourface.online/blog#collection",
+    url: "https://www.yourface.online/blog",
+    name: "Face Shape Guides | Hairstyles, Glasses & Styling Tips",
+    description: "Browse face shape guides for basics, hairstyles, glasses, beard grooming, and AI analysis tips.",
+    isPartOf: {
+      "@id": "https://www.yourface.online/#website",
+    },
+    about: {
+      "@type": "Thing",
+      name: "Face shape analysis and styling guides",
+    },
+    mainEntity: BLOG_POSTS.map((post) => ({
+      "@type": "BlogPosting",
+      headline: post.title,
+      url: `https://www.yourface.online/blog/${post.slug}`,
+      datePublished: post.publishedAt,
+      description: post.description,
+    })),
+  }
+
   return (
-    <main className="min-h-[100dvh] text-white">
+    <>
+      <main className="min-h-[100dvh] text-white">
       <SiteHeader />
       <section className="mx-auto max-w-6xl px-4 py-10 sm:py-14">
         <header className="rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-8">
@@ -161,5 +199,12 @@ export default function BlogPage() {
       </section>
       <AppverseFooter showLatestArticles={false} />
     </main>
+      <Script
+        id="blog-collection-structured-data"
+        type="application/ld+json"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogCollectionStructuredData) }}
+      />
+    </>
   )
 }

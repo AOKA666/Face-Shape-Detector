@@ -212,6 +212,18 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     alternates: {
       canonical: `https://www.yourface.online/blog/${post.slug}`,
     },
+    openGraph: {
+      type: "article",
+      url: `https://www.yourface.online/blog/${post.slug}`,
+      title: post.title,
+      description: post.description,
+      publishedTime: post.publishedAt,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+    },
   }
 }
 
@@ -450,8 +462,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const articleStructuredData = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
+    "@id": `https://www.yourface.online/blog/${post.slug}#article`,
     headline: post.title,
     description: post.description,
+    keywords: post.tags.join(", "),
+    articleSection: post.category,
     datePublished: post.publishedAt,
     dateModified: post.publishedAt,
     mainEntityOfPage: {
@@ -471,6 +486,19 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       },
     },
     url: `https://www.yourface.online/blog/${post.slug}`,
+  }
+
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqItems.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1"),
+      },
+    })),
   }
 
   return (
@@ -580,8 +608,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <Script
         id={`blog-posting-schema-${post.slug}`}
         type="application/ld+json"
-        strategy="afterInteractive"
+        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleStructuredData) }}
+      />
+      <Script
+        id={`blog-faq-schema-${post.slug}`}
+        type="application/ld+json"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
       />
     </>
   )
