@@ -32,6 +32,7 @@ const BLOG_FILES = [
   "best-hairstyles-for-heart-face-shape.md",
   "best-hairstyles-for-diamond-face-shape.md",
   "best-hairstyles-for-oblong-face-shape.md",
+  "worst-haircuts-for-oval-faces-male.md",
   "best-beard-styles-for-your-face-shape.md",
   "how-accurate-are-ai-face-shape-detectors.md",
 ] as const
@@ -127,6 +128,12 @@ const RELATED_POSTS: Record<string, string[]> = {
     "best-hairstyles-for-diamond-face-shape",
     "face-shape-types-explained",
   ],
+  "worst-haircuts-for-oval-faces-male": [
+    "best-hairstyles-for-oval-face-shape",
+    "best-beard-styles-for-your-face-shape",
+    "face-shape-types-explained",
+    "how-to-measure-your-face-shape",
+  ],
   "best-beard-styles-for-your-face-shape": [
     "face-shape-types-explained",
     "best-glasses-for-your-face-shape",
@@ -210,7 +217,7 @@ function stripQuotes(value: string) {
 
 function inferCategory(slug: string): BlogCategory {
   if (slug.startsWith("how-") || slug.startsWith("what-")) return "Guide"
-  if (slug.includes("hairstyles") || slug.includes("beard") || slug.includes("glasses")) return "Trends"
+  if (slug.includes("hairstyles") || slug.includes("haircuts") || slug.includes("beard") || slug.includes("glasses")) return "Trends"
   return "Beauty"
 }
 

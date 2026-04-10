@@ -120,6 +120,12 @@ const CTA_BY_SLUG: Record<string, CtaConfig> = {
     title: "Check If Your Face Is Oblong or Oval",
     description: "Use our detector to compare face length and width before choosing a style that adds more balance.",
   },
+  "worst-haircuts-for-oval-faces-male": {
+    href: "/face-shape-detector-for-men",
+    ctaText: "Check Your Face Shape Before Your Next Cut",
+    title: "Make Sure Your Face Is Actually Oval",
+    description: "Use a clear photo to confirm whether your face is oval, oblong, or somewhere in between before copying the wrong haircut.",
+  },
   "best-beard-styles-for-your-face-shape": {
     href: "/face-shape-detector-for-men",
     ctaText: "Try the Face Shape Detector for Men",
@@ -205,6 +211,18 @@ const FAQ_BY_SLUG: Partial<Record<string, FaqItem[]>> = {
       question: "Can hairstyles help distinguish heart and diamond face shapes?",
       answer:
         "Yes, but do not rely on styling alone. Use your proportions first, then compare with [face shape types explained](/blog/face-shape-types-explained).",
+    },
+  ],
+  "worst-haircuts-for-oval-faces-male": [
+    {
+      question: "Can men with oval faces still wear a pompadour or slick back?",
+      answer:
+        "Yes, but keep the height controlled. The problem is usually too much volume on top combined with sides that are too tight.",
+    },
+    {
+      question: "What haircut is usually safest for oval face shape male?",
+      answer:
+        "A textured crop, side part, taper fade, or low-volume quiff is usually safer because it preserves balance instead of exaggerating face length.",
     },
   ],
 }

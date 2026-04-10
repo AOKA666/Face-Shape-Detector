@@ -69,6 +69,7 @@ const hubSections: HubSection[] = [
       "best-hairstyles-for-round-face-shape",
       "best-hairstyles-for-square-face-shape",
       "best-hairstyles-for-oval-face-shape",
+      "worst-haircuts-for-oval-faces-male",
       "best-hairstyles-for-heart-face-shape",
       "best-hairstyles-for-diamond-face-shape",
       "best-hairstyles-for-oblong-face-shape",
