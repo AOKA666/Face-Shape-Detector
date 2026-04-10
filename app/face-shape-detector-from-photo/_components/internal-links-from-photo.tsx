@@ -6,6 +6,18 @@ import { ArrowRight, BookOpen, Scan, Sparkles } from "lucide-react"
 export function InternalLinksFromPhoto() {
   const links = [
     {
+      title: "Face Shape Detector for Men",
+      description: "Use photo-based analysis to choose better men's haircuts, beard styles, and glasses.",
+      icon: <Scan className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
+      href: "/face-shape-detector-for-men",
+    },
+    {
+      title: "Men's Hairstyles by Face Shape",
+      description: "Go from photo result to haircut direction without guessing.",
+      icon: <BookOpen className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
+      href: "/mens-hairstyles-by-face-shape",
+    },
+    {
       title: "How to Tell Your Face Shape From a Selfie",
       description: "Learn the best photo setup before running AI face shape analysis.",
       icon: <Scan className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,

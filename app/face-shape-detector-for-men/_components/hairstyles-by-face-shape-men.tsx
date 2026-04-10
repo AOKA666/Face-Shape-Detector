@@ -1,31 +1,36 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { Scissors, User } from "lucide-react"
 
 export function HairstylesByFaceShapeMen() {
   const categories = [
     {
       icon: <Scissors className="h-6 w-6 text-lime-300" />,
-      title: "Short Hair Styles",
+      title: "Haircuts by Face Shape",
       items: [
-        "Buzz cut - Works great for oval and square faces",
-        "Crew cut - Perfect for rectangle and oval faces",
-        "Textured crop - Ideal for square and diamond faces",
-        "Fade cut - Versatile for most face shapes",
-        "Ivy league - Great for oval and round faces",
+        "Oval face: controlled volume, textured crops, side parts, and low quiffs usually work best.",
+        "Round face: choose cuts that add definition without widening the cheeks.",
+        "Square face: keep structure sharp but avoid overly blocky styling.",
+        "Oblong face: reduce extra height and keep more width through the sides.",
+        "Heart and diamond face shapes: use texture to balance the forehead, cheekbones, and jaw.",
       ],
+      href: "/mens-hairstyles-by-face-shape",
+      cta: "Open the men's haircut hub",
     },
     {
       icon: <User className="h-6 w-6 text-lime-300" />,
-      title: "Beard Considerations",
+      title: "Beard & Grooming by Face Shape",
       items: [
-        "Beards can alter perceived face shape",
-        "Full beard adds width to narrow faces",
-        "Goatee can elongate round faces",
-        "Stubble works well with most styles",
-        "Consider beard with your hair length",
+        "Beards change perceived jaw width, chin length, and lower-face balance.",
+        "Round faces often benefit from more structure and length at the chin.",
+        "Oblong faces usually need controlled beard length to avoid extra elongation.",
+        "Oval faces can handle more beard styles, but proportion still matters.",
+        "Use beard shape to support the haircut instead of fighting it.",
       ],
+      href: "/beard-styles-by-face-shape",
+      cta: "See beard style recommendations",
     },
   ]
 
@@ -33,22 +38,22 @@ export function HairstylesByFaceShapeMen() {
     {
       src: "buzz cut.png",
       alt: "Man with a textured buzz cut paired with clean skin",
-      label: "Buzz Cut Focus",
+      label: "Haircut fit depends on face shape",
     },
     {
       src: "beard.png",
       alt: "Bearded male profile showing how stubble reshapes the jawline",
-      label: "Beard & Contours",
+      label: "Beards change facial balance too",
     },
   ]
 
   return (
     <section className="relative isolate overflow-hidden py-20 bg-neutral-900">
-      <div className="mx-auto max-w-4xl px-4">
+      <div className="mx-auto max-w-5xl px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">Hairstyles by Face Shape (Men)</h2>
+          <h2 className="text-3xl font-bold text-white sm:text-4xl">Men&apos;s Haircuts and Beard Styles by Face Shape</h2>
           <p className="mt-4 text-lg text-white/60">
-            Discover the best hair and beard styles for your unique face shape
+            Use your face shape as the baseline, then choose haircuts, beards, and glasses that keep your proportions balanced.
           </p>
         </div>
         <div className="grid gap-4 mb-10 md:grid-cols-2">
@@ -87,6 +92,9 @@ export function HairstylesByFaceShapeMen() {
                   </li>
                 ))}
               </ul>
+              <Link href={category.href} className="mt-6 inline-flex text-sm font-semibold text-lime-300 hover:text-lime-200">
+                {category.cta}
+              </Link>
             </div>
           ))}
         </div>

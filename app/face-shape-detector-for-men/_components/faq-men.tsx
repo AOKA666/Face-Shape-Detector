@@ -11,23 +11,23 @@ export function FAQMen() {
   const faqs = [
     {
       question: "Is this accurate for men with beards?",
-      answer: "Yes, our AI can analyze your face shape even with facial hair. However, for the most accurate results, we recommend analyzing a photo with minimal facial hair first, then considering how your beard style can enhance or modify your overall appearance.",
+      answer: "Yes. Facial hair can change the visual outline of your jaw, but our tool can still help you identify the underlying face shape. For the cleanest read, upload a photo with lighter beard growth first, then use beard style guides as a second step.",
+    },
+    {
+      question: "What haircut suits an oval face male best?",
+      answer: "Oval faces usually do best with controlled volume, natural texture, and balanced sides. Textured crops, side parts, Ivy League cuts, and low quiffs are usually safer than extra-tall pompadours or ultra-tight fades.",
+    },
+    {
+      question: "Does a beard make your face look longer?",
+      answer: "It can. Pointed or chin-heavy beard shapes usually add vertical length, while wider and more controlled beard shapes can add balance. That matters a lot for oblong, round, and oval faces.",
     },
     {
       question: "Does hair affect the result?",
-      answer: "Long or voluminous hair can sometimes affect the analysis. For best results, use a photo with hair pulled back or styled naturally so your facial features are clearly visible. The AI focuses on bone structure and proportions rather than hair volume.",
+      answer: "Yes. Long fringes, big curls, or heavy volume can make face shape harder to read. Use a clear front-facing photo with your forehead, cheekbones, and jawline visible.",
     },
     {
-      question: "What's the best hairstyle for my face shape?",
-      answer: "Each face shape has complementary styles. Square faces benefit from textured styles that soften edges, oval faces can pull off almost any look, and rectangular faces need styles that add width. Our analysis provides personalized recommendations.",
-    },
-    {
-      question: "Can face shape change over time?",
-      answer: "Your basic bone structure remains the same, but factors like aging, weight changes, and facial hair can alter how your face shape appears. Regular check-ins can help adjust your style as your look evolves.",
-    },
-    {
-      question: "How do I choose the right glasses?",
-      answer: "For square faces, look for round or oval frames to soften angles. Oval faces can handle most frame shapes. Rectangle faces benefit from wider frames with decorative temples. Our analysis includes glasses recommendations.",
+      question: "How do I choose glasses for my face shape?",
+      answer: "Start with proportion. Square faces often suit rounder frames, round faces usually need more structure, and oval faces can handle most frame shapes. Use face shape first, then refine by style preference.",
     },
   ]
 

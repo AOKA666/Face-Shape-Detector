@@ -6,6 +6,12 @@ import { ArrowRight, BookOpen, Scissors, Glasses } from "lucide-react"
 export function InternalLinks() {
   const links = [
     {
+      title: "Face Shape Detector for Men",
+      description: "Use your result to choose better men's haircuts, beard styles, and glasses faster.",
+      icon: <BookOpen className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
+      href: "/face-shape-detector-for-men",
+    },
+    {
       title: "What Face Shape Do I Have?",
       description: "Step-by-step method to identify your face shape before styling decisions.",
       icon: <BookOpen className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,

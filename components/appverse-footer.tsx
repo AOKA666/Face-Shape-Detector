@@ -19,10 +19,10 @@ const footerBlogPosts = [
     excerpt: "A practical step-by-step method to identify your face shape accurately from a clear photo.",
   },
   {
-    slug: "best-hairstyles-for-round-face-shape",
+    slug: "worst-haircuts-for-oval-faces-male",
     category: "Trends" as const,
-    title: "Best Hairstyles for Round Face Shape",
-    excerpt: "Haircut ideas that add definition, balance proportions, and flatter round face shapes.",
+    title: "Worst Haircuts for Oval Faces Male",
+    excerpt: "Avoid the common haircut mistakes that make an oval face look too long or too narrow.",
   },
   {
     slug: "best-hairstyles-for-square-face-shape",
@@ -72,7 +72,7 @@ export function AppverseFooter({ showLatestArticles = true }: { showLatestArticl
             asChild
             className="rounded-full bg-lime-400 px-6 py-2 text-sm font-medium text-black shadow-[0_0_20px_rgba(163,230,53,0.35)] hover:bg-lime-300"
           >
-            <Link href="/face-shape-detector-online">Try Face Detection Now</Link>
+            <Link href="/face-shape-detector-for-men">Try Face Detection for Men</Link>
           </Button>
         </div>
       </div>
@@ -85,10 +85,10 @@ export function AppverseFooter({ showLatestArticles = true }: { showLatestArticl
               <div className="text-center mb-8">
                 <p className="mb-2 text-[11px] tracking-widest text-lime-300">LATEST ARTICLES</p>
                 <h3 className="text-2xl font-bold leading-tight text-white sm:text-3xl">
-                  Learn More About Face Shapes & Styling
+                  Men&apos;s Face Shape, Haircut & Beard Guides
                 </h3>
                 <p className="mt-2 max-w-2xl mx-auto text-sm text-neutral-400">
-                  Explore our expert guides on face shape analysis, hairstyle recommendations, and beauty tips
+                  Explore face shape analysis, haircut strategy, beard styling, and practical grooming direction for men
                 </p>
               </div>
 
@@ -158,13 +158,18 @@ export function AppverseFooter({ showLatestArticles = true }: { showLatestArticl
                 <h5 className="mb-2 text-xs font-semibold uppercase tracking-widest text-neutral-400">Navigation</h5>
                 <ul className="space-y-2 text-sm text-neutral-300">
                   <li>
-                    <Link href="/" className="hover:text-lime-300">
-                      Home
+                    <Link href="/face-shape-detector-for-men" className="hover:text-lime-300">
+                      Face Shape Detector for Men
                     </Link>
                   </li>
                   <li>
-                    <Link href="/#faq" className="hover:text-lime-300">
-                      FAQ
+                    <Link href="/mens-hairstyles-by-face-shape" className="hover:text-lime-300">
+                      Men&apos;s Haircuts
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/beard-styles-by-face-shape" className="hover:text-lime-300">
+                      Beard Styles
                     </Link>
                   </li>
                   <li>

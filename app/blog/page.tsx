@@ -76,6 +76,17 @@ const hubSections: HubSection[] = [
     ],
   },
   {
+    id: "mens-style",
+    title: "Men's Haircuts & Grooming",
+    description: "Male-first guides for face shape detection, haircut choices, beard styling, and practical grooming decisions.",
+    slugs: [
+      "worst-haircuts-for-oval-faces-male",
+      "best-beard-styles-for-your-face-shape",
+      "best-hairstyles-for-square-face-shape",
+      "best-hairstyles-for-oblong-face-shape",
+    ],
+  },
+  {
     id: "glasses",
     title: "Glasses & Accessories",
     description: "Frame and accessory direction based on facial proportion and balance.",

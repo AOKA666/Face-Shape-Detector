@@ -49,15 +49,23 @@ export default function MenPage() {
         name: "Is this accurate for men with beards?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Yes, our AI can analyze your face shape even with facial hair. However, for the most accurate results, we recommend analyzing a photo with minimal facial hair first, then considering how your beard style can enhance or modify your overall appearance.",
+          text: "Yes. Facial hair can change the visual outline of your jaw, but our tool can still help you identify the underlying face shape. For the cleanest read, upload a photo with lighter beard growth first, then use beard style guides as a second step.",
         },
       },
       {
         "@type": "Question",
-        name: "Does hair affect the result?",
+        name: "What haircut suits an oval face male best?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Long or voluminous hair can sometimes affect the analysis. For best results, use a photo with hair pulled back or styled naturally so your facial features are clearly visible. The AI focuses on bone structure and proportions rather than hair volume.",
+          text: "Oval faces usually do best with controlled volume, natural texture, and balanced sides. Textured crops, side parts, Ivy League cuts, and low quiffs are usually safer than extra-tall pompadours or ultra-tight fades.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Does a beard make your face look longer?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "It can. Pointed or chin-heavy beard shapes usually add vertical length, while wider and more controlled beard shapes can add balance. That matters a lot for oblong, round, and oval faces.",
         },
       },
     ],
@@ -77,6 +85,12 @@ export default function MenPage() {
             description="Use the AI face shape detector to choose better men's haircuts, beard shapes, and glasses with less guesswork."
             ctaText="Try the Face Shape Detector"
             href="/face-shape-detector-online"
+          />
+          <FaceDetectorCTA
+            title="Need Haircut Ideas by Face Shape?"
+            description="Go straight to the men's haircut hub if you already know your face shape and want faster style direction."
+            ctaText="Browse Men's Haircuts by Face Shape"
+            href="/mens-hairstyles-by-face-shape"
           />
         </section>
         <InternalLinksMen />

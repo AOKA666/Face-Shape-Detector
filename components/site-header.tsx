@@ -13,16 +13,19 @@ export function SiteHeader() {
 
   const navLinks = [
     { href: "/", label: "Home" },
+    { href: "/face-shape-detector-for-men", label: "For Men" },
     { href: "/face-shape-detector-online", label: "Face Shape Detector" },
     { href: "/about", label: "About" },
   ]
 
   const guideItems = [
+    { href: "/mens-hairstyles-by-face-shape", label: "Men's Haircuts" },
+    { href: "/beard-styles-by-face-shape", label: "Beard Styles" },
     { href: "/blog#featured", label: "Featured Guides" },
     { href: "/blog#basics", label: "Face Shape Basics" },
     { href: "/blog#hairstyles", label: "Hairstyles by Face Shape" },
-    { href: "/blog#glasses", label: "Glasses & Accessories" },
     { href: "/blog#beard", label: "Beard & Grooming" },
+    { href: "/blog#glasses", label: "Glasses & Accessories" },
     { href: "/blog#ai-analysis", label: "AI & Analysis" },
   ]
 
@@ -39,7 +42,7 @@ export function SiteHeader() {
           </Link>
 
           <nav className="hidden items-center gap-6 text-sm text-white/90 md:flex">
-            {navLinks.slice(0, 2).map((link) => (
+            {navLinks.slice(0, 3).map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -78,12 +81,12 @@ export function SiteHeader() {
               )}
             </div>
             <Link
-              href={navLinks[2].href}
+              href={navLinks[3].href}
               className={`transition-colors ${
-                pathname === navLinks[2].href ? "text-lime-300" : "hover:text-lime-300"
+                pathname === navLinks[3].href ? "text-lime-300" : "hover:text-lime-300"
               }`}
             >
-              {navLinks[2].label}
+              {navLinks[3].label}
             </Link>
           </nav>
 
@@ -95,7 +98,7 @@ export function SiteHeader() {
                          hover:bg-lime-300 hover:shadow-md hover:scale-[1.02]
                          transition-all"
             >
-              <Link href="/face-shape-detector-online">Try Now</Link>
+              <Link href="/face-shape-detector-for-men">Try for Men</Link>
             </Button>
           </div>
 
@@ -155,7 +158,7 @@ export function SiteHeader() {
                                hover:bg-lime-300 hover:shadow-md hover:scale-[1.02]
                                transition-all"
                   >
-                    <Link href="/face-shape-detector-online">Try Now</Link>
+                    <Link href="/face-shape-detector-for-men">Try for Men</Link>
                   </Button>
                 </div>
               </SheetContent>

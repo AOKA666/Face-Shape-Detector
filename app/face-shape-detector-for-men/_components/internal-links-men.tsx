@@ -1,10 +1,28 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowRight, BookOpen, Scissors, Glasses } from "lucide-react"
+import { ArrowRight, BookOpen, Scissors, Glasses, ShieldCheck } from "lucide-react"
 
 export function InternalLinksMen() {
   const links = [
+    {
+      title: "Men's Hairstyles by Face Shape",
+      description: "Start with the main male haircut hub before picking a crop, fade, quiff, or side part.",
+      icon: <Scissors className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
+      href: "/mens-hairstyles-by-face-shape",
+    },
+    {
+      title: "Best Beard Styles by Face Shape",
+      description: "Use beard shape to add width, reduce length, or strengthen the jawline.",
+      icon: <ShieldCheck className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
+      href: "/beard-styles-by-face-shape",
+    },
+    {
+      title: "Worst Haircuts for Oval Faces Male",
+      description: "See which popular cuts over-elongate an oval face and what to choose instead.",
+      icon: <Scissors className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
+      href: "/blog/worst-haircuts-for-oval-faces-male",
+    },
     {
       title: "Face Shape Types Explained",
       description: "Use category traits to avoid mixing square, oval, and oblong patterns.",
@@ -16,12 +34,6 @@ export function InternalLinksMen() {
       description: "Match beard shape and length to your face proportions.",
       icon: <BookOpen className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
       href: "/blog/best-beard-styles-for-your-face-shape",
-    },
-    {
-      title: "Best Hairstyles for Square Face Shape",
-      description: "Haircut ideas that keep a strong jawline sharp but balanced.",
-      icon: <Scissors className="h-6 w-6 text-white/60 group-hover:text-lime-300 transition-colors" />,
-      href: "/blog/best-hairstyles-for-square-face-shape",
     },
     {
       title: "Best Glasses for Your Face Shape",
