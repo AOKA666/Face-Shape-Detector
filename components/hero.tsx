@@ -1026,12 +1026,12 @@ export function Hero() {
             </div>
           )}
           <div className="text-center">
-            <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.3em] text-lime-300">AI Face Shape Detector Online</p>
+            <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.3em] text-lime-300">Male-first face shape detector</p>
             <h1 className="mt-2 sm:mt-6 text-2xl sm:text-3xl font-extrabold leading-tight text-white sm:text-4xl lg:text-5xl">
-              Face Shape Detector Online Free
+              Face Shape Detector for Men: Haircuts, Beards, and Glasses
             </h1>
-            <p className="mx-auto mt-2 sm:mt-4 max-w-2xl text-sm text-white/70 sm:text-base lg:text-lg">
-              Upload a selfie to detect face shape from photo instantly with our AI face shape analysis. Use this free face shape detector online to get accurate results plus hairstyle, glasses, and styling recommendations in seconds.
+            <p className="mx-auto mt-2 sm:mt-4 max-w-3xl text-sm text-white/70 sm:text-base lg:text-lg">
+              Upload a clear photo to detect your face shape from a selfie, then use the result to choose better men&apos;s haircuts, beard styles, and glasses without guessing.
             </p>
           </div>
           <input

@@ -3,29 +3,29 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 const useCases = [
   {
-    title: "Face Shape Basics",
-    description: "Start with identification frameworks and common mistakes.",
-    href: "/blog#basics",
+    title: "Face Shape Detector for Men",
+    description: "Start with the male-first detector before choosing a haircut, beard shape, or glasses frame.",
+    href: "/face-shape-detector-for-men",
   },
   {
-    title: "Hairstyles by Face Shape",
-    description: "Find haircuts that add balance based on your face proportions.",
-    href: "/blog#hairstyles",
+    title: "Men's Haircuts by Face Shape",
+    description: "Find haircut direction for oval, round, square, oblong, heart, and diamond faces.",
+    href: "/mens-hairstyles-by-face-shape",
   },
   {
-    title: "Glasses & Accessories",
-    description: "Choose frames and accessory lines that complement your structure.",
-    href: "/blog#glasses",
+    title: "Beard Styles by Face Shape",
+    description: "Use beard shape to add width, reduce length, and sharpen the jawline.",
+    href: "/beard-styles-by-face-shape",
   },
   {
-    title: "Beard & Grooming",
-    description: "Shape facial hair to improve jawline and face-width balance.",
-    href: "/blog#beard",
+    title: "Male Face Shape Comparisons",
+    description: "Compare oval vs oblong and other lookalike categories before copying the wrong style.",
+    href: "/blog/oval-vs-oblong-face-male",
   },
   {
-    title: "AI & Analysis",
-    description: "Understand how detector quality changes with input conditions.",
-    href: "/blog#ai-analysis",
+    title: "Male-first Blog Guides",
+    description: "Browse haircut mistakes, beard ideas, and face-shape-driven grooming content for men.",
+    href: "/blog#mens-style",
   },
 ]
 

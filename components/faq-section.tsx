@@ -4,29 +4,29 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 const faqs = [
   {
-    question: "How accurate is an AI face shape detector?",
+    question: "How accurate is an AI face shape detector for men's haircut decisions?",
     answer:
-      "Our AI face shape detector uses advanced machine learning algorithms trained on thousands of facial images, achieving over 95% accuracy in identifying face shapes. The accuracy depends on photo quality and lighting conditions.",
-  },
-  {
-    question: "Is this face shape analyzer free to use?",
-    answer:
-      "Yes, our face shape analyzer is completely free to use. There are no hidden fees, subscriptions, or premium features locked behind a paywall.",
+      "It is most useful when the photo is clear, front-facing, and well lit. The better the input, the easier it is to separate lookalike shapes such as oval vs oblong before choosing a haircut or beard style.",
   },
   {
     question: "Can I detect my face shape from a selfie?",
     answer:
-      "Our AI works with selfies, portraits, and casual photos. For best results, use a well-lit photo where your face is clearly visible and facing the camera directly.",
+      "Yes. Use a straight-on selfie with your forehead, cheekbones, and jawline visible. That gives you a much better starting point for men's haircut, beard, and glasses choices.",
+  },
+  {
+    question: "What haircut suits an oval face male best?",
+    answer:
+      "Usually a textured crop, side part, Ivy League, or low quiff. Oval faces handle variety well, but very high top volume and super-tight sides can still push the face out of balance.",
   },
   {
     question: "Does the tool store my uploaded photo?",
     answer:
-      "No, we never store your photos. All image processing happens locally in your browser, and your photos are immediately discarded after analysis. Your privacy is our priority.",
+      "No. Your photos are not stored after analysis. The goal is fast face shape detection without turning your selfie into an unwanted museum exhibit.",
   },
   {
-    question: "What is the most common face shape?",
+    question: "Why does oval vs oblong matter so much for men?",
     answer:
-      "The oval face shape is often considered the most common, followed by round and square shapes. However, face shape distribution varies by ethnicity and genetics.",
+      "Because haircut advice changes fast once the face gets longer. A cut that works for an oval face can easily over-elongate an oblong one, especially with high fades or too much height on top.",
   },
 ]
 

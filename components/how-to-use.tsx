@@ -16,8 +16,8 @@ const steps = [
   {
     icon: FileCheck,
     step: "Step 3",
-    title: "Get Your Face Shape & Style Tips",
-    description: "Receive your face shape analysis with personalized styling recommendations.",
+    title: "Get Your Face Shape and Men's Style Direction",
+    description: "Use the result to compare haircut, beard, and glasses recommendations built around your proportions.",
   },
 ]
 

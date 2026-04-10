@@ -19,8 +19,8 @@ const features = [
   },
   {
     icon: Sparkles,
-    title: "Personalized Hair, Makeup, and Style Recommendations",
-    description: "Get tailored suggestions based on your unique face shape.",
+    title: "Men's Haircut, Beard, and Glasses Direction",
+    description: "Use your face shape result to make sharper grooming and style decisions instead of copying random trends.",
   },
 ]
 

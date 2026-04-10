@@ -4,40 +4,40 @@ import { BookOpen, Scissors, Sparkles } from "lucide-react"
 
 const articles = [
   {
-    icon: BookOpen,
-    title: "What Face Shape Do I Have? A Simple Step-by-Step Guide",
-    description: "Follow a practical method to identify your face shape from forehead, cheekbones, jawline, and length.",
-    href: "/blog/what-face-shape-do-i-have-a-simple-step-by-step-guide",
+    icon: Scissors,
+    title: "Best Haircuts for Oval Face Male",
+    description: "Controlled volume, texture, and balanced sides for one of the most versatile men's face shapes.",
+    href: "/blog/best-haircuts-for-oval-face-male",
   },
   {
     icon: Scissors,
-    title: "How to Tell Your Face Shape From a Selfie",
-    description: "Learn how to detect face shape from photo with simple checks and better selfie setup.",
-    href: "/blog/how-to-tell-your-face-shape-from-a-selfie",
-  },
-  {
-    icon: BookOpen,
-    title: "Face Shape Types Explained",
-    description: "Understand oval, round, square, heart, diamond, and oblong patterns before styling choices.",
-    href: "/blog/face-shape-types-explained",
-  },
-  {
-    icon: Sparkles,
-    title: "Best Glasses for Your Face Shape",
-    description: "Find frame styles that balance round, square, oval, heart, diamond, and oblong face shapes.",
-    href: "/blog/best-glasses-for-your-face-shape",
+    title: "Worst Haircuts for Oval Faces Male",
+    description: "Avoid the cuts that over-elongate an oval face or make it look too narrow.",
+    href: "/blog/worst-haircuts-for-oval-faces-male",
   },
   {
     icon: Scissors,
-    title: "Best Hairstyles for Round Face Shape",
-    description: "Hairstyles that add structure and visual length for round face proportions.",
-    href: "/blog/best-hairstyles-for-round-face-shape",
+    title: "Best Haircuts for Oblong Face Male",
+    description: "Haircut direction that reduces extra length and keeps more width through the silhouette.",
+    href: "/blog/best-haircuts-for-oblong-face-male",
   },
   {
     icon: Sparkles,
-    title: "How Accurate Are AI Face Shape Detectors?",
-    description: "See what impacts AI face shape accuracy and how to improve your input quality.",
-    href: "/blog/how-accurate-are-ai-face-shape-detectors",
+    title: "Best Beard Styles for Oval Face Male",
+    description: "Beard shapes that support oval proportions instead of pulling the face downward.",
+    href: "/blog/best-beard-styles-for-oval-face-male",
+  },
+  {
+    icon: BookOpen,
+    title: "Oval vs Oblong Face Male",
+    description: "The difference that changes haircut and beard advice fast if your face already leans long.",
+    href: "/blog/oval-vs-oblong-face-male",
+  },
+  {
+    icon: Sparkles,
+    title: "Best Beard Styles for Your Face Shape",
+    description: "Use beard width, length, and outline to improve jawline balance and facial structure.",
+    href: "/blog/best-beard-styles-for-your-face-shape",
   },
 ]
 
