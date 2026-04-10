@@ -25,7 +25,7 @@ export function Intro() {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white sm:text-4xl">What Face Shape Do I Have?</h1>
           <p className="mt-4 text-lg text-white/60">
-            Understanding your face shape is the first step to enhancing your natural beauty
+            Understanding your face shape is the first step to choosing better haircuts, beard styles, glasses, and overall styling direction.
           </p>
         </div>
         <div className="flex justify-center mb-8">

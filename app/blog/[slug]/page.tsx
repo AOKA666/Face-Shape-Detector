@@ -120,11 +120,41 @@ const CTA_BY_SLUG: Record<string, CtaConfig> = {
     title: "Check If Your Face Is Oblong or Oval",
     description: "Use our detector to compare face length and width before choosing a style that adds more balance.",
   },
+  "best-haircuts-for-oval-face-male": {
+    href: "/mens-hairstyles-by-face-shape",
+    ctaText: "Browse Men's Haircuts by Face Shape",
+    title: "Need More Men's Haircut Options?",
+    description: "Use the male haircut hub to compare oval, oblong, round, square, heart, and diamond face strategies in one place.",
+  },
   "worst-haircuts-for-oval-faces-male": {
     href: "/face-shape-detector-for-men",
     ctaText: "Check Your Face Shape Before Your Next Cut",
     title: "Make Sure Your Face Is Actually Oval",
     description: "Use a clear photo to confirm whether your face is oval, oblong, or somewhere in between before copying the wrong haircut.",
+  },
+  "best-haircuts-for-oblong-face-male": {
+    href: "/mens-hairstyles-by-face-shape",
+    ctaText: "Compare Men's Haircuts by Face Shape",
+    title: "Need More Long-Face Haircut Direction?",
+    description: "Use the male haircut hub to compare oblong, oval, round, square, heart, and diamond haircut strategy side by side.",
+  },
+  "worst-haircuts-for-long-face-men": {
+    href: "/face-shape-detector-for-men",
+    ctaText: "Check If Your Face Is Oblong or Oval",
+    title: "Confirm Your Face Shape Before the Barber Does Damage",
+    description: "Use a clear photo to verify whether your face is long, oblong, or oval before choosing a height-heavy style that works against you.",
+  },
+  "best-beard-styles-for-oval-face-male": {
+    href: "/beard-styles-by-face-shape",
+    ctaText: "Browse Beard Styles by Face Shape",
+    title: "Need More Beard Ideas by Face Shape?",
+    description: "Use the beard hub to compare how different beard shapes affect oval, oblong, round, square, heart, and diamond faces.",
+  },
+  "oval-vs-oblong-face-male": {
+    href: "/face-shape-detector-for-men",
+    ctaText: "Compare Your Face Shape Online",
+    title: "Still Stuck Between Oval and Oblong?",
+    description: "Upload a clear photo and compare your proportions before choosing a haircut meant for the wrong face shape.",
   },
   "best-beard-styles-for-your-face-shape": {
     href: "/face-shape-detector-for-men",
@@ -223,6 +253,66 @@ const FAQ_BY_SLUG: Partial<Record<string, FaqItem[]>> = {
       question: "What haircut is usually safest for oval face shape male?",
       answer:
         "A textured crop, side part, taper fade, or low-volume quiff is usually safer because it preserves balance instead of exaggerating face length.",
+    },
+  ],
+  "best-haircuts-for-oval-face-male": [
+    {
+      question: "What is the best haircut for oval face male?",
+      answer:
+        "A textured crop, Ivy League, side part, or low quiff is usually a strong option because it keeps the face balanced instead of too long.",
+    },
+    {
+      question: "Should oval face men avoid fades?",
+      answer:
+        "Not all fades. Low fades and tapers usually work better than very high skin fades, which can remove too much side width and make the face look longer.",
+    },
+  ],
+  "best-haircuts-for-oblong-face-male": [
+    {
+      question: "What haircut makes an oblong face look shorter?",
+      answer:
+        "Textured fringe, French crop, and controlled crew cuts usually help because they reduce vertical emphasis and keep more balance through the sides.",
+    },
+    {
+      question: "Should oblong face men avoid height on top?",
+      answer:
+        "Usually yes. Too much height on top often makes an oblong face look longer, especially when paired with tight sides.",
+    },
+  ],
+  "worst-haircuts-for-long-face-men": [
+    {
+      question: "Why are high fades bad for long face men?",
+      answer:
+        "Because they remove side width and usually get paired with more height on top, which exaggerates face length instead of balancing it.",
+    },
+    {
+      question: "Can long face men still wear short hair?",
+      answer:
+        "Yes. The issue is not short hair itself. The problem is short haircuts that are too tall, too tight, or too narrow overall.",
+    },
+  ],
+  "best-beard-styles-for-oval-face-male": [
+    {
+      question: "What beard style suits an oval face male best?",
+      answer:
+        "Heavy stubble, a short boxed beard, or a controlled full beard usually works best because these styles add structure without making the face look too long.",
+    },
+    {
+      question: "Should oval face men avoid long beards?",
+      answer:
+        "Usually yes if the beard gets very pointed or chin-heavy. Oval faces do not usually need extra vertical length through the lower face.",
+    },
+  ],
+  "oval-vs-oblong-face-male": [
+    {
+      question: "What is the biggest difference between oval and oblong face male?",
+      answer:
+        "Both are longer than they are wide, but oblong faces are noticeably longer and usually need less height on top and more balance through the sides.",
+    },
+    {
+      question: "Why does oval vs oblong matter for haircuts?",
+      answer:
+        "Because a haircut that works on an oval face can easily over-elongate an oblong face. That difference changes what volume, fringe, and fade level make sense.",
     },
   ],
 }

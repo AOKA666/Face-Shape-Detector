@@ -86,6 +86,12 @@ export default function OnlinePage() {
             ctaText="Try the Face Shape Detector"
             href="/face-shape-detector-from-photo"
           />
+          <FaceDetectorCTA
+            title="Looking for men's haircut recommendations?"
+            description="If your goal is choosing better men's haircuts, beard styles, and glasses, go to the male-first detector page and styling hubs next."
+            ctaText="Open Face Shape Detector for Men"
+            href="/face-shape-detector-for-men"
+          />
         </section>
         <InternalLinks />
         <FAQOnline />

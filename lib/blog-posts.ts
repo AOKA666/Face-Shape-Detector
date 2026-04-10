@@ -32,7 +32,12 @@ const BLOG_FILES = [
   "best-hairstyles-for-heart-face-shape.md",
   "best-hairstyles-for-diamond-face-shape.md",
   "best-hairstyles-for-oblong-face-shape.md",
+  "best-haircuts-for-oval-face-male.md",
   "worst-haircuts-for-oval-faces-male.md",
+  "best-haircuts-for-oblong-face-male.md",
+  "worst-haircuts-for-long-face-men.md",
+  "best-beard-styles-for-oval-face-male.md",
+  "oval-vs-oblong-face-male.md",
   "best-beard-styles-for-your-face-shape.md",
   "how-accurate-are-ai-face-shape-detectors.md",
 ] as const
@@ -128,11 +133,41 @@ const RELATED_POSTS: Record<string, string[]> = {
     "best-hairstyles-for-diamond-face-shape",
     "face-shape-types-explained",
   ],
-  "worst-haircuts-for-oval-faces-male": [
+  "best-haircuts-for-oval-face-male": [
+    "worst-haircuts-for-oval-faces-male",
+    "best-beard-styles-for-oval-face-male",
+    "oval-vs-oblong-face-male",
     "best-hairstyles-for-oval-face-shape",
-    "best-beard-styles-for-your-face-shape",
+  ],
+  "worst-haircuts-for-oval-faces-male": [
+    "best-haircuts-for-oval-face-male",
+    "best-beard-styles-for-oval-face-male",
+    "oval-vs-oblong-face-male",
     "face-shape-types-explained",
-    "how-to-measure-your-face-shape",
+  ],
+  "best-haircuts-for-oblong-face-male": [
+    "worst-haircuts-for-long-face-men",
+    "oval-vs-oblong-face-male",
+    "best-hairstyles-for-oblong-face-shape",
+    "face-shape-types-explained",
+  ],
+  "worst-haircuts-for-long-face-men": [
+    "best-haircuts-for-oblong-face-male",
+    "oval-vs-oblong-face-male",
+    "best-hairstyles-for-oblong-face-shape",
+    "face-shape-types-explained",
+  ],
+  "best-beard-styles-for-oval-face-male": [
+    "best-haircuts-for-oval-face-male",
+    "worst-haircuts-for-oval-faces-male",
+    "best-beard-styles-for-your-face-shape",
+    "oval-vs-oblong-face-male",
+  ],
+  "oval-vs-oblong-face-male": [
+    "best-haircuts-for-oval-face-male",
+    "best-haircuts-for-oblong-face-male",
+    "worst-haircuts-for-long-face-men",
+    "face-shape-types-explained",
   ],
   "best-beard-styles-for-your-face-shape": [
     "face-shape-types-explained",

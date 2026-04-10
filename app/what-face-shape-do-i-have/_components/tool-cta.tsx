@@ -12,9 +12,9 @@ export function ToolCTA() {
           </div>
           <h2 className="text-3xl font-bold text-white sm:text-4xl">Try Our Face Shape Detector</h2>
           <p className="mx-auto mt-4 max-w-2xl text-base text-white/70 sm:text-lg">
-            Get instant, accurate face shape analysis with our AI-powered tool. Simply upload a photo and discover your face shape in seconds.
+            Get instant, accurate face shape analysis with our AI-powered tool. If you are making men&apos;s haircut or beard decisions, use the male-first path after you get your result.
           </p>
-          <div className="mt-8 flex justify-center gap-4">
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Button
               asChild
               className="bg-lime-400 text-black font-medium rounded-lg px-8 py-3
@@ -22,6 +22,9 @@ export function ToolCTA() {
                          transition-all"
             >
               <Link href="/#hero">Detect Face Shape Now</Link>
+            </Button>
+            <Button asChild variant="outline" className="border-white/20 bg-black/20 text-white hover:bg-white/10 hover:text-lime-300">
+              <Link href="/face-shape-detector-for-men">Use the Men&apos;s Version</Link>
             </Button>
           </div>
         </div>

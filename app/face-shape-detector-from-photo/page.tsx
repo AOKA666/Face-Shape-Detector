@@ -78,6 +78,12 @@ export default function FromPhotoPage() {
             ctaText="Try the Face Shape Detector"
             href="/face-shape-detector-online"
           />
+          <FaceDetectorCTA
+            title="Using this for men's grooming decisions?"
+            description="Jump straight to the male-first detector page if you want haircut, beard, and glasses guidance built around men's styling intent."
+            ctaText="Open the Face Shape Detector for Men"
+            href="/face-shape-detector-for-men"
+          />
         </section>
         <InternalLinksFromPhoto />
         <FAQFromPhoto />

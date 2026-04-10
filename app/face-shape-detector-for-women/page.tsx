@@ -78,6 +78,12 @@ export default function WomenPage() {
             ctaText="Try the Face Shape Detector"
             href="/face-shape-detector-online"
           />
+          <FaceDetectorCTA
+            title="Looking for men's haircut or beard guidance instead?"
+            description="Use the male-first detector and grooming hubs if your goal is men's hairstyles, beard styles, and glasses choices."
+            ctaText="Go to the Face Shape Detector for Men"
+            href="/face-shape-detector-for-men"
+          />
         </section>
         <InternalLinksWomen />
         <FAQWomen />

@@ -21,10 +21,10 @@ export function HeroOnline() {
           <h1 className="mt-6 text-3xl font-extrabold leading-tight text-white sm:text-4xl lg:text-5xl">
             Face Shape Detector Online
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-white/80 sm:text-lg">
-            Use directly in your browser - no downloads, no installations, instant results
+          <p className="mx-auto mt-4 max-w-3xl text-base text-white/80 sm:text-lg">
+            Use directly in your browser with no downloads or setup. If you are choosing men&apos;s haircuts, beard styles, or glasses, start here and then move to our male-first guides.
           </p>
-          <div className="mt-8 flex justify-center gap-4">
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Button
               asChild
               className="bg-lime-400 text-black font-medium rounded-lg px-8 py-3
@@ -32,6 +32,9 @@ export function HeroOnline() {
                        transition-all"
             >
               <Link href="/#hero">Try Online Now</Link>
+            </Button>
+            <Button asChild variant="outline" className="border-white/20 bg-black/20 text-white hover:bg-white/10 hover:text-lime-300">
+              <Link href="/face-shape-detector-for-men">Go to Face Shape Detector for Men</Link>
             </Button>
           </div>
         </div>

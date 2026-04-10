@@ -79,6 +79,12 @@ export default function WhatFaceShapePage() {
             ctaText="Try the Face Shape Detector"
             href="/face-shape-detector-online"
           />
+          <FaceDetectorCTA
+            title="What face shape do I have male?"
+            description="If your next step is choosing men&apos;s haircuts, beard styles, or frames, go to the male-first detector page and use the dedicated grooming hubs."
+            ctaText="Open the Face Shape Detector for Men"
+            href="/face-shape-detector-for-men"
+          />
         </section>
         <CommonMistakes />
         <InternalLinks />
