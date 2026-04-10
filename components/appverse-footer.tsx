@@ -78,8 +78,8 @@ export function AppverseFooter({ showLatestArticles = true }: { showLatestArticl
       </div>
 
       {showLatestArticles && (
-        <div id="blog" className="container mx-auto px-4 py-12 sm:py-16">
-          <Card className="relative overflow-hidden rounded-3xl liquid-glass p-6 sm:p-10">
+        <div id="blog" className="container mx-auto px-4 py-12 sm:py-16 [content-visibility:auto] [contain-intrinsic-size:900px]">
+          <Card className="relative overflow-hidden rounded-3xl border border-white/10 bg-neutral-900/85 p-6 sm:p-10 shadow-[0_12px_40px_rgba(0,0,0,0.25)]">
             <div className="relative">
               {/* Section Header */}
               <div className="text-center mb-8">
@@ -100,7 +100,7 @@ export function AppverseFooter({ showLatestArticles = true }: { showLatestArticl
                     <Link
                       key={post.slug}
                       href={`/blog/${post.slug}`}
-                      className="group relative rounded-2xl liquid-glass p-5 transition-all hover:bg-white/5 hover:ring-1 hover:ring-lime-300/30"
+                      className="group relative rounded-2xl border border-white/10 bg-neutral-900/70 p-5 transition-colors hover:bg-neutral-800/80 hover:ring-1 hover:ring-lime-300/30"
                     >
                       <div className="flex items-start gap-3">
                         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-lime-400/10">
