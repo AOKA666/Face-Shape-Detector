@@ -22,7 +22,7 @@ export function HeroOnline() {
             Face Shape Detector Online
           </h1>
           <p className="mx-auto mt-4 max-w-3xl text-base text-white/80 sm:text-lg">
-            Use directly in your browser with no downloads or setup. If you are choosing men&apos;s haircuts, beard styles, or glasses, start here and then move to our male-first guides.
+            Use directly in your browser with no downloads or setup. Upload a clear photo for more accurate face shape analysis, then move to our male-first haircut, beard, and glasses guides.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Button

@@ -17,7 +17,7 @@ export const dynamic = "force-static"
 export const metadata: Metadata = {
   title: "Face Shape Detector for Men | Free AI Haircut & Beard Guide",
   description:
-    "Use a free AI face shape detector for men to identify oval, round, square, heart, diamond, or oblong face shape from a selfie. Get men's haircut, beard, and glasses guidance.",
+    "Use a free AI face shape detector for men for more accurate face shape analysis from a selfie. Identify oval, round, square, heart, diamond, or oblong face shape and get men's haircut, beard, and glasses guidance.",
   alternates: {
     canonical: "https://www.yourface.online/",
   },
@@ -26,13 +26,13 @@ export const metadata: Metadata = {
     url: "https://www.yourface.online/",
     title: "Face Shape Detector for Men | Free AI Haircut & Beard Guide",
     description:
-      "Use a free AI face shape detector for men to identify oval, round, square, heart, diamond, or oblong face shape from a selfie. Get men's haircut, beard, and glasses guidance.",
+      "Use a free AI face shape detector for men for more accurate face shape analysis from a selfie. Identify oval, round, square, heart, diamond, or oblong face shape and get men's haircut, beard, and glasses guidance.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Face Shape Detector for Men | Free AI Haircut & Beard Guide",
     description:
-      "Use a free AI face shape detector for men to identify oval, round, square, heart, diamond, or oblong face shape from a selfie. Get men's haircut, beard, and glasses guidance.",
+      "Use a free AI face shape detector for men for more accurate face shape analysis from a selfie. Identify oval, round, square, heart, diamond, or oblong face shape and get men's haircut, beard, and glasses guidance.",
   },
 }
 
@@ -57,7 +57,7 @@ export default function Page() {
     url: "https://www.yourface.online/",
     name: "Face Shape Detector for Men | Free AI Haircut & Beard Guide",
     description:
-      "Use our free male-first face shape detector online to detect face shape from photo and choose better men's haircut, beard, and glasses direction in seconds.",
+      "Use our free male-first face shape detector online for more accurate face shape analysis from a clear photo, then choose better men's haircut, beard, and glasses direction in seconds.",
     isPartOf: {
       "@id": "https://www.yourface.online/#website",
     },
@@ -69,7 +69,7 @@ export default function Page() {
     "@id": "https://www.yourface.online/",
     name: "AI Face Shape Detector for Men - Free Online Haircut and Beard Analyzer",
     description:
-      "Upload your photo to instantly detect your face shape using AI. Get personalized men's haircut, beard, and glasses recommendations based on your proportions.",
+      "Upload your photo to instantly detect your face shape using AI and get more accurate style direction for men's haircuts, beards, and glasses based on your proportions.",
     url: "https://www.yourface.online/",
     applicationCategory: "UtilityApplication",
     operatingSystem: "Any",

@@ -1031,7 +1031,7 @@ export function Hero() {
               Face Shape Detector for Men: Haircuts, Beards, and Glasses
             </h1>
             <p className="mx-auto mt-2 sm:mt-4 max-w-3xl text-sm text-white/70 sm:text-base lg:text-lg">
-              Upload a clear photo to detect your face shape from a selfie, then use the result to choose better men&apos;s haircuts, beard styles, and glasses without guessing.
+              Upload a clear photo for more accurate face shape analysis, then use the result to choose better men&apos;s haircuts, beard styles, and glasses without guessing.
             </p>
           </div>
           <input

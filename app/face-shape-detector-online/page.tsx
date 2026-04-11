@@ -16,7 +16,7 @@ export const dynamic = "force-static"
 export const metadata: Metadata = {
   title: "Face Shape Detector Online | Free AI Tool From Photo",
   description:
-    "Use our free online face shape detector to analyze your selfie in seconds. Discover your face shape and get accurate AI-based styling insights.",
+    "Use our free online face shape detector to analyze your selfie in seconds with more accurate AI-based face shape insights. Discover your face shape and choose better styling direction.",
   alternates: {
     canonical: "https://www.yourface.online/face-shape-detector-online",
   },

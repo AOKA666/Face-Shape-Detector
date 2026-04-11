@@ -16,7 +16,7 @@ export const dynamic = "force-static"
 export const metadata: Metadata = {
   title: "Face Shape Detector for Men | Find the Best Cut & Style",
   description:
-    "Use our AI face shape detector for men to identify your face shape and discover better hairstyles, beard styles, and glasses choices.",
+    "Use our AI face shape detector for men for more accurate face shape analysis and discover better hairstyles, beard styles, and glasses choices.",
   alternates: {
     canonical: "https://www.yourface.online/face-shape-detector-for-men",
   },
@@ -29,7 +29,7 @@ export default function MenPage() {
     "@id": "https://www.yourface.online/face-shape-detector-for-men",
     name: "Face Shape Detector for Men | Find the Best Cut & Style",
     description:
-      "Use our AI face shape detector for men to identify your face shape and discover better hairstyles, beard styles, and glasses choices.",
+      "Use our AI face shape detector for men for more accurate face shape analysis and discover better hairstyles, beard styles, and glasses choices.",
     url: "https://www.yourface.online/face-shape-detector-for-men",
     applicationCategory: "UtilityApplication",
     operatingSystem: "Any",

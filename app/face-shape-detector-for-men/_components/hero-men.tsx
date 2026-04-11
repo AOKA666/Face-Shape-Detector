@@ -22,7 +22,7 @@ export function HeroMen() {
             Face Shape Detector for Men: Find the Best Haircut, Beard, and Glasses
           </h1>
           <p className="mx-auto mt-4 max-w-3xl text-base text-white/70 sm:text-lg">
-            Upload a clear photo to identify your face shape, then use that result to choose better men's haircuts, beard styles, and frame shapes without guessing.
+            Upload a clear photo for more accurate face shape detection, then use that result to choose better men's haircuts, beard styles, and frame shapes without guessing.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Button

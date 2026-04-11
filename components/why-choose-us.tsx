@@ -4,8 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 const features = [
   {
     icon: Zap,
-    title: "Fast & Accurate Face Shape Detection Using AI",
-    description: "Our advanced AI analyzes your facial features in seconds with high precision.",
+    title: "Faster, More Accurate Face Shape Analysis",
+    description: "Built to give cleaner face shape reads from clear front-facing photos, so your haircut and beard decisions start from a stronger baseline.",
   },
   {
     icon: Shield,
