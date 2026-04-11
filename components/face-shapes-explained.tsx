@@ -57,7 +57,7 @@ export function FaceShapesExplained() {
               <div className="mb-4 overflow-hidden rounded-2xl bg-white/10">
                   <div className="relative aspect-square w-full">
                     <Image
-                      src={`/images/faces-shape/${shape.slug}.png`}
+                      src={`/images/faces-shape/${shape.slug}.webp`}
                       alt={`${shape.name} face shape illustration`}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
